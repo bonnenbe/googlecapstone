@@ -1,0 +1,12 @@
+# compiled python files
+*.pyc
+
+# build.sh temporary output
+/build/
+
+# build.sh installed libraries
+#/autoload/
+#/dbindexer/
+#/djangoappengine/
+#/djangotoolbox/
+
