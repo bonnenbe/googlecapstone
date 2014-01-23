@@ -24,7 +24,7 @@ class ChangeRequest(ndb.Model):
 
 
 MAIN_PAGE_FOOTER_TEMPLATE = """\
-    <form action="/submit" method="post">
+    <form action="/View" method="post">
     <p>
         Summary: <div><textarea name="summary" rows="3" cols="60"></textarea></div>
         Description: <div><textarea name="description" rows="3" cols="60"></textarea></div>
@@ -66,13 +66,14 @@ class MainPage(webapp2.RequestHandler):
         crs = crs_query.fetch(10)
 
         for cr in crs:
-            self.response.write('On %s ' % cr.created_on)
+            self.response.write('<a href="%s">On %s ' % (self.request.host_url + "/View?" + urllib.urlencode({'id' : cr.key.id()})
+                                                         ,cr.created_on))
             if cr.technician:
                 self.response.write(
                         '<b>%s</b> submitted:' % cr.technician.nickname())
             else:
                 self.response.write('an anonymous person submitted:')
-            self.response.write('<blockquote>%s</blockquote>\
+            self.response.write('</a><blockquote>%s</blockquote>\
 <blockquote>%s</blockquote>\
 <blockquote>%s</blockquote>\
 <blockquote>%s</blockquote>\
@@ -96,7 +97,7 @@ class MainPage(webapp2.RequestHandler):
                             (url, url_linktext))
 
 
-class Guestbook(webapp2.RequestHandler):
+class View(webapp2.RequestHandler):
 
     def post(self):
         guestbook_name = self.request.get('guestbook_name',
@@ -124,5 +125,5 @@ class Guestbook(webapp2.RequestHandler):
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/submit', Guestbook),
+    ('/View', View),
 ], debug=True)
