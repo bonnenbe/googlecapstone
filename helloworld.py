@@ -12,24 +12,34 @@ import datetime
 
 class ChangeRequest(ndb.Model):
     summary = ndb.TextProperty(required=True)
+    description = ndb.TextProperty(required=True)
+    impact = ndb.TextProperty(required=True)
+    documentation = ndb.TextProperty(required=True)
+    rationale  = ndb.TextProperty(required=True)
+    implementation_steps = ndb.TextProperty(required=True)    
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     technician = ndb.UserProperty()
+    priority = ndb.StringProperty(required=True,
+                                  choices=set(["sensitive", "routine"]))
+
 
 MAIN_PAGE_FOOTER_TEMPLATE = """\
-    <form action="/sign?%s" method="post">
-      <div><textarea name="summary" rows="3" cols="60"></textarea></div>
+    <form action="/submit" method="post">
+      <p>
+      Summary: <div><textarea name="summary" rows="3" cols="60"></textarea></div>
+      Description: <div><textarea name="description" rows="3" cols="60"></textarea></div>
+Impact: <div><textarea name="description" rows="3" cols="60"></textarea></div>
+Documentation: <div><textarea name="documentation" rows="3" cols="60"></textarea></div>
+Rationale: <div><textarea name="rationale" rows="3" cols="60"></textarea></div>
+Implementation Steps: <div><textarea name="implementation_steps" rows="3" cols="60"></textarea></div>
+Priority: <div><select name="priority">
+<option value="sensitive">sensitive</option>
+<option value="routine">routine</option>
       <div><input type="submit" value="Submit Change Request"></div>
+</p>
     </form>
-
     <hr>
-
-    <form>Guestbook name:
-      <input value="%s" name="guestbook_name">
-      <input type="submit" value="switch">
-    </form>
-
     <a href="%s">%s</a>
-
   </body>
 </html>
 """
@@ -56,11 +66,20 @@ class MainPage(webapp2.RequestHandler):
             self.response.write('On %s ' % cr.created_on)
             if cr.technician:
                 self.response.write(
-                        '<b>%s</b> wrote:' % cr.technician.nickname())
+                        '<b>%s</b> submitted:' % cr.technician.nickname())
             else:
-                self.response.write('an anonymous person wrote:')
-            self.response.write('<blockquote>%s</blockquote>' %
-                                cgi.escape(cr.summary))
+                self.response.write('an anonymous person submitted:')
+            self.response.write('<blockquote>%s</blockquote>\
+<blockquote>%s</blockquote>\
+<blockquote>%s</blockquote>\
+<blockquote>%s</blockquote>\
+<blockquote>%s</blockquote>\
+<blockquote>%s</blockquote>\
+                                <blockquote>%s</blockquote>' %
+                                (cgi.escape(cr.summary),cgi.escape(cr.description),
+                                 cgi.escape(cr.impact),cgi.escape(cr.documentation),
+                                 cgi.escape(cr.rationale),cgi.escape(cr.implementation_steps),
+                                 cgi.escape(cr.priority)))
             
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -70,10 +89,8 @@ class MainPage(webapp2.RequestHandler):
             url_linktext = 'Login'
 
         # Write the submission form and the footer of the page
-        sign_query_params = urllib.urlencode({'guestbook_name': guestbook_name})
         self.response.write(MAIN_PAGE_FOOTER_TEMPLATE %
-                            (sign_query_params, cgi.escape(guestbook_name),
-                             url, url_linktext))
+                            (url, url_linktext))
 
 
 class Guestbook(webapp2.RequestHandler):
@@ -81,8 +98,8 @@ class Guestbook(webapp2.RequestHandler):
     def post(self):
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
-        cr = ChangeRequest(parent=guestbook_key(guestbook_name),
-                           summary=self.request.get('summary'))
+        cr = ChangeRequest(parent=guestbook_key(guestbook_name))
+                           
                            
                            
 
@@ -90,13 +107,19 @@ class Guestbook(webapp2.RequestHandler):
             cr.technician = users.get_current_user()
 
         cr.summary = self.request.get('summary')
+        cr.description = self.request.get('description')
+        cr.impact = self.request.get('impact')
+        cr.documentation = self.request.get('documentation')
+        cr.rationale = self.request.get('rationale')
+        cr.implementation_steps = self.request.get('implementation_steps')
+        cr.priority = self.request.get('priority')
         cr.put()
 
-        query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))
+
+        self.redirect('/')
 
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/sign', Guestbook),
+    ('/submit', Guestbook),
 ], debug=True)
