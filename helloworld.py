@@ -34,7 +34,7 @@ Rationale: <div><textarea name="rationale" rows="3" cols="60"></textarea></div>
 Implementation Steps: <div><textarea name="implementation_steps" rows="3" cols="60"></textarea></div>
 Priority: <div><select name="priority">
 <option value="sensitive">sensitive</option>
-<option value="routine">routine</option>
+<option value="routine">routine</option></div>
       <div><input type="submit" value="Submit Change Request"></div>
 </p>
     </form>
