@@ -25,18 +25,21 @@ class ChangeRequest(ndb.Model):
 
 MAIN_PAGE_FOOTER_TEMPLATE = """\
     <form action="/submit" method="post">
-      <p>
-      Summary: <div><textarea name="summary" rows="3" cols="60"></textarea></div>
-      Description: <div><textarea name="description" rows="3" cols="60"></textarea></div>
-Impact: <div><textarea name="description" rows="3" cols="60"></textarea></div>
-Documentation: <div><textarea name="documentation" rows="3" cols="60"></textarea></div>
-Rationale: <div><textarea name="rationale" rows="3" cols="60"></textarea></div>
-Implementation Steps: <div><textarea name="implementation_steps" rows="3" cols="60"></textarea></div>
-Priority: <div><select name="priority">
-<option value="sensitive">sensitive</option>
-<option value="routine">routine</option></div>
-      <div><input type="submit" value="Submit Change Request"></div>
-</p>
+    <p>
+        Summary: <div><textarea name="summary" rows="3" cols="60"></textarea></div>
+        Description: <div><textarea name="description" rows="3" cols="60"></textarea></div>
+        Impact: <div><textarea name="description" rows="3" cols="60"></textarea></div>
+        Documentation: <div><textarea name="documentation" rows="3" cols="60"></textarea></div>
+        Rationale: <div><textarea name="rationale" rows="3" cols="60"></textarea></div>
+        Implementation Steps: <div><textarea name="implementation_steps" rows="3" cols="60"></textarea></div>
+        Priority: <div>
+            <select name="priority">
+            <option value="sensitive">sensitive</option>
+            <option value="routine">routine</option>
+        </div>
+    
+    <div><input type="submit" value="Submit Change Request"></div>
+    </p>
     </form>
     <hr>
     <a href="%s">%s</a>
@@ -55,7 +58,7 @@ def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-        self.response.write('<html><body>')
+        self.response.write('<html><head><link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /></head><body>')
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         crs_query = ChangeRequest.query(
