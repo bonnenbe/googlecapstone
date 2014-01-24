@@ -66,7 +66,7 @@ class MainPage(webapp2.RequestHandler):
         crs = crs_query.fetch(10)
 
         for cr in crs:
-            self.response.write('<a href="%s">On %s ' % (self.request.host_url + "/View?" + urllib.urlencode({'id' : cr.key.id()})
+            self.response.write('<a href="%s">On %s ' % (self.request.host_url + "/View?" + urllib.urlencode({'key' : cr.key.urlsafe()})
                                                          ,cr.created_on))
             if cr.technician:
                 self.response.write(
@@ -99,6 +99,29 @@ class MainPage(webapp2.RequestHandler):
 
 class View(webapp2.RequestHandler):
 
+    def get(self):
+        key = ndb.Key(urlsafe=self.request.get('key'))
+        cr = key.get()
+        self.response.write( """<html><body>\
+        <p>
+        Summary: <div><textarea name="summary" rows="3" cols="60">%s</textarea></div>
+        Description: <div><textarea name="description" rows="3" cols="60">%s</textarea></div>
+        Impact: <div><textarea name="description" rows="3" cols="60">%s</textarea></div>
+        Documentation: <div><textarea name="documentation" rows="3" cols="60">%s</textarea></div>
+        Rationale: <div><textarea name="rationale" rows="3" cols="60">%s</textarea></div>
+        Implementation Steps: <div><textarea name="implementation_steps" rows="3" cols="60">%s</textarea></div>
+        Priority: <div>
+            <select name="priority">
+            <option value="sensitive">sensitive</option>
+            <option value="routine">routine</option>
+        </div>
+            </p>
+      </body>
+</html>
+""" % (cgi.escape(cr.summary),cgi.escape(cr.description),
+                                 cgi.escape(cr.impact),cgi.escape(cr.documentation),
+                                 cgi.escape(cr.rationale),cgi.escape(cr.implementation_steps)))
+        
     def post(self):
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
