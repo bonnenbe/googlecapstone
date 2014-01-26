@@ -1,0 +1,40 @@
+<!doctype html>
+<html ng-app>
+  <head>
+    <script src="angular.min.js"></script>
+  </head>
+  <body>
+    <h1>Change Request</h1>
+    <div ng-init="priorities = ['sensitive', 'routine']">
+    <div>
+      Summary: <input type="text" ng-model="summary"  >
+    </div>
+    <div>
+      Description: <input type="text" ng-model="description"  >
+    </div>
+    <div>
+      Impact: <input type="text" ng-model="impact"  >
+    </div>
+    <div>
+      Documentation: <input type="text" ng-model="documentation"  >
+    </div>
+    <div>
+      Rationale: <input type="text" ng-model="rationale"  >
+    </div>
+    <div>
+      Implementation Steps: <input type="text" ng-model="implementation_steps"  >
+    </div>
+    <div>
+      Created On: <input type="datetime" ng-model="created_on"  >
+    </div>
+    <div>
+      Technician: <input type="email" ng-model="technician" >
+    </div>
+    Priority: <select ng-model="priority">
+      <option ng-repeat="p in priorities">{{p}}</option>
+    </select>
+    </div>
+    
+    
+  </body>
+</html>
