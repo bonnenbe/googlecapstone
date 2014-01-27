@@ -1,40 +1,42 @@
 <!doctype html>
-<html ng-app>
+<html ng-app="module1">
   <head>
-    <script src="angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.10/angular.min.js"></script>
+    <script src="controller1.js"></script>
   </head>
   <body>
-    <h1>Change Request</h1>
-    <div ng-init="priorities = ['sensitive', 'routine']">
-    <div>
-      Summary: <input type="text" ng-model="summary"  >
+    <div ng-controller="controller1 as ctrl">
+      <h1>Create Change Request</h1>
+      <div>
+	Summary: <input type="text" ng-model="$scope.cr.summary"  >
+      </div>
+      <div>
+	Description: <input type="text" ng-model="$scope.cr.description"  >
+      </div>
+      <div>
+	Impact: <input type="text" ng-model="$scope.cr.impact"  >
+      </div>
+      <div>
+	Documentation: <input type="text" ng-model="$scope.cr.documentation"  >
+      </div>
+      <div>
+	Rationale: <input type="text" ng-model="$scope.cr.rationale"  >
+      </div>
+      <div>
+	Implementation Steps: <input type="text" ng-model="$scope.cr.implementation_steps"  >
+      </div>
+      <div>
+	Technician: <input type="email" ng-model="$scope.cr.technician" >
+      </div>
+      Priority: <select ng-model="$scope.cr.priority">
+	<option ng-repeat="p in ctrl.priorities">{{p}}</option>
+      </select>
+      <div><button ng-click="ctrl.add($scope.cr)">Add</button>
+      </div>
+      <h1>Current Change Requests</h1>
+      <div ng-repeat="cr in ctrl.crs">{{cr.summary}} {{cr.priority}}</div>
+      <hr>
+      {{ctrl.crs}}
     </div>
-    <div>
-      Description: <input type="text" ng-model="description"  >
-    </div>
-    <div>
-      Impact: <input type="text" ng-model="impact"  >
-    </div>
-    <div>
-      Documentation: <input type="text" ng-model="documentation"  >
-    </div>
-    <div>
-      Rationale: <input type="text" ng-model="rationale"  >
-    </div>
-    <div>
-      Implementation Steps: <input type="text" ng-model="implementation_steps"  >
-    </div>
-    <div>
-      Created On: <input type="datetime" ng-model="created_on"  >
-    </div>
-    <div>
-      Technician: <input type="email" ng-model="technician" >
-    </div>
-    Priority: <select ng-model="priority">
-      <option ng-repeat="p in priorities">{{p}}</option>
-    </select>
-    </div>
-    
-    
   </body>
 </html>
