@@ -9,6 +9,13 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
+- url: /
+  static_files: view1.html
+  upload: view1.html
+
+- url: /
+  static_dir: .
+
 - url: /.*
   script: helloworld.application
 
