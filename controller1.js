@@ -7,5 +7,9 @@ angular.module('module1',[])
 	    newcr = new Object();
 	    for(var k in cr) newcr[k]=cr[k];
 	    this.crs.push(newcr);
+	    //$http.post('/Add',newcr).success(
+	};
+	this.remove = function remove(index){
+	    this.crs.splice(index,1);
 	};
     });
