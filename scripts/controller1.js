@@ -12,11 +12,11 @@ angular.module('module1',[])
 	    // }).error(function() {
 	    // 	window.alert("ERROR");
 	    // });
-	    $http({
-		url: '/changerequests',
-		method: "POST",
-		data: {"summary": "blah", "priority": "routine"}
-		headers: {'Content-Type': 'application/json'}});
+	    // $http({
+	    // 	url: '/changerequests',
+	    // 	method: "POST",
+	    // 	data: {"summary": "blah", "priority": "routine"}
+	    // 	headers: {'Content-Type': 'application/json'}});
 
 	};
 	this.remove = function remove(index){

@@ -9,13 +9,15 @@ handlers:
 - url: /stylesheets
   static_dir: stylesheets
 
-- url: /
-  static_files: view1.html
-  upload: view1.html
+- url: /views
+  static_dir: views
 
-- url: /(.*\.(html|css|js))$
-  static_files: ./\1
-  upload: ./(.*\.(html|css|js))$
+- url: /scripts
+  static_dir: scripts
+
+- url: /
+  static_files: views/view1.html
+  upload: views/view1.html
 
 - url: /.*
   script: server.application
