@@ -1,5 +1,5 @@
 var app = angular.module('module1',['ngRoute', 'ngAnimate'])
-    .controller('controller1',['$http', '$scope', function($http, $scope){
+    .controller('listController',['$http', '$scope', function($http, $scope){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests',"").success(function(data) {
 	    $scope.crs = data.changerequests;
@@ -22,24 +22,26 @@ var app = angular.module('module1',['ngRoute', 'ngAnimate'])
 		$scope.crs.splice(index,1);
 	    })};
     }])
-    .controller('updateController', ['$http', '$scope', function($routeParams, $http, $scope){
-	$http.get('/changerequests/id/' + $routeParams.id,"").success(function(data) {
+    .controller('updateController', function($routeParams, $http, $scope){
+	$scope.priorities = ['routine', 'sensitive'];
+	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;
-	})
-    }]);
+	});
+    });
 	
 
 app.config(function ($routeProvider) {
     $routeProvider
-	.when('/id/:id',
+	.when('/id=:id',
 	      {
 		  controller: 'updateController',
 		  templateUrl: '/views/update.html'
 	      })
 	.when('/',
 	      {
-		  controller: 'controller1',
-		  templateUrl: '/views/view1.html'
+		  controller: 'listController',
+		  templateUrl: '/views/view1.html',
+		  controllerAs: 'ctrl'
 	      })
 	.otherwise({ redirectTo: '/' });
 });
