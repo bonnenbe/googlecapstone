@@ -16,8 +16,8 @@ handlers:
   static_dir: scripts
 
 - url: /
-  static_files: views/view1.html
-  upload: views/view1.html
+  static_files: views/index.html
+  upload: views/index.html
 
 - url: /.*
   script: server.application

@@ -1,6 +1,4 @@
-<div ng-controller="controller1 as ctrl">
-  <h1>Create Change Request</h1>
-  <div>
+ <div>
     Summary: <input type="text" ng-model="cr.summary"  >
   </div>
   <div>
@@ -21,15 +19,4 @@
   <div>
     Technician: <input type="email" ng-model="cr.technician" >
   </div>
-  Priority: <select ng-model="cr.priority">
-    <option ng-repeat="p in priorities">{{p}}</option>
-  </select>
-  <div><button ng-click="ctrl.add(cr)">Add</button>
-  </div>
-  <h1>Current Change Requests</h1>
-  <div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
-    <a ng-href="/id/{{cr.id}}">[Click Me]</a>
-    <a href ng-click="ctrl.remove($index)">[X]</a></div>
-  <hr>
-  {{crs}}
 </div>

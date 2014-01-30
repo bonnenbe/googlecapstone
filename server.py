@@ -143,40 +143,52 @@ class View(webapp2.RequestHandler):
         cr.put()
         self.redirect('/')
 
-    
-class ChangeRequestHandler(webapp2.RequestHandler):
+def encodeChangeRequest(cr):
+    obj = {
+        'summary': cr.summary, 
+        'priority': cr.priority,
+        'id': cr.key.urlsafe()
+        }
+    return obj
+
+class CRListHandler(webapp2.RequestHandler):
     def get(self):
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
         crs_query = ChangeRequest.query(
             ancestor=guestbook_key(guestbook_name)).order(-ChangeRequest.created_on)
-        crs = crs_query.fetch(10)
+        crs = crs_query.fetch(100)
 
         
         #crs = [ChangeRequest(summary='sample summary',priority='routine')]
         
         objs = []
+        self.response.headers['Content-Type'] = 'application/json'   
         for cr in crs:
-            self.response.headers['Content-Type'] = 'application/json'   
-            obj = {
-                'summary': cr.summary, 
-                'priority': cr.priority
-                }
-            objs.append(obj)
+            objs.append(encodeChangeRequest(cr))
             
-        self.response.out.write(json.dumps({'changerequests': objs}))
+        self.response.write(json.dumps({'changerequests': objs}))
     def post(self):
         form = json.loads(self.request.body)
-        print form
         cr = ChangeRequest(parent=guestbook_key(),
                            summary=form['summary'],priority=form['priority'])
         cr.put()
+        self.response.write(json.dumps({'id': cr.key.urlsafe()}))
         
+class CRHandler(webapp2.RequestHandler):
+    def get(self, id):
+        key = ndb.Key(urlsafe=id)
+        cr = key.get()
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
+    def delete(self, id):
+        key = ndb.Key(urlsafe=id)
+        key.delete()
     
 
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/View', View),
-    webapp2.Route('/changerequests', handler=ChangeRequestHandler, methods=['GET','POST'])
+    webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
+    webapp2.Route('/changerequests/<id:.*>', handler=CRHandler)
 ], debug=True)
