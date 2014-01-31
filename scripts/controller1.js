@@ -28,12 +28,25 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 	    $http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
 		$scope.crs.splice(index,1);
 	    })};
+
+		
+		
+	    
+	    
+	    
     }])
-    .controller('updateController', function($routeParams, $http, $scope){
+    .controller('updateController', function($routeParams, $http, $scope, $location){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;
 	});
+	this.update = function update(cr){
+	    newcr = new Object();
+	    for(var k in cr) newcr[k]=cr[k];
+	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(newcr)).success(function() {
+		$location.path('#');
+	    })};
+		
     });
 	
 
@@ -42,7 +55,8 @@ app.config(function ($routeProvider) {
 	.when('/id=:id',
 	      {
 		  controller: 'updateController',
-		  templateUrl: '/views/update.html'
+		  templateUrl: '/views/update.html',
+		  controllerAs: 'ctrl'
 	      })
 	.when('/',
 	      {

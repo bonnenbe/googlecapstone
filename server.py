@@ -67,6 +67,16 @@ class CRHandler(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=id)
         cr = key.get()
         self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
+    def put(self, id):
+        form = json.loads(self.request.body)
+        key = ndb.Key(urlsafe=id)
+        cr = key.get()
+        cr.summary = form['summary']
+        cr.priority = form['priority']
+        cr.put()
+                          
+        
+        
     def delete(self, id):
         key = ndb.Key(urlsafe=id)
         key.delete()
