@@ -1,11 +1,18 @@
-var app = angular.module('module1',['ngRoute', 'ngAnimate'])
+var app = angular.module('module1',['ngRoute', 'ngGrid'])
     .controller('listController',['$http', '$scope', function($http, $scope){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests',"").success(function(data) {
 	    $scope.crs = data.changerequests;
-	    window.alert(JSON.stringify($scope.crs));
 	});
-			
+
+	$scope.myData = [{name: "Moroni", age: 50},
+                 {name: "Tiancum", age: 43},
+                 {name: "Jacob", age: 27},
+                 {name: "Nephi", age: 29},
+                 {name: "Enos", age: 34}];
+	$scope.gridOptions = {data: 'myData',
+			      columnDefs: [{ field:"name", displayName: "Name"},
+					   { field:"age", displayName: "Age"}] };
 	this.add = function add(cr){
 	    newcr = new Object();
 	    for(var k in cr) newcr[k]=cr[k];
