@@ -15,7 +15,7 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 					   { field:"age", displayName: "Age"}] };
 	this.add = function add(cr){
 	    newcr = new Object();
-	    for(var k in cr) newcr[k]=cr[k];
+	    angular.copy(cr,newcr);
 	    $http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
 		newcr.id = data.id;
 		$scope.crs.push(newcr);
@@ -41,9 +41,7 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 	    $scope.cr = data.changerequest;
 	});
 	this.update = function update(cr){
-	    newcr = new Object();
-	    for(var k in cr) newcr[k]=cr[k];
-	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(newcr)).success(function() {
+	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify($scope.cr)).success(function() {
 		$location.path('#');
 	    })};
 		
