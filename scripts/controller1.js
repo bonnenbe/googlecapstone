@@ -20,6 +20,7 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 		newcr.id = data.id;
 		$scope.crs.push(newcr);
 	    	console.log("Successful add");
+		alert(data.blah)
 	    }).error(function() {
 	    	console.log("Unsuccessful add");
 	    });
@@ -41,8 +42,9 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 	    $scope.cr = data.changerequest;
 	});
 	this.update = function update(cr){
-	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify($scope.cr)).success(function() {
+	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
 		$location.path('#');
+		alert(data.blah);
 	    })};
 		
     });
