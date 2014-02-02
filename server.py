@@ -32,13 +32,22 @@ def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
     """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
     return ndb.Key('Guestbook', guestbook_name)
 
+class JSONEncoder(json.JSONEncoder):
+    def default(self,obj):
+        if isinstance(obj,datetime.datetime):
+            return obj.isoformat()
+        return json.JSONEncoder.default(self,obj)
+
 def encodeChangeRequest(cr):
     obj = {
         'summary': cr.summary, 
         'priority': cr.priority,
-        'id': cr.key.urlsafe()
+        'id': cr.key.urlsafe(),
+        'audit_trail': cr.audit_trail
         }
     return obj
+
+
 
 class CRListHandler(webapp2.RequestHandler):
     def get(self):
@@ -53,7 +62,7 @@ class CRListHandler(webapp2.RequestHandler):
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
             
-        self.response.write(json.dumps({'changerequests': objs}))
+        self.response.write(json.dumps({'changerequests': objs},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest(parent=guestbook_key(),
@@ -61,13 +70,13 @@ class CRListHandler(webapp2.RequestHandler):
         cr.audit_trail = []
         cr.put()
         self.response.write(json.dumps({'id': cr.key.urlsafe(),
-                                        'blah': cr.__repr__()}))
+                                        'blah': cr.__repr__()},cls=JSONEncoder))
         
 class CRHandler(webapp2.RequestHandler):
     def get(self, id):
         key = ndb.Key(urlsafe=id)
         cr = key.get()
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
         key = ndb.Key(urlsafe=id)
@@ -90,7 +99,7 @@ class CRHandler(webapp2.RequestHandler):
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.append(audit_entry)
             cr.put()
-        self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()}))
+        self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
     def delete(self, id):
         key = ndb.Key(urlsafe=id)

@@ -26,3 +26,13 @@ Priority: <select ng-model="cr.priority">
 </div>
 <div><button ng-click="ctrl.update(cr)">Update</button>
 </div>
+<ul>
+<li ng-repeat="audit_entry in cr.audit_trail">
+  <hr>
+  On {{audit_entry.date}}: 
+  <ul>
+    <li ng-repeat="change in audit_entry.changes">
+      Changed {{change.property}} from {{change.from}} to {{change.to}} </li>
+  </ul>
+</li>
+</ul>
