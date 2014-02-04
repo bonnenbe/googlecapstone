@@ -3,4 +3,4 @@
 <div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
   <a ng-href="#/id={{cr.id}}">[Edit]</a>
   <a href ng-click="ctrl.remove($index)">[X]</a></div>
-
+<div class="gridStyle" ng-grid="gridOptions"></div>
