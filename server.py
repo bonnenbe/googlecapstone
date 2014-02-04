@@ -77,15 +77,9 @@ class CRListHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'changerequests': objs},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)
-        cr = ChangeRequest(parent=guestbook_key(),
-			summary=form['summary'],
-			description=form['description'],
-			impact=form['impact'],
-			documentation=form['documentation'],
-			rationale=form['rationale'],
-			implementation_steps=form['implementation_steps'],
-			#technician=form['technician'],
-			priority=form['priority'])
+        cr = ChangeRequest(parent=guestbook_key())
+        for k in (set(form.keys()) - set('id')):
+            setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.put()
         self.response.write(json.dumps({'id': cr.key.urlsafe(),
