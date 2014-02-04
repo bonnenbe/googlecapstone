@@ -10,3 +10,7 @@
 #/djangoappengine/
 #/djangotoolbox/
 
+scripts/controller1.js~
+server.py~
+*.html~
+*.swp

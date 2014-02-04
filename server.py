@@ -28,7 +28,7 @@ class ChangeRequest(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     technician = ndb.UserProperty()
     priority = ndb.StringProperty(choices=set(["sensitive", "routine"]))
-    audit_trail = ndb.PickleProperty()
+    audit_trail = ndb.JsonProperty()
 
 
 
@@ -102,7 +102,7 @@ class CRHandler(webapp2.RequestHandler):
         cr = key.get()
 
         audit_entry = dict()
-        audit_entry['date'] = datetime.datetime.now()
+        audit_entry['date'] = datetime.datetime.now().isoformat()
         audit_entry['changes'] = []
         
         
