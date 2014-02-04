@@ -14,17 +14,7 @@ app.controller('listController',['$http', '$scope', function($http, $scope){
 	$scope.gridOptions = {data: 'myData',
 			      columnDefs: [{ field:"name", displayName: "Name"},
 					   { field:"age", displayName: "Age"}] };
-	this.add = function add(cr){
-	    newcr = new Object();
-	    angular.copy(cr,newcr);
-	    $http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
-		newcr.id = data.id;
-		$scope.crs.push(newcr);
-	    	console.log("Successful add");
-	    }).error(function() {
-	    	console.log("Unsuccessful add");
-	    });
-	};
+
 	this.remove = function remove(index){
 	    $http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
 		$scope.crs.splice(index,1);
@@ -36,6 +26,22 @@ app.controller('listController',['$http', '$scope', function($http, $scope){
 	    
 	    
 }]);
+
+app.controller('createController', function($http,$scope,$location){
+    $scope.priorities = ['routine', 'sensitive'];
+    
+    this.add = function add(cr){
+	newcr = new Object();
+	angular.copy(cr,newcr);
+	$http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
+	    newcr.id = data.id;
+	    $scope.crs.push(newcr);
+	    console.log("Successful add");
+	}).error(function() {
+	    console.log("Unsuccessful add");
+	});
+    };    
+});
 
 app.controller('updateController', function($routeParams, $http, $scope, $location){
 	$scope.priorities = ['routine', 'sensitive'];
@@ -63,6 +69,12 @@ app.config(function ($routeProvider) {
 		  controller: 'listController',
 		  templateUrl: '/views/view1.html',
 		  controllerAs: 'ctrl'
+	      })
+	.when('/Create',
+	      {
+		  controller: 'createController',
+		  templateUrl: '/views/create.html',
+		  controlerAs: 'ctrl'
 	      })
 	.otherwise({ redirectTo: '/' });
 });
