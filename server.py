@@ -1,7 +1,6 @@
 import cgi
 import urllib
 import json
-import pickle
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
