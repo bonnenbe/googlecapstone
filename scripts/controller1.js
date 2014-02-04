@@ -11,9 +11,12 @@ app.controller('listController',['$http', '$scope', function($http, $scope){
                  {name: "Jacob", age: 27},
                  {name: "Nephi", age: 29},
                  {name: "Enos", age: 34}];
-	$scope.gridOptions = {data: 'myData',
-			      columnDefs: [{ field:"name", displayName: "Name"},
-					   { field:"age", displayName: "Age"}] };
+	$scope.gridOptions = {
+                    data: 'myData',
+                    columnDefs: [{ field:"name", displayName: "Name"},
+                        { field:"age", displayName: "Age"}]
+                        };
+                    
 	this.add = function add(cr){
 	    newcr = new Object();
 	    angular.copy(cr,newcr);
@@ -30,10 +33,6 @@ app.controller('listController',['$http', '$scope', function($http, $scope){
 		$scope.crs.splice(index,1);
 	    })};
 
-		
-		
-	    
-	    
 	    
 }]);
 
