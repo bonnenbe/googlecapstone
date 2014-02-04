@@ -1,5 +1,6 @@
-var app = angular.module('module1',['ngRoute', 'ngGrid'])
-    .controller('listController',['$http', '$scope', function($http, $scope){
+var app = angular.module('module1',['ngRoute', 'ngGrid']);
+
+app.controller('listController',['$http', '$scope', function($http, $scope){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests',"").success(function(data) {
 	    $scope.crs = data.changerequests;
@@ -34,8 +35,9 @@ var app = angular.module('module1',['ngRoute', 'ngGrid'])
 	    
 	    
 	    
-    }])
-    .controller('updateController', function($routeParams, $http, $scope, $location){
+}]);
+
+app.controller('updateController', function($routeParams, $http, $scope, $location){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;

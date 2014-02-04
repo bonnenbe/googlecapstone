@@ -7,6 +7,7 @@
     <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css"> -->
     <link rel="stylesheet" type="text/css" href="stylesheets/ng-grid.min.css"></link>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
     <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
     <script src="scripts/angular.js"></script>
     <!-- <script src="scripts/angular-animate.js"></script> -->
@@ -15,11 +16,8 @@
     <script src="scripts/controller1.js"></script>
 </head>
 <body>
-  <div class="view-animate-container">
-    <div ng-view class="view-animate"></div>
-  </div>
-  <div ng-controller="listController as ctrl">
-    <div class="gridStyle" ng-grid="gridOptions"></div>
-  </div>
+    <div ng-view>
+    
+    </div>
 </body>
 </html>

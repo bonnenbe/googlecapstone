@@ -16,10 +16,12 @@ handlers:
   static_dir: scripts
 
 - url: /
+  login: required
   static_files: views/index.html
   upload: views/index.html
 
 - url: /.*
+  login: required
   script: server.application
 
   
