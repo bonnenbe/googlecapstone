@@ -10,7 +10,14 @@ import webapp2
 import datetime
 
 
-properties = ['summary','priority']
+properties = [	'summary',
+		'description',
+		'impact',
+		'documentation',
+		'rationale',
+		'implementation_steps',
+		#'technician',
+		'priority']
 class ChangeRequest(ndb.Model):
     summary = ndb.TextProperty()
     description = ndb.TextProperty()
@@ -39,8 +46,14 @@ class JSONEncoder(json.JSONEncoder):
 
 def encodeChangeRequest(cr):
     obj = {
-        'summary': cr.summary, 
-        'priority': cr.priority,
+        'summary': cr.summary,
+	'description': cr.description,
+	'impact': cr.impact,
+	'documentation': cr.documentation,
+	'rationale': cr.rationale,
+	'implementation_steps': cr.implementation_steps,
+	#'technician': cr.technician,
+	'priority': cr.priority,
         'id': cr.key.urlsafe(),
         'audit_trail': cr.audit_trail
         }
@@ -65,7 +78,14 @@ class CRListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest(parent=guestbook_key(),
-                           summary=form['summary'],priority=form['priority'])
+			summary=form['summary'],
+			description=form['description'],
+			impact=form['impact'],
+			documentation=form['documentation'],
+			rationale=form['rationale'],
+			implementation_steps=form['implementation_steps'],
+			#technician=form['technician'],
+			priority=form['priority'])
         cr.audit_trail = []
         cr.put()
         self.response.write(json.dumps({'id': cr.key.urlsafe(),
