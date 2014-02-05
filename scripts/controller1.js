@@ -1,23 +1,28 @@
 var app = angular.module('module1',['ngRoute', 'ngGrid']);
 
-app.controller('listController',['$http', '$scope', function($http, $scope){
-	$scope.priorities = ['routine', 'sensitive'];
-	$http.get('/changerequests',"").success(function(data) {
-	    $scope.crs = data.changerequests;
-	});
+app.controller('listController',['$http', '$scope', function($http, $scope, $location){
+    $scope.priorities = ['routine', 'sensitive'];
+    $http.get('/changerequests',"").success(function(data) {
+	$scope.crs = data.changerequests;
+    });
 
-	$scope.gridOptions = {
-                    data: 'crs',
-//                    columnDefs: [{ field:"name", displayName: "Name"},
-//                        { field:"age", displayName: "Age"}]
-                        };
+    $scope.gridOptions = {
+        data: 'crs',
+	//                    columnDefs: [{ field:"name", displayName: "Name"},
+	//                        { field:"age", displayName: "Age"}]
+    };
 
-	this.remove = function remove(index){
-	    $http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
-		$scope.crs.splice(index,1);
-	    })};
+    this.remove = function remove(index){
+	$http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
+	    $scope.crs.splice(index,1);
+	})};
+    
+    this.login = function login(){
+	$http.get('/Login',"").success(function() {
+	    $location.path(data.url)
+	})};
 
-	    
+    
 }]);
 
 app.controller('createController', function($http,$scope,$location){

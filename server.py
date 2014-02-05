@@ -6,7 +6,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 import webapp2
-
+import logging
 import datetime
 
 
@@ -120,9 +120,15 @@ class CRHandler(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=id)
         key.delete()
     
+class LoginHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.write(json.dumps({'url': users.create_login_url(self.request.uri)}))
 
 
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
-        webapp2.Route('/changerequests/<id:.*>', handler=CRHandler)
+        webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
+        webapp2.Route('/Login', handler=LoginHandler)
 ], debug=True)
+
+logging.info(users.create_login_url("/"))
