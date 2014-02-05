@@ -120,15 +120,17 @@ class CRHandler(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=id)
         key.delete()
     
-class LoginHandler(webapp2.RequestHandler):
+class LogoutHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write(json.dumps({'url': users.create_login_url(self.request.uri)}))
-
+        logging.info(self.request.host_url)
+        self.redirect(self.request.host_url + users.create_logout_url(self.request.host_url))
+        #self.response.write(json.dumps({'url': users.create_logout_url('/')}))
+        
 
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
-        webapp2.Route('/Login', handler=LoginHandler)
+        webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')})
 ], debug=True)
 
 logging.info(users.create_login_url("/"))
