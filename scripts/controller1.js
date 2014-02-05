@@ -10,7 +10,7 @@ app.filter('datetime', function() {
 
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
-    $scope.searchableFields = ['technician'];
+    $scope.searchableFields = ['technician','priority'];
     $scope.searchField = $scope.searchableFields[0];
     $http.get('/changerequests',"").success(function(data) {
 	$scope.crs = data.changerequests;
