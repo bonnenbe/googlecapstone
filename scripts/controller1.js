@@ -11,17 +11,6 @@ app.controller('listController',['$http', '$scope', function($http, $scope){
 //                    columnDefs: [{ field:"name", displayName: "Name"},
 //                        { field:"age", displayName: "Age"}]
                         };
-	this.add = function add(cr){
-	    newcr = new Object();
-	    angular.copy(cr,newcr);
-	    $http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
-		newcr.id = data.id;
-		$scope.crs.push(newcr);
-	    	console.log("Successful add");
-	    }).error(function() {
-	    	console.log("Unsuccessful add");
-	    });
-	};
 
 	this.remove = function remove(index){
 	    $http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
@@ -39,8 +28,9 @@ app.controller('createController', function($http,$scope,$location){
 	angular.copy(cr,newcr);
 	$http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
 	    newcr.id = data.id;
-	    $scope.crs.push(newcr);
+	    //$scope.crs.push(newcr);
 	    console.log("Successful add");
+	    $location.path('#');
 	}).error(function() {
 	    console.log("Unsuccessful add");
 	});
@@ -57,7 +47,7 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 		$location.path('#');
 	    })};
 		
-    });
+});
 	
 
 app.config(function ($routeProvider) {
@@ -71,14 +61,14 @@ app.config(function ($routeProvider) {
 	.when('/',
 	      {
 		  controller: 'listController',
-		  templateUrl: '/views/view1.html',
+		  templateUrl: '/views/list.html',
 		  controllerAs: 'ctrl'
 	      })
 	.when('/Create',
 	      {
 		  controller: 'createController',
 		  templateUrl: '/views/create.html',
-		  controlerAs: 'ctrl'
+		  controllerAs: 'ctrl'
 	      })
 	.otherwise({ redirectTo: '/' });
 });

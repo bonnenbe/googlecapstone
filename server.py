@@ -78,7 +78,7 @@ class CRListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest(parent=guestbook_key())
-        for k in (set(form.keys()) - set('id')):
+        for k in (set(form.keys()) - set(['id'])):
             setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.put()
