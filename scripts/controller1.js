@@ -32,7 +32,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     this.search = function search(){
 	var obj = {};
 	obj["params"] = {};
-	obj.params[$scope.searchField] = $scope.searchText;
+	if ($scope.searchText.length > 0)	    
+	    obj.params[$scope.searchField] = $scope.searchText;
 	$http.get('/changerequests',obj).success(function(data) {
 	    $scope.crs = data.changerequests;
 	})};
