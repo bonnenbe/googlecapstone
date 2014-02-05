@@ -29,7 +29,7 @@ Priority: <select ng-model="cr.priority">
 <ul>
 <li ng-repeat="audit_entry in cr.audit_trail">
   <hr>
-  On {{audit_entry.date}}: 
+  On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
   <ul>
     <li ng-repeat="change in audit_entry.changes">
       Changed {{change.property}} from {{change.from}} to {{change.to}} </li>

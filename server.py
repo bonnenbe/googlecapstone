@@ -52,7 +52,7 @@ def encodeChangeRequest(cr):
 	'documentation': cr.documentation,
 	'rationale': cr.rationale,
 	'implementation_steps': cr.implementation_steps,
-	#'technician': cr.technician,
+	'technician': str(cr.technician),
 	'priority': cr.priority,
         'id': cr.key.urlsafe(),
         'audit_trail': cr.audit_trail
@@ -81,6 +81,7 @@ class CRListHandler(webapp2.RequestHandler):
         for k in (set(form.keys()) - set(['id'])):
             setattr(cr,k,form[k])
         cr.audit_trail = []
+        cr.technician = users.get_current_user()
         cr.put()
         self.response.write(json.dumps({'id': cr.key.urlsafe(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -97,6 +98,7 @@ class CRHandler(webapp2.RequestHandler):
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
+        audit_entry['user'] = users.get_current_user().nickname()
         audit_entry['changes'] = []
         
         
