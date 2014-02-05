@@ -1,4 +1,4 @@
-var app = angular.module('module1',['ngRoute', 'ngGrid']);
+var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
@@ -48,6 +48,9 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 		
 });
 	
+function CollapseDemoCtrl($scope) {
+    $scope.isCollapsed = false;
+}
 
 app.config(function ($routeProvider) {
     $routeProvider

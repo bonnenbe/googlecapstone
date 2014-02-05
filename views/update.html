@@ -26,13 +26,19 @@ Priority: <select ng-model="cr.priority">
 </div>
 <div><button ng-click="ctrl.update(cr)">Update</button>
 </div>
-<ul>
-<li ng-repeat="audit_entry in cr.audit_trail">
-  <hr>
-  On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
-  <ul>
-    <li ng-repeat="change in audit_entry.changes">
-      Changed {{change.property}} from {{change.from}} to {{change.to}} </li>
-  </ul>
-</li>
-</ul>
+<div ng-controller="CollapseDemoCtrl">
+	<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
+	<hr>
+	<div collapse="isCollapsed">
+        <ul>
+        <li ng-repeat="audit_entry in cr.audit_trail">
+          <hr>
+          On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
+          <ul>
+            <li ng-repeat="change in audit_entry.changes">
+              Changed {{change.property}} from {{change.from}} to {{change.to}} </li>
+          </ul>
+        </li>
+        </ul>
+	</div>
+</div>
