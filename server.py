@@ -66,15 +66,19 @@ class CRListHandler(webapp2.RequestHandler):
     def get(self):
         guestbook_name = self.request.get('guestbook_name',
                                           DEFAULT_GUESTBOOK_NAME)
-        crs_query = ChangeRequest.query(
-            ancestor=guestbook_key(guestbook_name)).order(-ChangeRequest.created_on)
-        crs = crs_query.fetch(100)
+        
+        logging.info(self.request.params)
+        crs_query = ChangeRequest.query(ancestor=guestbook_key(guestbook_name))
+        if self.request.params and self.request.params['technician']:
+            crs_query = crs_query.filter(ChangeRequest.technician == self.request.params['technician'])
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
 
         objs = []
         self.response.headers['Content-Type'] = 'application/json'   
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
             
+        logging.info(self.response.body)
         self.response.write(json.dumps({'changerequests': objs},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)

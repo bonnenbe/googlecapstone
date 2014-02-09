@@ -16,7 +16,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	$http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
 	    $scope.crs.splice(index,1);
 	})};
-    
+    this.search = function search(){
+	$http.get('/changerequests',{params: {technician: $scope.searchText}}).success(function(data) {
+	    $scope.crs = data.changerequests;
+	})};
 }]);
 
 app.controller('createController', function($http,$scope,$location){
