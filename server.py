@@ -16,7 +16,7 @@ properties = [	'summary',
 		'documentation',
 		'rationale',
 		'implementation_steps',
-		#'technician',
+		'technician',
 		'priority']
 class ChangeRequest(ndb.Model):
     summary = ndb.TextProperty()
@@ -26,7 +26,8 @@ class ChangeRequest(ndb.Model):
     rationale  = ndb.TextProperty()
     implementation_steps = ndb.TextProperty()    
     created_on = ndb.DateTimeProperty(auto_now_add=True)
-    technician = ndb.UserProperty()
+    technician = ndb.StringProperty()
+    author = ndb.UserProperty()
     priority = ndb.StringProperty(choices=set(["sensitive", "routine"]))
     audit_trail = ndb.JsonProperty()
 
@@ -52,7 +53,7 @@ def encodeChangeRequest(cr):
 	'documentation': cr.documentation,
 	'rationale': cr.rationale,
 	'implementation_steps': cr.implementation_steps,
-	'technician': str(cr.technician),
+	'technician': cr.technician,
 	'priority': cr.priority,
         'id': cr.key.urlsafe(),
         'audit_trail': cr.audit_trail
@@ -78,10 +79,10 @@ class CRListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest(parent=guestbook_key())
-        for k in (set(form.keys()) - set(['id'])):
+        for k in (set(form.keys()) & set(properties)):
             setattr(cr,k,form[k])
         cr.audit_trail = []
-        cr.technician = users.get_current_user()
+        cr.author = users.get_current_user()
         cr.put()
         self.response.write(json.dumps({'id': cr.key.urlsafe(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -120,17 +121,8 @@ class CRHandler(webapp2.RequestHandler):
         key = ndb.Key(urlsafe=id)
         key.delete()
     
-class LogoutHandler(webapp2.RequestHandler):
-    def get(self):
-        logging.info(self.request.host_url)
-        self.redirect(self.request.host_url + users.create_logout_url(self.request.host_url))
-        #self.response.write(json.dumps({'url': users.create_logout_url('/')}))
-        
-
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
         webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')})
 ], debug=True)
-
-logging.info(users.create_login_url("/"))
