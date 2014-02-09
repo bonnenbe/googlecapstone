@@ -1,4 +1,4 @@
-application: chromatic-tree-459
+application: s~chromatic-tree-459
 version: 1
 runtime: python27
 api_version: 1
@@ -28,4 +28,7 @@ handlers:
 libraries:
 - name: webapp2
   version: latest
+
+builtins:
+- remote_api: on
 
