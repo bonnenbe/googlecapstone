@@ -1,28 +1,30 @@
 <div>
-<div>
-  Summary: <input type="text" ng-model="cr.summary"  >
+<div class="updateinput">
+  Summary: <textarea cols="80" rows="5" ng-model="cr.summary"  > </textarea>
 </div>
-<div>
-  Description: <input type="text" ng-model="cr.description"  >
+<div class="updateinput">
+	Description: <textarea cols="80" rows="5" ng-model="cr.description"  > </textarea>
 </div>
-<div>
-  Impact: <input type="text" ng-model="cr.impact"  >
+<div class="updateinput">
+	Impact: <textarea cols="80" rows="5" ng-model="cr.impact"  > </textarea>
 </div>
-<div>
-  Documentation: <input type="text" ng-model="cr.documentation"  >
+<div class="updateinput">
+	Documentation: <textarea cols="80" rows="5" ng-model="cr.documentation"  > </textarea>
 </div>
-<div>
-  Rationale: <input type="text" ng-model="cr.rationale"  >
+<div class="updateinput">
+	Rationale: <textarea cols="80" rows="3" ng-model="cr.rationale"  > </textarea>
 </div>
-<div>
-  Implementation Steps: <input type="text" ng-model="cr.implementation_steps"  >
+<div class="updateinput">
+	Implementation Steps: <textarea cols="80" rows="5" ng-model="cr.implementation_steps"  > </textarea>
 </div>
-<div>
-  Technician: <input type="email" ng-model="cr.technician" >
+<div class="updateinput">
+  	Technician: <input type="email" ng-model="cr.technician" >
 </div>
-Priority: <select ng-model="cr.priority">
-  <option ng-repeat="p in priorities">{{p}}</option>
-</select>
+<div class="updateinput">
+  	Priority: <select ng-model="cr.priority">
+  	<option ng-repeat="p in priorities">{{p}}</option>
+	</select>
+</div>
 </div>
 <div><button ng-click="ctrl.update(cr)">Update</button>
 </div>
@@ -36,7 +38,7 @@ Priority: <select ng-model="cr.priority">
           On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
           <ul>
             <li ng-repeat="change in audit_entry.changes">
-              Changed {{change.property}} from {{change.from}} to {{change.to}} </li>
+              Changed {{change.property}} from "{{change.from}}" to "{{change.to}}" </li>
           </ul>
         </li>
         </ul>
