@@ -67,8 +67,8 @@ class CRListHandler(webapp2.RequestHandler):
         
         logging.info(self.request.params)
         crs_query = ChangeRequest.query(ancestor=guestbook_key(guestbook_name))
-        if self.request.params and self.request.params['technician']:
-            crs_query = crs_query.filter(ChangeRequest.technician == self.request.params['technician'])
+        for field in self.request.params:
+            crs_query = crs_query.filter(getattr(ChangeRequest,field) == self.request.params[field])
         crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
 
         objs = []

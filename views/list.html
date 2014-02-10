@@ -3,7 +3,9 @@
 <div><a href="/Logout" >Logout</button></a></div>
 <br>
 <textarea align="right" ng-model="searchText"></textarea>
-<button align="right" ng-click="ctrl.search()">Search technician</button>
+<select ng-model="searchField" required ng-options="f for f in searchableFields">
+</select>
+<button align="right" ng-click="ctrl.search()">Search</button>
 <div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
   <a ng-href="#/id={{cr.id}}">[Edit]</a>
   <a href ng-click="ctrl.remove($index)">[X]</a></div>

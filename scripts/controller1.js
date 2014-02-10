@@ -2,6 +2,8 @@ var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
+    $scope.searchableFields = ['technician'];
+    $scope.searchField = $scope.searchableFields[0];
     $http.get('/changerequests',"").success(function(data) {
 	$scope.crs = data.changerequests;
     });
@@ -20,7 +22,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.crs.splice(index,1);
 	})};
     this.search = function search(){
-	$http.get('/changerequests',{params: {technician: $scope.searchText}}).success(function(data) {
+	var obj = {};
+	obj["params"] = {};
+	obj.params[$scope.searchField] = $scope.searchText;
+	$http.get('/changerequests',obj).success(function(data) {
 	    $scope.crs = data.changerequests;
 	})};
 }]);
