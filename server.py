@@ -4,11 +4,11 @@ import json
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from datamodel import ChangeRequest
 
 import webapp2
 import logging
 import datetime
-
 
 properties = [	'summary',
 		'description',
@@ -17,20 +17,12 @@ properties = [	'summary',
 		'rationale',
 		'implementation_steps',
 		'technician',
-		'priority']
-class ChangeRequest(ndb.Model):
-    summary = ndb.TextProperty()
-    description = ndb.TextProperty()
-    impact = ndb.TextProperty()
-    documentation = ndb.TextProperty()
-    rationale  = ndb.TextProperty()
-    implementation_steps = ndb.TextProperty()    
-    created_on = ndb.DateTimeProperty(auto_now_add=True)
-    technician = ndb.StringProperty()
-    author = ndb.UserProperty()
-    priority = ndb.StringProperty(choices=set(["sensitive", "routine"]))
-    audit_trail = ndb.JsonProperty()
-
+		'priority',
+		'tests_conducted',
+		'risks',
+		'backout_plan',
+		'communication_plan',
+		'layman_description']
 
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
@@ -56,8 +48,14 @@ def encodeChangeRequest(cr):
 	'technician': cr.technician,
 	'priority': cr.priority,
         'id': cr.key.urlsafe(),
-        'audit_trail': cr.audit_trail
-        }
+	'created_on': cr.created_on,
+        'audit_trail': cr.audit_trail,
+	'tests_conducted': cr.tests_conducted,
+	'risks': cr.risks,
+	'backout_plan': cr.backout_plan,
+	'communication_plan': cr.communication_plan,
+	'layman_description': cr.layman_description
+	}
     return obj
 
 

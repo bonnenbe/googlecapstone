@@ -8,8 +8,11 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
     $scope.gridOptions = {
         data: 'crs',
-	//                    columnDefs: [{ field:"name", displayName: "Name"},
-	//                        { field:"age", displayName: "Age"}]
+	columnDefs: [  	{ field:"created_on", displayName: "Created On"},
+			{ field:"technician", displayName: "Technician"},
+	             	{ field:"summary", displayName: "Summary"},
+			{ field:"priority", displayName: "Priority"},
+			{ field:"id", displayName: "ID"}]
     };
 
     this.remove = function remove(index){
