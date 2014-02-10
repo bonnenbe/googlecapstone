@@ -7,6 +7,22 @@ body {
     /*width: 400px; */
     min-height: 300px
 }
-.updateinput {
+
+label {
 	font-weight: bold;
+	float: left;
+	text-align: right;
+	margin-right: 15px;
+	width: 200px;
 }
+
+.buttons {
+    text-align: right;
+    width: 200px;
+    
+}
+
+.form {
+    padding: 40px;
+}
+
