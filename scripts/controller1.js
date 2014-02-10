@@ -1,5 +1,13 @@
 var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 
+app.filter('datetime', function() {
+    return function(iso186) {
+	newdate = new Date(iso186);
+	datestring = newdate.toDateString().substring(3) + ', ' + newdate.toTimeString().substring(0,5);
+	return datestring;
+    }
+});
+
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
     $http.get('/changerequests',"").success(function(data) {
@@ -8,7 +16,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
     $scope.gridOptions = {
         data: 'crs',
-	columnDefs: [  	{ field:"created_on", displayName: "Created On"},
+	columnDefs: [  	{ field:"created_on | datetime", displayName: "Created On"},
 			{ field:"technician", displayName: "Technician"},
 	             	{ field:"summary", displayName: "Summary"},
 			{ field:"priority", displayName: "Priority"},
