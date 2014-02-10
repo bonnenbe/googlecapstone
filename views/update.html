@@ -1,61 +1,75 @@
-<div>
-<div class="updateinput">
-  Summary: <textarea cols="80" rows="5" ng-model="cr.summary"  > </textarea>
-</div>
-<div class="updateinput">
-	Description: <textarea cols="80" rows="5" ng-model="cr.description"  > </textarea>
-</div>
-<div class="updateinput">
-	Impact: <textarea cols="80" rows="5" ng-model="cr.impact"  > </textarea>
-</div>
-<div class="updateinput">
-	Documentation: <textarea cols="80" rows="5" ng-model="cr.documentation"  > </textarea>
-</div>
-<div class="updateinput">
-	Rationale: <textarea cols="80" rows="3" ng-model="cr.rationale"  > </textarea>
-</div>
-<div class="updateinput">
-	Implementation Steps: <textarea cols="80" rows="5" ng-model="cr.implementation_steps"  > </textarea>
-</div>
-<div class="updateinput">
-  Tests Conducted: <textarea cols="80" rows="5" ng-model="cr.tests_conducted" > </textarea>
-</div>
-<div class="updateinput">
-  Risks: <textarea cols="80" rows="5" ng-model="cr.risks" > </textarea>
-</div>
-<div class="updateinput">
-  Backout Plan: <textarea cols="80" rows="5" ng-model="cr.backout_plan" > </textarea>
-</div>
-<div class="updateinput">
-  Communication Plan: <textarea cols="80" rows="5" ng-model="cr.communication_plan" > </textarea>
-</div>
-<div class="updateinput">
-  Layman Description: <textarea cols="80" rows="5" ng-model="cr.layman_description" > </textarea>
-</div>
-<div class="updateinput">
-  	Technician: <input type="email" ng-model="cr.technician" >
-</div>
-<div class="updateinput">
-  	Priority: <select ng-model="cr.priority">
-  	<option ng-repeat="p in priorities">{{p}}</option>
-	</select>
-</div>
-</div>
-<div><button ng-click="ctrl.update(cr)">Update</button>
-</div>
+<div class="form">
+
+<h1>Edit Change Request</h1>
+
+<p class="formfield">
+    <label for="textarea">Summary: </label>
+	<textarea cols="80" rows="5" ng-model="cr.summary" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Technician: </label>
+    <input type="text" ng-model="cr.technician" >
+</p>
+<p class="formfield">
+    <label for="textarea">Description: </label>
+    <textarea cols="80" rows="5" ng-model="cr.description" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Impact: </label>
+    <textarea cols="80" rows="5" ng-model="cr.impact" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Documentation: </label>
+    <textarea cols="80" rows="5" ng-model="cr.documentation" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Rationale: </label>
+    <textarea cols="80" rows="3" ng-model="cr.rationale" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Implementation Steps: </label>
+    <textarea cols="80" rows="5" ng-model="cr.implementation_steps" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Tests Conducted: </label>
+    <textarea cols="80" rows="5" ng-model="cr.tests_conducted" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Risks: </label>
+    <textarea cols="80" rows="5" ng-model="cr.risks" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Backout Plan: </label>
+    <textarea cols="80" rows="5" ng-model="cr.backout_plan" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Communication Plan:  </label>
+    <textarea cols="80" rows="5" ng-model="cr.communication_plan" > </textarea>
+</p>
+<p class="formfield">
+    <label for="textarea">Layman Description: </label>
+    <textarea cols="80" rows="5" ng-model="cr.layman_description" > </textarea>
+</p>
+
+<p class="formfield">
+    <label for="textarea">Priority: </label>
+    <select ng-model="cr.priority">
+        <option ng-repeat="p in priorities">{{p}}</option>
+    </select>
+</p>
+
+<button ng-click="ctrl.update(cr)">Update</button>
+
 <div ng-controller="CollapseDemoCtrl">
 	<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
-	<hr>
 	<div collapse="isCollapsed">
-        <ul>
         <li ng-repeat="audit_entry in cr.audit_trail">
-          <hr>
           On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
           <ul>
             <li ng-repeat="change in audit_entry.changes">
               Changed {{change.property}} from "{{change.from}}" to "{{change.to}}" </li>
           </ul>
         </li>
-        </ul>
 	</div>
+</div>
 </div>
