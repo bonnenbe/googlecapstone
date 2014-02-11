@@ -1,6 +1,7 @@
 body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #DDDDDD;
+  padding: 15px;
 }
 .gridStyle {
     border: 1px solid rgb(212,212,212);
@@ -22,7 +23,4 @@ label {
     
 }
 
-.form {
-    padding: 10px 20px 20px 20px;
-}
 
