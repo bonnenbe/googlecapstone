@@ -15,3 +15,10 @@ indexes:
   properties:
   - name: created_on
     direction: desc
+
+- kind: ChangeRequest
+  ancestor: yes
+  properties:
+  - name: technician
+  - name: created_on
+    direction: desc
