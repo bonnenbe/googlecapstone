@@ -1,15 +1,22 @@
 <div>
 
-<h1>Current Change Requests</h1>
-<div><a ng-href="#/Create">Create new request</button></a></div>
-<br>
-<textarea align="right" ng-model="searchText"></textarea>
-<select ng-model="searchField" required ng-options="f for f in searchableFields">
-</select>
-<button align="right" ng-click="ctrl.search()">Search</button>
-<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
-  <a ng-href="#/id={{cr.id}}">[Edit]</a>
-  <a href ng-click="ctrl.remove($index)">[X]</a></div>
-<div class="gridStyle" ng-grid="gridOptions"></div>
+    <h1>Current Change Requests</h1>
+    <br>
+    <a ng-href="#/Create"><button>Create new request</button></a>
+    <br><br>
+
+    <select ng-model="searchField" required ng-options="f for f in searchableFields">
+    </select>
+    <textarea align="right" ng-model="searchText"></textarea>
+
+    <button align="right" ng-click="ctrl.search()">Search</button>
+    
+    <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
+        <a ng-href="#/id={{cr.id}}">[Edit]</a>
+        <a href ng-click="ctrl.remove($index)">[X]</a>
+    </div>-->
+
+    <div class="gridStyle" ng-grid="gridOptions"></div>
 
 </div>
+

@@ -14,7 +14,7 @@ label {
 	float: left;
 	text-align: right;
 	margin-right: 15px;
-	width: 200px;
+	width: 30%;
 }
 
 .buttons {
@@ -23,4 +23,7 @@ label {
     
 }
 
+.formfield {
+    margin: 3 auto;
+}
 
