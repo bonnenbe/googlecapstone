@@ -45,6 +45,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
 app.controller('createController', function($http,$scope,$location){
     $scope.priorities = ['routine', 'sensitive'];
+    $scope.cr = {};
+    $scope.cr.technician = $scope.user;
     
     this.add = function add(cr){
 	newcr = new Object();
