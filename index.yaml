@@ -11,6 +11,17 @@ indexes:
 # your application using appcfg.py.
 
 - kind: ChangeRequest
+  properties:
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: technician
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
   ancestor: yes
   properties:
   - name: created_on
