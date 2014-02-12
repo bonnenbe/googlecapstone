@@ -25,17 +25,19 @@
     </head>
 
     <body>
+      <div ng-controller="main">
         <div id="googleInfo"> 
             <a ng-href="#" id="home"><button>Home</button></a>
             <div id="login">
-                Currently logged in as: (fix me please)
+                Currently logged in as: <b>{{user}}</b>
                 <a href="/Logout" ><button>Logout</button></a>
             </div>
             <br>
         </div>
         
-        <div ng-view>
+	
+          <div ng-view>
+          </div>
         </div>
-        
     </body>
 </html>

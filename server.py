@@ -122,9 +122,13 @@ class CRHandler(webapp2.RequestHandler):
     def delete(self, id):
         key = ndb.Key(urlsafe=id)
         key.delete()
+class UserHandler(webapp2.RequestHandler):
+    def get(self):
+        self.response.write(json.dumps({'user': users.get_current_user().email()}))
     
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
-        webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')})
+        webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
+        webapp2.Route('/user',handler=UserHandler)
 ], debug=True)

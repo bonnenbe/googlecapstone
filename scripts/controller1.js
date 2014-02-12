@@ -8,6 +8,10 @@ app.filter('datetime', function() {
     }
 });
 
+app.controller('main', function($http, $scope){
+    $http.get('/user').success(function(data){
+	$scope.user = data.user;
+    })});
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.searchableFields = ['technician','priority'];
