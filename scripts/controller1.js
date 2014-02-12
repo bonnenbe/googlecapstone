@@ -73,7 +73,19 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 	    })};
 		
 });
+app.controller('DateCtrl', function($scope){
+    $scope.format = 'dd-MMMM-yyyy';
+    $scope.dateOptions = {};
+    $scope.open = function($event) {
+	$event.preventDefault();
+	$event.stopPropagation();
+	$scope.opened = true;
+    };
+});
 	
+app.controller('TimeCtrl', function($scope){
+});
+
 function CollapseDemoCtrl($scope) {
     $scope.isCollapsed = false;
 }
