@@ -25,12 +25,6 @@ properties = [	'summary',
 		'layman_description']
 
 
-DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
-
-def guestbook_key(guestbook_name=DEFAULT_GUESTBOOK_NAME):
-    """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
-    return ndb.Key('Guestbook', guestbook_name)
-
 class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
         if isinstance(obj,datetime.datetime):
@@ -62,11 +56,8 @@ def encodeChangeRequest(cr):
 
 class CRListHandler(webapp2.RequestHandler):
     def get(self):
-        guestbook_name = self.request.get('guestbook_name',
-                                          DEFAULT_GUESTBOOK_NAME)
-        
         logging.info(self.request.params)
-        crs_query = ChangeRequest.query(ancestor=guestbook_key(guestbook_name))
+        crs_query = ChangeRequest.query()
         for field in self.request.params:
             crs_query = crs_query.filter(getattr(ChangeRequest,field) == self.request.params[field])
         crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
@@ -80,7 +71,7 @@ class CRListHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'changerequests': objs},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)
-        cr = ChangeRequest(parent=guestbook_key())
+        cr = ChangeRequest()
         for k in (set(form.keys()) & set(properties)):
             setattr(cr,k,form[k])
         cr.audit_trail = []
@@ -101,7 +92,7 @@ class CRHandler(webapp2.RequestHandler):
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
-        audit_entry['user'] = users.get_current_user().nickname()
+        audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
         
         
