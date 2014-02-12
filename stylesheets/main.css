@@ -17,8 +17,17 @@ label {
 	width: 30%;
 }
 
-.buttons {
-    text-align: right;
+#home button {
+    width: 100px;
+    height: 30px;
+    float: left;
+}
+#login {
+    float: right;
+    
+}
+#googleInfo {
+    
     width: 100%;
     
 }

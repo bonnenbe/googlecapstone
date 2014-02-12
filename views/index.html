@@ -25,10 +25,13 @@
     </head>
 
     <body>
-        <div class=buttons> 
-            <a ng-href="#"><button>Home</button></a>
-            <div>Currently logged in as: (fix me please)    </div>
-            <a href="/Logout" ><button>Logout</button></a>
+        <div id="googleInfo"> 
+            <a ng-href="#" id="home"><button>Home</button></a>
+            <div id="login">
+                Currently logged in as: (fix me please)
+                <a href="/Logout" ><button>Logout</button></a>
+            </div>
+            <br>
         </div>
         
         <div ng-view>
