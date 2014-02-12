@@ -1,16 +1,19 @@
 <div>
 
     <h1>Current Change Requests</h1>
-    <br>
+    
     <a ng-href="#/Create"><button>Create new request</button></a>
     <br><br>
 
-    <select ng-model="searchField" required ng-options="f for f in searchableFields">
-    </select>
-    <textarea align="right" ng-model="searchText"></textarea>
+    <div id="search">
+        <select ng-model="searchField" required ng-options="f for f in searchableFields">
+        </select>
+        
+        <input type=text ng-model="searchText"></textarea>    
+        <button ng-click="ctrl.search()">Search</button>
 
-    <button align="right" ng-click="ctrl.search()">Search</button>
-    
+    </div>
+    <br>
     <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
         <a ng-href="#/id={{cr.id}}">[Edit]</a>
         <a href ng-click="ctrl.remove($index)">[X]</a>

@@ -17,19 +17,23 @@ label {
 	width: 30%;
 }
 
+
+
 #home button {
     width: 100px;
     height: 30px;
     float: left;
 }
+
 #login {
     float: right;
-    
 }
+#login button {
+    margin-left: 10px;
+}
+
 #googleInfo {
-    
     width: 100%;
-    
 }
 
 .formfield {
