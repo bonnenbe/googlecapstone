@@ -55,11 +55,23 @@
       <label for="startDate">Start Time: </label>
       <div id="startDate"> 
         <span ng-controller="DateCtrl">
-            <input type="text" datepicker-popup="{{format}}" ng-model="startDate" datepicker-options="dateOptions" is-open="opened">
+            <input type="text" datepicker-popup="{{format}}" ng-model="cr.startDate" datepicker-options="dateOptions" is-open="opened">
             <button ng-click="open($event)">Select</button>
         </span>
-        <span ng-model="startTime" ng-controller="TimeCtrl">
+        <span ng-model="cr.startTime" ng-controller="TimeCtrl">
             <timepicker minute-step="10"></timepicker>
+        </span>
+      </div>
+    </p>
+    <p class="formfield">
+      <label for="startDate">End Time: </label>
+      <div id="endDate"> 
+        <span ng-controller="DateCtrl">
+          <input type="text" datepicker-popup="{{format}}" ng-model="cr.endDate" datepicker-options="dateOptions" is-open="opened">
+          <button ng-click="open($event)">Select</button>
+        </span>
+        <span ng-model="cr.endTime" ng-controller="TimeCtrl">
+          <timepicker minute-step="10"></timepicker>
         </span>
       </div>
     </p>

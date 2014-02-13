@@ -20,4 +20,5 @@ class ChangeRequest(ndb.Model):
     backout_plan  = ndb.TextProperty()
     communication_plan  = ndb.TextProperty()
     layman_description  = ndb.TextProperty()
-    
+    startTime = ndb.DateTimeProperty()
+    endTime = ndb.DateTimeProperty()

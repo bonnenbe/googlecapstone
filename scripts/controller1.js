@@ -26,7 +26,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 			{ field:"technician", displayName: "Technician"},
 	             	{ field:"summary", displayName: "Summary"},
 			{ field:"priority", displayName: "Priority"},
-			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'}]
+			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'},
+			{ field:"startTime | datetime", displayName: "Start Time"}]
     };
 
     this.remove = function remove(index){
@@ -51,6 +52,14 @@ app.controller('createController', function($http,$scope,$location){
     this.add = function add(cr){
 	newcr = new Object();
 	angular.copy(cr,newcr);
+	newcr.startTime = new Date(cr.startDate.getFullYear(),cr.startDate.getMonth(),cr.startDate.getDate(),
+				   cr.startTime.getHours(),cr.startTime.getMinutes(),cr.startTime.getSeconds());
+	delete newcr.startDate;
+	newcr.endTime = new Date(cr.endDate.getFullYear(),cr.endDate.getMonth(),cr.endDate.getDate(),
+				   cr.endTime.getHours(),cr.endTime.getMinutes(),cr.endTime.getSeconds());
+	delete newcr.endDate;
+	alert(JSON.stringify(newcr));
+	
 	$http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
 	    newcr.id = data.id;
 	    //$scope.crs.push(newcr);

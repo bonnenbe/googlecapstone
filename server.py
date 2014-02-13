@@ -5,6 +5,7 @@ import json
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from datamodel import ChangeRequest
+from dateutil.parser import *
 
 import webapp2
 import logging
@@ -22,7 +23,9 @@ properties = [	'summary',
 		'risks',
 		'backout_plan',
 		'communication_plan',
-		'layman_description']
+		'layman_description',
+                'startTime',
+                'endTime']
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -48,7 +51,9 @@ def encodeChangeRequest(cr):
 	'risks': cr.risks,
 	'backout_plan': cr.backout_plan,
 	'communication_plan': cr.communication_plan,
-	'layman_description': cr.layman_description
+	'layman_description': cr.layman_description,
+        'startTime': cr.startTime,
+        'endTime': cr.endTime
 	}
     return obj
 
@@ -73,6 +78,8 @@ class CRListHandler(webapp2.RequestHandler):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
         for k in (set(form.keys()) & set(properties)):
+            if k == 'startTime' or k == 'endTime':
+                setattr(cr,k,dateutil.parser.parse(form[k]))
             setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.author = users.get_current_user()
