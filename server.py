@@ -1,11 +1,11 @@
 import cgi
 import urllib
 import json
+import string
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
 from datamodel import ChangeRequest
-from dateutil.parser import *
 
 import webapp2
 import logging
@@ -79,8 +79,10 @@ class CRListHandler(webapp2.RequestHandler):
         cr = ChangeRequest()
         for k in (set(form.keys()) & set(properties)):
             if k == 'startTime' or k == 'endTime':
-                setattr(cr,k,dateutil.parser.parse(form[k]))
-            setattr(cr,k,form[k])
+                setattr(cr,k,datetime.datetime.strptime(string.split(form[k],'.')[0],
+                                                        "%Y-%m-%dT%H:%M:%S"))
+            else:
+                setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.author = users.get_current_user()
         cr.put()
