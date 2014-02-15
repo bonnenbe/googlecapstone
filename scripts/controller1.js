@@ -59,7 +59,6 @@ app.controller('createController', function($http,$scope,$location){
 	newcr.endTime = new Date(cr.endDate.getFullYear(),cr.endDate.getMonth(),cr.endDate.getDate(),
 				   cr.endTime.getHours(),cr.endTime.getMinutes(),cr.endTime.getSeconds());
 	delete newcr.endDate;
-	alert(JSON.stringify(newcr));
 	
 	$http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
 	    newcr.id = data.id;

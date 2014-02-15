@@ -1,4 +1,6 @@
 import datetime
+import string
+import logging
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
@@ -22,3 +24,12 @@ class ChangeRequest(ndb.Model):
     layman_description  = ndb.TextProperty()
     startTime = ndb.DateTimeProperty()
     endTime = ndb.DateTimeProperty()
+    def __setattr__(self, attr, value):
+        if (attr in ['startTime','endTime','created_on']
+            and isinstance(value, basestring)):
+            d = datetime.datetime.strptime(string.split(value,'.')[0],
+                                           "%Y-%m-%dT%H:%M:%S")
+            object.__setattr__(self,attr,d)
+        else:
+            object.__setattr__(self,attr,value)
+    

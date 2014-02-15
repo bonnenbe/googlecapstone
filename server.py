@@ -32,7 +32,7 @@ class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
         if isinstance(obj,datetime.datetime):
             return obj.isoformat()
-        return json.JSONEncoder.default(self,obj)
+        return json.JSONEncoder.default(obj)
 
 def encodeChangeRequest(cr):
     obj = {
@@ -78,11 +78,7 @@ class CRListHandler(webapp2.RequestHandler):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
         for k in (set(form.keys()) & set(properties)):
-            if k == 'startTime' or k == 'endTime':
-                setattr(cr,k,datetime.datetime.strptime(string.split(form[k],'.')[0],
-                                                        "%Y-%m-%dT%H:%M:%S"))
-            else:
-                setattr(cr,k,form[k])
+            setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.author = users.get_current_user()
         cr.put()
