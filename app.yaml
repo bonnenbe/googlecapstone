@@ -32,3 +32,5 @@ libraries:
 builtins:
 - remote_api: on
 
+auto_id_policy: legacy
+
