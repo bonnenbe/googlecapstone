@@ -93,7 +93,6 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 			{ field:"technician", displayName: "Technician"},
 	             	{ field:"summary", displayName: "Summary"},
 			{ field:"priority", displayName: "Priority"},
-			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'},
 			{ field:"startTime | datetime", displayName: "Start Time"},
 			{ field:"endTime | datetime", displayName: "End Time"},
 			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'}
