@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<changes>
+ <ChangeRequest>
+  <author>guoalber1</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:14:39</created_on>
+  <key>1</key>
+  <technician>a@gmail.com</technician>
+  <summary>hello</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>guoalber1</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:01:45</created_on>
+  <key>5161210659995648</key>
+  <technician>guoalber1@gmail.com</technician>
+  <summary>asdf</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-15T00:57:35</created_on>
+  <key>5639274879778816</key>
+  <technician>albertguo@google.com</technician>
+  <summary>Sterling Heights server maintenance</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W3siZGF0ZSI6ICIyMDE0LTAyLTE1VDAxOjA2OjU4LjkyMjIxMCIsICJjaGFuZ2VzIjogW3sidG8iOiAiYmRlbm5pZUBnb29nbGUuY29tIiwgInByb3BlcnR5IjogInRlY2huaWNpYW4iLCAiZnJvbSI6ICJiYm9ubmVuQGdtYWlsLmNvbSJ9XSwgInVzZXIiOiAiYmJvbm5lbkBnbWFpbC5jb20ifV0=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-15T01:06:15</created_on>
+  <key>5676830073815040</key>
+  <technician>bdennie@google.com</technician>
+  <summary>VPN service down in order to</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W3siZGF0ZSI6ICIyMDE0LTAyLTE1VDAwOjUzOjM4Ljg5MTM0MCIsICJjaGFuZ2VzIjogW3sidG8iOiAiYW50YXJ1c0Bnb29nbGUuY29tIiwgInByb3BlcnR5IjogInRlY2huaWNpYW4iLCAiZnJvbSI6ICJiYm9ubmVuQGdtYWlsLmNvbSJ9XSwgInVzZXIiOiAiYmJvbm5lbkBnbWFpbC5jb20ifV0=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-15T00:53:16</created_on>
+  <key>5685265389584384</key>
+  <technician>antarus@google.com</technician>
+  <summary>Updating the software used for a centralized network service (e.g. LDAP)</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W3siZGF0ZSI6ICIyMDE0LTAyLTE1VDAwOjU5OjQ5LjQxMTE2MCIsICJjaGFuZ2VzIjogW3sidG8iOiAiUmV0YXNraW5nIENoaWNhZ28gc2VydmVycyB0byBob3N0IG11bHRpcGxlIHZwbiBzZXJ2ZXJzIiwgInByb3BlcnR5IjogInN1bW1hcnkiLCAiZnJvbSI6ICJSZXRhc2tpbmcgc2VydmVycyB0byBob3N0IHZwbiBzZXJ2aWNlcyJ9XSwgInVzZXIiOiAiYmJvbm5lbkBnbWFpbC5jb20ifSwgeyJkYXRlIjogIjIwMTQtMDItMTVUMDE6MDY6MzQuMTcxNjEwIiwgImNoYW5nZXMiOiBbeyJ0byI6ICJhLmd1b0Bnb29nbGUuY29tIiwgInByb3BlcnR5IjogInRlY2huaWNpYW4iLCAiZnJvbSI6ICJiYm9ubmVuQGdtYWlsLmNvbSJ9XSwgInVzZXIiOiAiYmJvbm5lbkBnbWFpbC5jb20ifV0=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-15T00:58:45</created_on>
+  <key>5717271485874176</key>
+  <technician>a.guo@google.com</technician>
+  <summary>Retasking Chicago servers to host multiple vpn servers</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-15T00:52:05</created_on>
+  <key>5724160613416960</key>
+  <technician>bbonnen@google.com</technician>
+  <summary>Creating new firewall rules to restrict access to existing machines</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>bbonnen</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-15T00:54:20</created_on>
+  <key>5757334940811264</key>
+  <technician>nvogt@google.com</technician>
+  <summary>Moving services from one datacenter to another during a maintenance window where facility-wide power will be off</summary>
+  <layman_description></layman_description>
+ </ChangeRequest>
+</changes>

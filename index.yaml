@@ -12,11 +12,6 @@ indexes:
 
 - kind: ChangeRequest
   properties:
-  - name: created_on
-    direction: desc
-
-- kind: ChangeRequest
-  properties:
   - name: priority
   - name: created_on
     direction: desc
