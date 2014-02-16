@@ -42,7 +42,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     $scope.setPagingData = function(data, page, pageSize){	
         var pagedData = data.changerequests.slice((page - 1) * pageSize, page * pageSize);
         $scope.crs = pagedData;
-        $scope.totalServerItems = data.length;
+        $scope.totalServerItems = data.changerequests.length;
         if (!$scope.$$phase) {
             $scope.$apply();
         }
