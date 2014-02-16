@@ -28,6 +28,8 @@ properties = [	'summary',
                 'endTime']
 
 
+
+
 class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
         if isinstance(obj,datetime.datetime):
@@ -102,10 +104,10 @@ class CRHandler(webapp2.RequestHandler):
         
         
         for p in properties:
-            if getattr(cr,p) != form[p]:
+            if form[p] and str(getattr(cr,p)) != form[p]:
                 change = dict()
                 change['property'] = p
-                change['from'] = getattr(cr,p)
+                change['from'] = str(getattr(cr,p))
                 change['to'] = form[p]
                 audit_entry['changes'].append(change)
                 setattr(cr,p,form[p])
