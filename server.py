@@ -11,7 +11,7 @@ import webapp2
 import logging
 import datetime
 
-properties = [	'summary',
+properties = {	'summary',
 		'description',
 		'impact',
 		'documentation',
@@ -25,7 +25,7 @@ properties = [	'summary',
 		'communication_plan',
 		'layman_description',
                 'startTime',
-                'endTime']
+                'endTime'}
 
 
 
@@ -63,11 +63,12 @@ def encodeChangeRequest(cr):
 
 class CRListHandler(webapp2.RequestHandler):
     def get(self):
-        logging.info(self.request.params)
+        logging.debug(self.request.params)
         crs_query = ChangeRequest.query()
-        for field in (set(self.request.params.keys()) & set(properties)):
-            crs_query = crs_query.filter(getattr(ChangeRequest,field) == self.request.params[field])
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(self.request.params['limit']), offset=int(self.request.params['offset']))
+        params = self.request.params
+        for field in set(params.keys()) & properties:
+            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
         objs = []
         self.response.headers['Content-Type'] = 'application/json'   
@@ -79,7 +80,7 @@ class CRListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
-        for k in (set(form.keys()) & set(properties)):
+        for k in (set(form.keys()) & properties):
             setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.author = users.get_current_user()

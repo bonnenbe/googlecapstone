@@ -45,11 +45,12 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     };
 
     // On get new page
-    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+    $scope.getPagedDataAsync = function (pageSize, page, searchParams) {
         setTimeout(function () {
             var params = {};
 	    params["offset"] = (page - 1) * pageSize;
 	    params["limit"] = pageSize;
+	    for (var attr in searchParams) {params[attr] = searchParams[attr]};
 	    var obj = {};
 	    obj["params"] = params;
 	    $http.get('/changerequests', obj).success(function (data){
@@ -58,7 +59,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         }, 100);
     };
     
-    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, {});
     
     // set paging data when paging data is changed or page is turned	
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
@@ -99,13 +100,12 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.crs.splice(index,1);
 	})};
     this.search = function search(){
-	var obj = {};
-	obj["params"] = {};
+	var searchParams = {};
 	if ($scope.searchText.length > 0)	    
-	    obj.params[$scope.searchField] = $scope.searchText;
-	$http.get('/changerequests',obj).success(function(data) {
-	    $scope.crs = data.changerequests;
-	})};
+	    searchParams[$scope.searchField] = $scope.searchText;
+	$scope.pagingOptions.currentPage = 1;
+	$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, searchParams);
+    };
 }]);
 
 app.controller('createController', function($http,$scope,$location){
