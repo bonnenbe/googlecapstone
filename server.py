@@ -65,9 +65,9 @@ class CRListHandler(webapp2.RequestHandler):
     def get(self):
         logging.info(self.request.params)
         crs_query = ChangeRequest.query()
-        for field in self.request.params:
+        for field in (set(self.request.params.keys()) & set(properties)):
             crs_query = crs_query.filter(getattr(ChangeRequest,field) == self.request.params[field])
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(self.request.params['limit']), offset=int(self.request.params['offset']))
 
         objs = []
         self.response.headers['Content-Type'] = 'application/json'   

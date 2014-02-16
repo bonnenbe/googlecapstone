@@ -23,9 +23,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     $scope.priorities = ['routine', 'sensitive'];
     $scope.searchableFields = ['technician','priority'];
     $scope.searchField = $scope.searchableFields[0];
-    $http.get('/changerequests',"").success(function(data) {
-	$scope.crs = data.changerequests;
-    });
+    
 
     $scope.filterOptions = {
         filterText: "",
@@ -39,10 +37,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     };
 
     // Sets paging data
-    $scope.setPagingData = function(data, page, pageSize){	
-        var pagedData = data.changerequests.slice((page - 1) * pageSize, page * pageSize);
-        $scope.crs = pagedData;
-        $scope.totalServerItems = data.changerequests.length;
+    $scope.setPagingData = function(pageSize, page, data){
+	$scope.crs = data.changerequests;
         if (!$scope.$$phase) {
             $scope.$apply();
         }
@@ -51,20 +47,14 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     // On get new page
     $scope.getPagedDataAsync = function (pageSize, page, searchText) {
         setTimeout(function () {
-            var data;
-            if (searchText) {
-                var ft = searchText.toLowerCase();
-                $http.get('/changerequests').success(function (largeLoad) {		
-                    data = largeLoad.filter(function(item) {
-                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
-                    });
-                    $scope.setPagingData(data,page,pageSize);
-                });            
-            } else {
-                $http.get('/changerequests').success(function (largeLoad) {
-                    $scope.setPagingData(largeLoad,page,pageSize);
-                });
-            }
+            var params = {};
+	    params["offset"] = (page - 1) * pageSize;
+	    params["limit"] = pageSize;
+	    var obj = {};
+	    obj["params"] = params;
+	    $http.get('/changerequests', obj).success(function (data){
+		$scope.setPagingData(pageSize, page, data);
+	    });
         }, 100);
     };
     
