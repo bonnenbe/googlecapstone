@@ -116,6 +116,13 @@ app.controller('createController', function($http,$scope,$location){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.cr = {};
     $scope.cr.technician = $scope.user;
+    $scope.cr.startTime = new Date();
+    $scope.cr.startDate = new Date();
+    $scope.cr.endTime = new Date();
+    $scope.cr.endDate = new Date();
+    $scope.cr.startTime.setMinutes(0);
+    $scope.cr.endTime.setMinutes(0);
+    
     
     this.add = function add(cr){
 	newcr = new Object();
