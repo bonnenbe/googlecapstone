@@ -33,7 +33,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     $scope.pagingOptions = {
         pageSizes: [5, 10, 25, 50],
         pageSize: 5,
-        currentPage: 1
+        currentPage: 1,
+	totalServerItems: false
     };
 
     // Sets paging data
@@ -58,6 +59,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    });
         }, 100);
     };
+
+
     
     $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, {});
     
@@ -77,6 +80,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         data: 'crs',
 	enablePaging: true,
 	showFooter: true,
+	footerTemplate: 'templates/footerTemplate.html',
 	totalServerItems: 'totalServerItems',
 	pagingOptions: $scope.pagingOptions,
 	filterOptions: $scope.filterOptions,
