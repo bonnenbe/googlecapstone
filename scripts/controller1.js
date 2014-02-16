@@ -1,5 +1,7 @@
 var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 
+
+// This filter allows the date time to be displayed properly in the grid.
 app.filter('datetime', function() {
     return function(iso186) {
 	newdate = new Date(iso186);
@@ -8,10 +10,15 @@ app.filter('datetime', function() {
     }
 });
 
+//
+// Controllers
+//
 app.controller('main', function($http, $scope){
     $http.get('/user').success(function(data){
 	$scope.user = data.user;
     })});
+
+// List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.searchableFields = ['technician','priority'];
@@ -20,18 +27,85 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	$scope.crs = data.changerequests;
     });
 
+    $scope.filterOptions = {
+        filterText: "",
+        useExternalFilter: true
+    };
+    $scope.totalServerItems = 0;
+    $scope.pagingOptions = {
+        pageSizes: [5, 10, 25, 50],
+        pageSize: 5,
+        currentPage: 1
+    };
+
+    // Sets paging data
+    $scope.setPagingData = function(data, page, pageSize){	
+        var pagedData = data.changerequests.slice((page - 1) * pageSize, page * pageSize);
+        $scope.crs = pagedData;
+        $scope.totalServerItems = data.length;
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
+    };
+
+    // On get new page
+    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+        setTimeout(function () {
+            var data;
+            if (searchText) {
+                var ft = searchText.toLowerCase();
+                $http.get('/changerequests').success(function (largeLoad) {		
+                    data = largeLoad.filter(function(item) {
+                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                    });
+                    $scope.setPagingData(data,page,pageSize);
+                });            
+            } else {
+                $http.get('/changerequests').success(function (largeLoad) {
+                    $scope.setPagingData(largeLoad,page,pageSize);
+                });
+            }
+        }, 100);
+    };
+    
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage);
+    
+    // set paging data when paging data is changed or page is turned	
+    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+    $scope.$watch('filterOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+        }
+    }, true);
+
     $scope.gridOptions = {
         data: 'crs',
+	enablePaging: true,
+	showFooter: true,
+	totalServerItems: 'totalServerItems',
+	pagingOptions: $scope.pagingOptions,
+	filterOptions: $scope.filterOptions,
 	columnDefs: [  	{ field:"created_on | datetime", displayName: "Created On"},
 			{ field:"technician", displayName: "Technician"},
 	             	{ field:"summary", displayName: "Summary"},
 			{ field:"priority", displayName: "Priority"},
 			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'},
 			{ field:"startTime | datetime", displayName: "Start Time"},
-			{ field:"endTime | datetime", displayName: "End Time"}]
+			{ field:"endTime | datetime", displayName: "End Time"},
+			{ field:"id", displayName: "ID", cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a ng-href="#/id={{row.getProperty(col.field)}}">{{row.getProperty(col.field)}}</a></div>'}
+//			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
+]
     };
 
+
+
+
     this.remove = function remove(index){
+	    alert(index);
 	$http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
 	    $scope.crs.splice(index,1);
 	})};
