@@ -105,7 +105,8 @@ class CRHandler(webapp2.RequestHandler):
         
         
         for p in properties:
-            if form[p] and str(getattr(cr,p)) != form[p]:
+            if (form[p] and str(getattr(cr,p)) != form[p] and
+                p not in ['startTime', 'endTime']):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))
