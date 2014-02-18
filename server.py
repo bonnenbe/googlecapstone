@@ -46,7 +46,7 @@ def encodeChangeRequest(cr):
 	'implementation_steps': cr.implementation_steps,
 	'technician': cr.technician,
 	'priority': cr.priority,
-        'id': cr.key.urlsafe(),
+        'id': cr.key.id(),
 	'created_on': cr.created_on,
         'audit_trail': cr.audit_trail,
 	'tests_conducted': cr.tests_conducted,
@@ -85,17 +85,17 @@ class CRListHandler(webapp2.RequestHandler):
         cr.audit_trail = []
         cr.author = users.get_current_user()
         cr.put()
-        self.response.write(json.dumps({'id': cr.key.urlsafe(),
+        logging.debug(cr.key.id())
+        self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
         
 class CRHandler(webapp2.RequestHandler):
     def get(self, id):
-        key = ndb.Key(urlsafe=id)
-        cr = key.get()
+        cr = ChangeRequest.get_by_id(int(id))
         self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
-        key = ndb.Key(urlsafe=id)
+        key = ndb.Key('ChangeRequest',int(id))
         cr = key.get()
 
         audit_entry = dict()
@@ -120,7 +120,7 @@ class CRHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
     def delete(self, id):
-        key = ndb.Key(urlsafe=id)
+        key = ndb.Key('ChangeRequest',int(id))
         key.delete()
 class UserHandler(webapp2.RequestHandler):
     def get(self):
