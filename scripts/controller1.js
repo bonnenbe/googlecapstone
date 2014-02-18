@@ -22,8 +22,8 @@ app.controller('main', function($http, $scope){
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.searchableFields = ['technician','priority'];
-    $scope.searchField = $scope.searchableFields[0];
-    
+    $scope.searchParams = {field: $scope.searchableFields[0],
+			   text: ""};
 
     $scope.filterOptions = {
         filterText: "",
@@ -51,7 +51,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
             var params = {};
 	    params["offset"] = (page - 1) * pageSize;
 	    params["limit"] = pageSize;
-	    for (var attr in searchParams) {params[attr] = searchParams[attr]};
+	    if (searchParams.text)
+		params[searchParams.field] = searchParams.text;
 	    var obj = {};
 	    obj["params"] = params;
 	    $http.get('/changerequests', obj).success(function (data){
@@ -62,17 +63,17 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
 
     
-    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, {});
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
     
     // set paging data when paging data is changed or page is turned	
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
         if (newVal !== oldVal) {
-          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.filterOptions.filterText);
+          $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
         }
     }, true);
     $scope.$watch('filterOptions', function (newVal, oldVal) {
         if (newVal !== oldVal) {
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, {});
+            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
         }
     }, true);
 
@@ -104,11 +105,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.crs.splice(index,1);
 	})};
     this.search = function search(){
-	var searchParams = {};
-	if ($scope.searchText.length > 0)	    
-	    searchParams[$scope.searchField] = $scope.searchText;
-	$scope.pagingOptions.currentPage = 1;
-	$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, searchParams);
+	if ($scope.pagingOptions.currentPage != 1)
+	    $scope.pagingOptions.currentPage = 1;
+	else	    
+	    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
     };
 }]);
 

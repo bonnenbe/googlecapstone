@@ -6,10 +6,10 @@
     <br><br>
 
     <div id="search">
-        <select ng-model="searchField" required ng-options="f for f in searchableFields">
+        <select ng-model="searchParams.field" required ng-options="f for f in searchableFields">
         </select>
         
-        <input type=text ng-model="searchText">
+        <input type=text ng-model="searchParams.text">
         <button ng-click="ctrl.search()">Search</button>
 
     </div>
