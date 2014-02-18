@@ -3,7 +3,11 @@
         <div class="ngFooterSelectedItems" ng-show="multiSelect">
             <span class="ngLabel">{{i18n.ngSelectedItemsLabel}} {{selectedItems.length}}</span>
         </div>
+	<div class="ngFooterDisplayedItems" ng-class="{'ngNoMultiSelect': !multiSelect}" >
+		<span class="ngLabel">Showing Results: {{pagingOptions.pageSize*(pagingOptions.currentPage-1)+1}}-{{pagingOptions.pageSize*(pagingOptions.currentPage)}}</span>
+        </div>
     </div>
+    
     <div class="ngPagerContainer" style="float: right; margin-top: 10px;" ng-show="enablePaging" ng-class="{'ngNoMultiSelect': !multiSelect}">
         <div style="float:left; margin-right: 10px;" class="ngRowCountPicker">
             <span style="float: left; margin-top: 3px;" class="ngLabel">{{i18n.ngPageSizeLabel}}</span>
