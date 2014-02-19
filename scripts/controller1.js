@@ -95,9 +95,27 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
 ]
     };
+        
+    function sizeGrid() {
+        var height = $("body").height();
+        
+        height = height-$("#googleInfo").outerHeight();
+        
+        $("#view").height(height);
+        
+        height = height-$("#otherListStuff").outerHeight();
+        
+        
+        //todo  why -20
+        $("#grid").height(height-20);
+        
+        //height = height-55-30;
+        
+        //$("#grid .ngViewport").height(height);
 
-
-
+    }
+    sizeGrid();
+    $(window).resize(sizeGrid);
 
     this.remove = function remove(index){
 	    alert(index);
@@ -111,6 +129,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
     };
 }]);
+
 
 app.controller('createController', function($http,$scope,$location){
     $scope.priorities = ['routine', 'sensitive'];
