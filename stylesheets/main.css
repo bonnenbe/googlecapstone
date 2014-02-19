@@ -7,7 +7,6 @@ body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #DDDDDD;
   padding: 15px;
-  overflow: hidden;
 }
 .gridStyle {
     border: 1px solid rgb(212,212,212);

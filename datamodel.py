@@ -16,6 +16,7 @@ class ChangeRequest(ndb.Model):
     technician = ndb.StringProperty()
     author = ndb.UserProperty()
     priority = ndb.StringProperty(choices=set(["sensitive", "routine"]))
+    status = ndb.StringProperty(choices={'draft','created','approved'})
     audit_trail = ndb.JsonProperty()
     tests_conducted  = ndb.TextProperty()
     risks  = ndb.TextProperty()

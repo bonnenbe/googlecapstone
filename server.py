@@ -11,6 +11,7 @@ import webapp2
 import logging
 import datetime
 
+#directly editable properties
 properties = {	'summary',
 		'description',
 		'impact',
@@ -64,7 +65,7 @@ def encodeChangeRequest(cr):
 class CRListHandler(webapp2.RequestHandler):
     def get(self):
         logging.debug(self.request.params)
-        crs_query = ChangeRequest.query()
+        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved'])) 
         params = self.request.params
         for field in set(params.keys()) & properties:
             crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
@@ -83,6 +84,7 @@ class CRListHandler(webapp2.RequestHandler):
         for k in (set(form.keys()) & properties):
             setattr(cr,k,form[k])
         cr.audit_trail = []
+        cr.status = 'created'
         cr.author = users.get_current_user()
         cr.put()
         logging.debug(cr.key.id())
@@ -122,13 +124,46 @@ class CRHandler(webapp2.RequestHandler):
     def delete(self, id):
         key = ndb.Key('ChangeRequest',int(id))
         key.delete()
+class DraftHandler(webapp2.RequestHandler):
+    def post(self):
+        form = json.loads(self.request.body)
+        changed = False
+        if 'id' in form and form['id']:
+            cr = ChangeRequest.get_by_id(int(form['id']))
+        else:
+            cr = ChangeRequest()
+            cr.audit_trail = []
+            cr.status = 'draft'
+            cr.author = users.get_current_user()
+            changed = True
+
+        for p in (set(form.keys()) & properties):
+            if form[p] and str(getattr(cr,p)) != form[p]:
+                setattr(cr,p,form[p])
+                changed = True
+        if changed:
+            cr.put()
+        self.response.write(json.dumps({'id': cr.key.id()}))
+    def get(self):
+        crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
+        objs = []
+        for cr in crs:
+            objs.append(encodeChangeRequest(cr))
+        self.response.write(json.dumps({'drafts': objs},cls=JSONEncoder)) 
+    
 class UserHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write(json.dumps({'user': users.get_current_user().email()}))
+       
+        
+        
     
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
         webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
-        webapp2.Route('/user',handler=UserHandler)
+        webapp2.Route('/user',handler=UserHandler),
+        webapp2.Route('/drafts',handler=DraftHandler)
+
 ], debug=True)

@@ -12,7 +12,27 @@ indexes:
 
 - kind: ChangeRequest
   properties:
+  - name: author
+  - name: status
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
   - name: priority
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
   - name: created_on
     direction: desc
 

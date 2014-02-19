@@ -128,10 +128,14 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	else	    
 	    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
     };
+    this.getDrafts = function (){
+	$http.get('/drafts').success(function(data){
+	    $scope.crs = data.drafts;
+	})};   
 }]);
 
 
-app.controller('createController', function($http,$scope,$location){
+app.controller('createController', function($http,$scope,$location,$interval){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.cr = {};
     $scope.cr.technician = $scope.user;
@@ -141,7 +145,15 @@ app.controller('createController', function($http,$scope,$location){
     $scope.cr.endDate = new Date();
     $scope.cr.startTime.setMinutes(0);
     $scope.cr.endTime.setMinutes(0);
-    
+    $scope.cr.id = ""
+    var self = this;
+    this.cancelDrafts = null;
+    $interval(function (){
+	self.cancelDrafts = self.sendDraft($scope.cr);
+    }, 10000);
+    $scope.$on('$destroy', function(e) {
+	$interval.cancel(self.cancelDrafts);
+    });
     
     this.add = function add(cr){
 	newcr = new Object();
@@ -162,6 +174,11 @@ app.controller('createController', function($http,$scope,$location){
 	    console.log("Unsuccessful add");
 	});
     };    
+    this.sendDraft = function sendDraft(cr){
+	$http.post('/drafts', JSON.stringify(cr)).success(function(data){
+	    cr.id = data.id;
+	})}; 
+    
 });
 
 app.controller('updateController', function($routeParams, $http, $scope, $location){
