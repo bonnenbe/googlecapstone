@@ -147,11 +147,11 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr.endTime.setMinutes(0);
     $scope.cr.id = ""
     var self = this;
-    this.cancelDrafts = null;
-    $interval(function (){
-	self.cancelDrafts = self.sendDraft($scope.cr);
+    self.cancelDrafts = $interval(function (){
+	self.sendDraft($scope.cr);
     }, 10000);
-    $scope.$on('$destroy', function(e) {
+    $scope.$on('$destroy', function() {
+	alert("DESTROY");
 	$interval.cancel(self.cancelDrafts);
     });
     
