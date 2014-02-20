@@ -66,6 +66,10 @@ transformers:
     - property: priority
       external_name: priority
       # Type: String Stats: 2 properties of this type in this kind.
+      
+    - property: status
+      external_name: status
+      # Type: String Stats: 3 properties of this type in this kind?
 
     - property: summary
       external_name: summary

@@ -42,6 +42,7 @@ for x in range(1,101):
             + "</summary>\n")
 
     f.write("  <layman_description></layman_description>\n")
+    f.write("  <status>created</status>\n")
     f.write(" </ChangeRequest>\n")
 
 f.write("</changes>\n")

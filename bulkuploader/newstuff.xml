@@ -1,147 +1,100 @@
 <?xml version="1.0"?>
 <changes>
  <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>1</key>
-  <technician>bgilmore</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>antarus</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>2</key>
-  <technician>antarus</technician>
-  <summary>Hello.</summary>
+  <key>1</key>
+  <technician>ben</technician>
+  <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>3</key>
-  <technician>antarus</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <key>2</key>
+  <technician>ben</technician>
+  <summary>The pleasure is mine.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>3</key>
+  <technician>bgilmore</technician>
+  <summary>Hello.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>4</key>
-  <technician>bgilmore</technician>
+  <technician>nick</technician>
   <summary>Greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>5</key>
+  <technician>antarus</technician>
+  <summary>Greetings, friend.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>5</key>
-  <technician>ben</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>6</key>
-  <technician>bgilmore</technician>
+  <technician>ben</technician>
   <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
+  <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>7</key>
-  <technician>ben</technician>
-  <summary>Greetings.</summary>
+  <technician>albert</technician>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>8</key>
   <technician>krelinga</technician>
-  <summary>Hello.</summary>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>9</key>
-  <technician>krelinga</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>10</key>
-  <technician>nick</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>11</key>
-  <technician>albert</technician>
-  <summary>Greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>12</key>
-  <technician>nick</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>13</key>
-  <technician>albert</technician>
-  <summary>Greetings.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -149,10 +102,71 @@
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>14</key>
+  <key>9</key>
   <technician>bgilmore</technician>
   <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>10</key>
+  <technician>antarus</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>11</key>
+  <technician>krelinga</technician>
+  <summary>I greet you.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>12</key>
+  <technician>antarus</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>13</key>
+  <technician>krelinga</technician>
+  <summary>Greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>albert</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>14</key>
+  <technician>albert</technician>
+  <summary>Hello.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
@@ -162,162 +176,153 @@
   <created_on>2014-02-16T20:3:39</created_on>
   <key>15</key>
   <technician>albert</technician>
-  <summary>The pleasure is mine.</summary>
+  <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>16</key>
-  <technician>antarus</technician>
-  <summary>Greetings, friend.</summary>
+  <technician>ben</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
+  <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>17</key>
-  <technician>antarus</technician>
-  <summary>The pleasure is mine.</summary>
+  <technician>ben</technician>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>krelinga</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>18</key>
-  <technician>krelinga</technician>
-  <summary>My greetings.</summary>
+  <technician>ben</technician>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>19</key>
-  <technician>nick</technician>
-  <summary>I greet you.</summary>
+  <technician>bgilmore</technician>
+  <summary>Greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>albert</author>
+  <author>antarus</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>20</key>
-  <technician>albert</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <technician>antarus</technician>
+  <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
+  <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>21</key>
   <technician>krelinga</technician>
-  <summary>I greet you.</summary>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>22</key>
-  <technician>ben</technician>
-  <summary>I greet you.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>23</key>
-  <technician>bgilmore</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
+  <author>antarus</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>24</key>
-  <technician>krelinga</technician>
+  <key>22</key>
+  <technician>antarus</technician>
   <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>23</key>
+  <technician>nick</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>24</key>
+  <technician>albert</technician>
+  <summary>Heh, greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>25</key>
-  <technician>albert</technician>
-  <summary>Hello.</summary>
+  <technician>ben</technician>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>26</key>
-  <technician>ben</technician>
+  <technician>bgilmore</technician>
   <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>27</key>
-  <technician>antarus</technician>
-  <summary>Heh, greetings.</summary>
+  <technician>ben</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>28</key>
-  <technician>albert</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>antarus</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>29</key>
-  <technician>antarus</technician>
-  <summary>I greet you.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>ben</author>
@@ -325,76 +330,83 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>30</key>
+  <key>28</key>
   <technician>ben</technician>
-  <summary>Greetings.</summary>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
+  <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>31</key>
+  <key>29</key>
   <technician>ben</technician>
   <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>30</key>
+  <technician>krelinga</technician>
+  <summary>Greetings, traveller.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>31</key>
+  <technician>ben</technician>
+  <summary>Greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>32</key>
   <technician>bgilmore</technician>
-  <summary>I greet you.</summary>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>33</key>
-  <technician>antarus</technician>
+  <technician>krelinga</technician>
   <summary>The pleasure is mine.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
+  <author>antarus</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>34</key>
-  <technician>ben</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <technician>antarus</technician>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>35</key>
-  <technician>nick</technician>
-  <summary>Well met!</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>36</key>
-  <technician>ben</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
@@ -402,10 +414,59 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>37</key>
+  <key>35</key>
   <technician>krelinga</technician>
-  <summary>I greet you.</summary>
+  <summary>The pleasure is mine.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>36</key>
+  <technician>nick</technician>
+  <summary>Greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>37</key>
+  <technician>nick</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>38</key>
+  <technician>ben</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>39</key>
+  <technician>nick</technician>
+  <summary>My greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
@@ -413,10 +474,35 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>38</key>
+  <key>40</key>
   <technician>albert</technician>
-  <summary>Well met!</summary>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>41</key>
+  <technician>krelinga</technician>
+  <summary>Greetings, friend.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>42</key>
+  <technician>antarus</technician>
+  <summary>Greetings, friend.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -424,109 +510,35 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>39</key>
-  <technician>bgilmore</technician>
-  <summary>Greetings, friend.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>40</key>
-  <technician>nick</technician>
-  <summary>Greetings, friend.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>antarus</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>41</key>
-  <technician>antarus</technician>
-  <summary>Well met!</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>42</key>
-  <technician>krelinga</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
   <key>43</key>
-  <technician>nick</technician>
-  <summary>Well met!</summary>
+  <technician>bgilmore</technician>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>albert</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>44</key>
-  <technician>albert</technician>
-  <summary>Greetings.</summary>
+  <technician>bgilmore</technician>
+  <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>45</key>
-  <technician>nick</technician>
-  <summary>Greetings.</summary>
+  <technician>bgilmore</technician>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>46</key>
-  <technician>ben</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>47</key>
-  <technician>nick</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>antarus</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>48</key>
-  <technician>antarus</technician>
-  <summary>The pleasure is mine.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
@@ -534,32 +546,71 @@
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>49</key>
+  <key>46</key>
   <technician>krelinga</technician>
-  <summary>Heh, greetings.</summary>
+  <summary>Greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>47</key>
+  <technician>krelinga</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>48</key>
+  <technician>nick</technician>
+  <summary>My greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>albert</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>49</key>
+  <technician>albert</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>50</key>
-  <technician>ben</technician>
-  <summary>The pleasure is mine.</summary>
+  <technician>nick</technician>
+  <summary>My greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>nick</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
+  <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>51</key>
-  <technician>antarus</technician>
-  <summary>Heh, greetings.</summary>
+  <technician>nick</technician>
+  <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
@@ -571,28 +622,31 @@
   <technician>albert</technician>
   <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>53</key>
   <technician>krelinga</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <summary>Greetings, friend.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>albert</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>54</key>
-  <technician>albert</technician>
-  <summary>Greetings, friend.</summary>
+  <technician>bgilmore</technician>
+  <summary>My greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>nick</author>
@@ -602,85 +656,81 @@
   <created_on>2014-02-16T20:3:39</created_on>
   <key>55</key>
   <technician>nick</technician>
-  <summary>Heh, greetings.</summary>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>56</key>
-  <technician>nick</technician>
-  <summary>The pleasure is mine.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
+  <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>57</key>
-  <technician>nick</technician>
-  <summary>The pleasure is mine.</summary>
+  <key>56</key>
+  <technician>albert</technician>
+  <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>58</key>
-  <technician>nick</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <key>57</key>
+  <technician>krelinga</technician>
+  <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>albert</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>58</key>
+  <technician>albert</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>59</key>
-  <technician>nick</technician>
-  <summary>Greetings, friend.</summary>
+  <technician>albert</technician>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>bgilmore</author>
+  <author>antarus</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>60</key>
-  <technician>bgilmore</technician>
-  <summary>Greetings.</summary>
+  <technician>antarus</technician>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>61</key>
   <technician>ben</technician>
-  <summary>Greetings, traveller.</summary>
+  <summary>Greetings, friend.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>62</key>
-  <technician>bgilmore</technician>
-  <summary>The pleasure is mine.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -688,10 +738,11 @@
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>63</key>
+  <key>62</key>
   <technician>bgilmore</technician>
-  <summary>My greetings.</summary>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>nick</author>
@@ -699,43 +750,35 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>64</key>
+  <key>63</key>
   <technician>nick</technician>
-  <summary>Well met!</summary>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>64</key>
+  <technician>antarus</technician>
+  <summary>Greetings, traveller.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>65</key>
-  <technician>nick</technician>
-  <summary>Greetings, friend.</summary>
+  <technician>krelinga</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>66</key>
-  <technician>bgilmore</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>67</key>
-  <technician>bgilmore</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>antarus</author>
@@ -743,65 +786,47 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>68</key>
+  <key>66</key>
   <technician>antarus</technician>
   <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>69</key>
-  <technician>ben</technician>
-  <summary>Greetings.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>nick</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>70</key>
-  <technician>nick</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>71</key>
-  <technician>albert</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>72</key>
-  <technician>krelinga</technician>
+  <key>67</key>
+  <technician>nick</technician>
   <summary>My greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>68</key>
+  <technician>albert</technician>
+  <summary>Hello.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>73</key>
-  <technician>albert</technician>
-  <summary>Greetings, friend.</summary>
+  <key>69</key>
+  <technician>ben</technician>
+  <summary>Heh, greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -809,21 +834,71 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>74</key>
+  <key>70</key>
   <technician>bgilmore</technician>
+  <summary>My greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>71</key>
+  <technician>nick</technician>
   <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>72</key>
+  <technician>nick</technician>
+  <summary>Greetings, traveller.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>73</key>
+  <technician>nick</technician>
+  <summary>I greet you.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>74</key>
+  <technician>ben</technician>
+  <summary>Greetings, traveller.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>75</key>
   <technician>krelinga</technician>
-  <summary>The pleasure is mine.</summary>
+  <summary>I greet you.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
@@ -835,28 +910,7 @@
   <technician>albert</technician>
   <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>77</key>
-  <technician>nick</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>nick</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>78</key>
-  <technician>nick</technician>
-  <summary>Hello.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -864,21 +918,47 @@
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>79</key>
+  <key>77</key>
   <technician>bgilmore</technician>
-  <summary>I greet you.</summary>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>78</key>
+  <technician>ben</technician>
+  <summary>My greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>79</key>
+  <technician>antarus</technician>
+  <summary>Greetings, friend.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>80</key>
   <technician>albert</technician>
-  <summary>Well met!</summary>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>antarus</author>
@@ -890,17 +970,19 @@
   <technician>antarus</technician>
   <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>ben</author>
+  <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>82</key>
-  <technician>ben</technician>
-  <summary>Greetings, traveller.</summary>
+  <technician>albert</technician>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>ben</author>
@@ -910,52 +992,45 @@
   <created_on>2014-02-16T20:3:39</created_on>
   <key>83</key>
   <technician>ben</technician>
-  <summary>Greetings, friend.</summary>
+  <summary>My greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
+  <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>84</key>
-  <technician>nick</technician>
-  <summary>I greet you.</summary>
+  <technician>krelinga</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>bgilmore</author>
+  <author>albert</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>85</key>
-  <technician>bgilmore</technician>
-  <summary>Hello.</summary>
+  <technician>albert</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>antarus</author>
+  <author>bgilmore</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>86</key>
-  <technician>antarus</technician>
-  <summary>My greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>87</key>
   <technician>bgilmore</technician>
-  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -963,10 +1038,59 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>88</key>
+  <key>87</key>
   <technician>bgilmore</technician>
-  <summary>Greetings, friend.</summary>
+  <summary>My greetings.</summary>
   <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>88</key>
+  <technician>krelinga</technician>
+  <summary>Heh, greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>krelinga</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>89</key>
+  <technician>krelinga</technician>
+  <summary>Well met!</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>nick</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>90</key>
+  <technician>nick</technician>
+  <summary>The pleasure is mine.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>91</key>
+  <technician>antarus</technician>
+  <summary>Greetings.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>albert</author>
@@ -974,21 +1098,11 @@
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>89</key>
+  <key>92</key>
   <technician>albert</technician>
-  <summary>Hello.</summary>
+  <summary>The pleasure is mine.</summary>
   <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>ben</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>90</key>
-  <technician>ben</technician>
-  <summary>Greetings, traveller.</summary>
-  <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -996,32 +1110,11 @@
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>91</key>
-  <technician>bgilmore</technician>
-  <summary>Greetings, friend.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>92</key>
-  <technician>krelinga</technician>
-  <summary>Greetings, friend.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>krelinga</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>sensitive</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
   <key>93</key>
-  <technician>krelinga</technician>
-  <summary>Greetings, traveller.</summary>
+  <technician>bgilmore</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>bgilmore</author>
@@ -1031,73 +1124,80 @@
   <created_on>2014-02-16T20:3:39</created_on>
   <key>94</key>
   <technician>bgilmore</technician>
-  <summary>Greetings, traveller.</summary>
+  <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>nick</author>
+  <author>krelinga</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>95</key>
-  <technician>nick</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>96</key>
-  <technician>albert</technician>
+  <technician>krelinga</technician>
   <summary>Hello.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>albert</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-16T20:3:39</created_on>
-  <key>97</key>
-  <technician>albert</technician>
-  <summary>Heh, greetings.</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>bgilmore</author>
+  <author>antarus</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
   <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>98</key>
-  <technician>bgilmore</technician>
-  <summary>Hello.</summary>
+  <key>96</key>
+  <technician>antarus</technician>
+  <summary>Greetings, traveller.</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
-  <author>bgilmore</author>
+  <author>ben</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
+  <priority>sensitive</priority>
   <created_on>2014-02-16T20:3:39</created_on>
-  <key>99</key>
-  <technician>bgilmore</technician>
-  <summary>Heh, greetings.</summary>
+  <key>97</key>
+  <technician>ben</technician>
+  <summary>Well met!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
  <ChangeRequest>
   <author>nick</author>
   <implementation_steps></implementation_steps>
   <audit_trail>W10=</audit_trail>
+  <priority>sensitive</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>98</key>
+  <technician>nick</technician>
+  <summary>Greetings, traveller.</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>antarus</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
+  <priority>routine</priority>
+  <created_on>2014-02-16T20:3:39</created_on>
+  <key>99</key>
+  <technician>antarus</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
+  <layman_description></layman_description>
+  <status>created</status>
+ </ChangeRequest>
+ <ChangeRequest>
+  <author>ben</author>
+  <implementation_steps></implementation_steps>
+  <audit_trail>W10=</audit_trail>
   <priority>routine</priority>
   <created_on>2014-02-16T20:3:39</created_on>
   <key>100</key>
-  <technician>nick</technician>
-  <summary>Greetings.</summary>
+  <technician>ben</technician>
+  <summary>You face Jaraxxus, Eredar Lord of the Burning Legion!</summary>
   <layman_description></layman_description>
+  <status>created</status>
  </ChangeRequest>
 </changes>
