@@ -151,7 +151,6 @@ app.controller('createController', function($http,$scope,$location,$interval){
 	self.sendDraft($scope.cr);
     }, 10000);
     $scope.$on('$destroy', function() {
-	alert("DESTROY");
 	$interval.cancel(self.cancelDrafts);
     });
     
