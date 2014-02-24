@@ -14,3 +14,13 @@ scripts/controller1.js~
 server.py~
 *.html~
 *.swp
+scripts/app-config.js~
+scripts/app-main.js~
+scripts/controller-date.js~
+scripts/controller-list.js~
+datamodel.py~
+*.yaml~~
+*.yaml~
+*.css~
+*.py~
+*.js~
