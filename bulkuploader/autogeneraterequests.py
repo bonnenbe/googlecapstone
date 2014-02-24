@@ -7,15 +7,19 @@ f.write("<?xml version=\"1.0\"?>\n")
 
 f.write("<changes>\n")
 
-names = ["ben", "nick", "albert", "bgilmore", "antarus", "krelinga"]
+names = ["ben@google.com", "nick@google.com", "albert@google.com", "bgilmore@google.com", "antarus@google.com", "krelinga@google.com"]
 priorities = ["routine", "sensitive"]
 
-summaries = ["Hello.", "Greetings, traveller.",
-             "I greet you.", "Greetings.", "Heh, greetings.", "Well met!",
-             "Greetings, friend.",
-             "You face Jaraxxus, Eredar Lord of the Burning Legion!",
-             "The pleasure is mine.", "My greetings."]
+#summaries = ["Hello.", "Greetings, traveller.",
+#             "I greet you.", "Greetings.", "Heh, greetings.", "Well met!",
+#             "Greetings, friend.",
+#             "You face Jaraxxus, Eredar Lord of the Burning Legion!",
+#             "The pleasure is mine.", "My greetings."]
 
+summaries = ["Software updates", "Server update", "Server maintenance",
+             "Switch maintenance", "Datacenter software upgrade",
+             "Server update", "Database restructuring",
+             "Routine switch maintenance", "Failover license services to atlanta."]
 
 
 for x in range(1,101):
@@ -33,7 +37,7 @@ for x in range(1,101):
                priorities[random.randint(0, len(priorities)-1)] + "</priority>\n"
     f.write(priority)
 
-    f.write("  <created_on>2014-02-16T20:3:39</created_on>\n")
+    f.write("  <created_on>2014-02-24T20:3:39</created_on>\n")
     f.write("  <key>" + str(x) + "</key>\n")
 
     f.write("  <technician>" + name + "</technician>\n")
@@ -43,6 +47,16 @@ for x in range(1,101):
 
     f.write("  <layman_description></layman_description>\n")
     f.write("  <status>created</status>\n")
+    f.write("  <documentation></documentation>\n")
+    f.write("  <tests_conducted></tests_conducted>\n")
+    f.write("  <backout_plan></backout_plan>\n")
+    f.write("  <risks></risks>\n")
+    
+
+    f.write("  <startTime>2014-02-20T21:00:14</startTime>\n")
+    f.write("  <endTime>2014-02-20T21:00:14</endTime>\n")
+    
+    
     f.write(" </ChangeRequest>\n")
 
 f.write("</changes>\n")

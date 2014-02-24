@@ -1,58 +1,39 @@
 <?xml version="1.0"?>
 <changes>
  <ChangeRequest>
-  <author>vogtnich</author>
-  <implementation_steps></implementation_steps>
+  <status>draft</status>
+  <startTime>2014-02-24T19:00:14</startTime>
+  <author>guoalber1</author>
+  <documentation>asdf</documentation>
+  <implementation_steps>asdf</implementation_steps>
+  <tests_conducted>asdf</tests_conducted>
   <audit_trail>W10=</audit_trail>
   <priority></priority>
-  <created_on>2014-02-20T21:26:24</created_on>
-  <key>40002</key>
-  <technician>vogtnich@gmail.com</technician>
-  <summary></summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>guoalber1</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority>routine</priority>
-  <created_on>2014-02-20T21:24:16</created_on>
-  <key>50002</key>
+  <created_on>2014-02-24T19:37:28</created_on>
+  <backout_plan>asdf</backout_plan>
+  <risks>asdf</risks>
+  <key>130001</key>
   <technician>guoalber1@gmail.com</technician>
+  <endTime>2014-02-24T19:00:14</endTime>
   <summary>asdf</summary>
   <layman_description>asdf</layman_description>
  </ChangeRequest>
  <ChangeRequest>
+  <status>created</status>
+  <startTime>2014-02-24T19:00:14</startTime>
   <author>guoalber1</author>
-  <implementation_steps></implementation_steps>
+  <documentation>asdf</documentation>
+  <implementation_steps>asdf</implementation_steps>
+  <tests_conducted>asdf</tests_conducted>
   <audit_trail>W10=</audit_trail>
-  <priority></priority>
-  <created_on>2014-02-20T21:25:57</created_on>
-  <key>70002</key>
-  <technician>guoalber1@gmail.com</technician>
-  <summary>asdf</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>guoalber1</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W3siZGF0ZSI6ICIyMDE0LTAyLTIwVDIxOjI1OjQ0LjI2OTkyMCIsICJjaGFuZ2VzIjogW3sidG8iOiAiYXNkZiIsICJwcm9wZXJ0eSI6ICJyaXNrcyIsICJmcm9tIjogIk5vbmUifV0sICJ1c2VyIjogImd1b2FsYmVyMUBnbWFpbC5jb20ifV0=</audit_trail>
   <priority>routine</priority>
-  <created_on>2014-02-20T21:25:22</created_on>
-  <key>90001</key>
+  <created_on>2014-02-24T19:37:36</created_on>
+  <backout_plan>asdf</backout_plan>
+  <risks>asdf</risks>
+  <key>140001</key>
   <technician>guoalber1@gmail.com</technician>
-  <summary>asdfasdfdraft</summary>
-  <layman_description></layman_description>
- </ChangeRequest>
- <ChangeRequest>
-  <author>guoalber1</author>
-  <implementation_steps></implementation_steps>
-  <audit_trail>W10=</audit_trail>
-  <priority></priority>
-  <created_on>2014-02-20T21:26:23</created_on>
-  <key>100001</key>
-  <technician>guoalber1@gmail.com</technician>
+  <endTime>2014-02-24T19:00:14</endTime>
   <summary>asdf</summary>
-  <layman_description></layman_description>
+  <layman_description>asdf</layman_description>
  </ChangeRequest>
 </changes>
