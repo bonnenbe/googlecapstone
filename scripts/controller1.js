@@ -151,8 +151,13 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.$on('$destroy', function() {
 	$interval.cancel(self.cancelDrafts);
     });
-    
+    this.remove = function remove(){
+	$http.delete('/changerequests/' + $scope.cr.id).success(function(){
+	})};
     this.add = function add(cr){
+	$interval.cancel(self.cancelDrafts);
+	if (cr.id)
+	    self.remove();
 	$http.post('/changerequests',JSON.stringify(cr)).success(function(data) {
 	    cr.id = data.id;
 	    console.log("Successful add");
