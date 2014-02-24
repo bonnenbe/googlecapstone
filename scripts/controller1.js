@@ -4,8 +4,8 @@ var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 // This filter allows the date time to be displayed properly in the grid.
 app.filter('datetime', function() {
     return function(iso186) {
-	newdate = new Date(iso186);
-	datestring = newdate.toDateString().substring(3) + ', ' + newdate.toTimeString().substring(0,5);
+	var newdate = new Date(iso186);
+	var datestring = newdate.toDateString().substring(3) + ', ' + newdate.toTimeString().substring(0,5);
 	return datestring;
     }
 });
@@ -110,7 +110,6 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         $("#grid").height(height-20);
         
         //height = height-55-30;
-        
         //$("#grid .ngViewport").height(height);
 
     }
