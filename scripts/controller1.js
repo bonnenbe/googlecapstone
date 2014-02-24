@@ -140,9 +140,7 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr = {};
     $scope.cr.technician = $scope.user;
     $scope.cr.startTime = new Date();
-    $scope.cr.startDate = new Date();
     $scope.cr.endTime = new Date();
-    $scope.cr.endDate = new Date();
     $scope.cr.startTime.setMinutes(0);
     $scope.cr.endTime.setMinutes(0);
     $scope.cr.id = ""
@@ -155,18 +153,8 @@ app.controller('createController', function($http,$scope,$location,$interval){
     });
     
     this.add = function add(cr){
-	newcr = new Object();
-	angular.copy(cr,newcr);
-	newcr.startTime = new Date(cr.startDate.getFullYear(),cr.startDate.getMonth(),cr.startDate.getDate(),
-				   cr.startTime.getHours(),cr.startTime.getMinutes(),cr.startTime.getSeconds());
-	delete newcr.startDate;
-	newcr.endTime = new Date(cr.endDate.getFullYear(),cr.endDate.getMonth(),cr.endDate.getDate(),
-				   cr.endTime.getHours(),cr.endTime.getMinutes(),cr.endTime.getSeconds());
-	delete newcr.endDate;
-	
-	$http.post('/changerequests',JSON.stringify(newcr)).success(function(data) {
-	    newcr.id = data.id;
-	    //$scope.crs.push(newcr);
+	$http.post('/changerequests',JSON.stringify(cr)).success(function(data) {
+	    cr.id = data.id;
 	    console.log("Successful add");
 	    $location.path('#');
 	}).error(function() {
@@ -204,9 +192,6 @@ app.controller('DateCtrl', function($scope){
 	$event.stopPropagation();
 	$scope.opened = true;
     };
-});
-	
-app.controller('TimeCtrl', function($scope){
 });
 
 function CollapseDemoCtrl($scope) {

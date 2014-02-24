@@ -151,6 +151,11 @@ class DraftHandler(webapp2.RequestHandler):
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
         self.response.write(json.dumps({'drafts': objs},cls=JSONEncoder)) 
+    def delete(self):
+        cr = ChangeRequest.get_by_id(int(id))
+        if cr.status == 'draft' and cr.author == users.get_current_user():
+            cr.delete()
+    
     
 class UserHandler(webapp2.RequestHandler):
     def get(self):
