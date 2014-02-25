@@ -55,30 +55,24 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         }, 100);
     };
 
+    $scope.refresh = function (){
+	$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
+    };
+
     
     //
     // Events for setting paging data when paging data is changed or page is turned	
     //
-    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
+    $scope.refresh();
     
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            $scope.getPagedDataAsync(
-                $scope.pagingOptions.pageSize, 
-                $scope.pagingOptions.currentPage, 
-                $scope.searchParams
-            );
-        }
+        if (newVal !== oldVal) 
+	    $scope.refresh();
     }, true);
     
     $scope.$watch('filterOptions', function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            $scope.getPagedDataAsync(
-                $scope.pagingOptions.pageSize, 
-                $scope.pagingOptions.currentPage, 
-                $scope.searchParams
-            );
-        }
+        if (newVal !== oldVal)
+	    $scope.refresh();
     }, true);
 
     //
@@ -139,13 +133,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     
     
     this.search = function search(){
-        if ($scope.pagingOptions.currentPage != 1) {
+        if ($scope.pagingOptions.currentPage != 1)
             $scope.pagingOptions.currentPage = 1;
-        }
-        else {    
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, 
-            $scope.pagingOptions.currentPage, $scope.searchParams);
-        }
+        else 
+	    $scope.refresh();
     };
     
     // Load drafts instead of the normal change requests.
