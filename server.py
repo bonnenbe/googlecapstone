@@ -124,25 +124,17 @@ class CRHandler(webapp2.RequestHandler):
     def delete(self, id):
         key = ndb.Key('ChangeRequest',int(id))
         key.delete()
-class DraftHandler(webapp2.RequestHandler):
+class DraftListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
-        changed = False
-        if 'id' in form and form['id']:
-            cr = ChangeRequest.get_by_id(int(form['id']))
-        else:
-            cr = ChangeRequest()
-            cr.audit_trail = []
-            cr.status = 'draft'
-            cr.author = users.get_current_user()
-            changed = True
-
+        cr = ChangeRequest()
+        cr.audit_trail = []
+        cr.status = 'draft'
+        cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
             if form[p] and str(getattr(cr,p)) != form[p]:
                 setattr(cr,p,form[p])
-                changed = True
-        if changed:
-            cr.put()
+        cr.put()
         self.response.write(json.dumps({'id': cr.key.id()}))
     def get(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
@@ -151,12 +143,26 @@ class DraftHandler(webapp2.RequestHandler):
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
         self.response.write(json.dumps({'drafts': objs},cls=JSONEncoder)) 
-    def delete(self):
+    
+class DraftHandler(webapp2.RequestHandler):
+    def get(self, id):
+        cr = ChangeRequest.get_by_id(int(id))
+        self.response.write(json.dumps({'draft': encodeChangeRequest(cr)},cls=JSONEncoder))
+    def put(self, id):
+        form = json.loads(self.request.body)
+        changed = False
+        cr = ChangeRequest.get_by_id(int(id))
+        if cr.status == 'draft' and cr.author == users.get_current_user():
+            for p in (set(form.keys()) & properties):
+                if form[p] and str(getattr(cr,p)) != form[p]:
+                    setattr(cr,p,form[p])
+                    changed = True
+        if changed:
+            cr.put()
+    def delete(self, id):
         cr = ChangeRequest.get_by_id(int(id))
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.delete()
-    
-    
 class UserHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write(json.dumps({'user': users.get_current_user().email()}))
@@ -169,6 +175,7 @@ application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
         webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
         webapp2.Route('/user',handler=UserHandler),
-        webapp2.Route('/drafts',handler=DraftHandler)
+        webapp2.Route('/drafts',handler=DraftListHandler),
+        webapp2.Route('/drafts/<id:.*>',handler=DraftHandler)
 
 ], debug=True)

@@ -7,7 +7,7 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr.endTime = new Date();
     $scope.cr.startTime.setMinutes(0);
     $scope.cr.endTime.setMinutes(0);
-    $scope.cr.id = ""
+    $scope.cr.id = null;
     var self = this;
     self.cancelDrafts = $interval(function (){
 	self.sendDraft($scope.cr);
@@ -16,7 +16,7 @@ app.controller('createController', function($http,$scope,$location,$interval){
 	$interval.cancel(self.cancelDrafts);
     });
     this.remove = function remove(){
-	$http.delete('/changerequests/' + $scope.cr.id).success(function(){
+	$http.delete('/drafts/' + $scope.cr.id).success(function(){
 	})};
     this.add = function add(cr){
 	$interval.cancel(self.cancelDrafts);
@@ -31,9 +31,12 @@ app.controller('createController', function($http,$scope,$location,$interval){
 	});
     };    
     this.sendDraft = function sendDraft(cr){
-	$http.post('/drafts', JSON.stringify(cr)).success(function(data){
-	    cr.id = data.id;
-	})}; 
+	if (cr.id)
+	    $http.put('/drafts/' + cr.id, JSON.stringify(cr));
+	else
+	    $http.post('/drafts', JSON.stringify(cr)).success(function(data){
+		cr.id = data.id;
+	    })};
     
 });
 
