@@ -17,6 +17,9 @@ handlers:
 - url: /scripts
   static_dir: scripts
 
+- url: /controllers
+  static_dir: controllers
+  
 - url: /
   login: required
   static_files: views/index.html

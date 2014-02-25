@@ -1,4 +1,5 @@
 
+
 app.controller('updateController', function($routeParams, $http, $scope, $location){
 	$scope.priorities = ['routine', 'sensitive'];
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
@@ -15,3 +16,9 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 	    })};
 		
 });
+
+
+// This function is used to close the audit trail button. It's a part of a bootstrap demo.
+function CollapseDemoCtrl($scope) {
+    $scope.isCollapsed = false;
+}

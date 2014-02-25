@@ -1,3 +1,14 @@
+var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
+
+
+//
+// Main Controller
+//
+app.controller('main', function($http, $scope){
+    $http.get('/user').success(function(data){
+	$scope.user = data.user;
+    })});
+
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -21,3 +32,6 @@ app.config(function ($routeProvider) {
 	      })
 	.otherwise({ redirectTo: '/' });
 });
+
+
+    

@@ -1,3 +1,11 @@
+// This filter allows the date time to be displayed properly in the grid.
+app.filter('datetime', function() {
+    return function(iso186) {
+	var newdate = new Date(iso186);
+	var datestring = newdate.toDateString().substring(3) + ', ' + newdate.toTimeString().substring(0,5);
+	return datestring;
+    }
+});
 
 // List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
@@ -77,6 +85,8 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 ]
     };
         
+        
+    // This function resizes the grid to fit. Currently fairly crude.
     function sizeGrid() {
         var height = $("body").height();
         
@@ -94,9 +104,13 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         //$("#grid .ngViewport").height(height);
 
     }
+    // These calls 1.call the function sizeGrid upon loading, and attaches the event upon window resizing.
     sizeGrid();
     $(window).resize(sizeGrid);
 
+    
+    
+    
     this.remove = function remove(index){
 	    alert(index);
 	$http.delete('/changerequests/' + $scope.crs[index].id,"").success(function() {
