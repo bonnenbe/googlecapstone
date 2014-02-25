@@ -10,6 +10,7 @@ app.filter('datetime', function() {
 
 // List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
+    var self = this;
     $scope.priorities = ['routine', 'sensitive'];
     $scope.searchableFields = ['technician','priority'];
     $scope.searchParams = {
@@ -145,6 +146,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
             $scope.crs = data.drafts;
         });
     };
+    this.clearDrafts = function (){
+	$http.delete('/drafts').success(function (){
+	    self.getDrafts;
+	})};
 
 }]);
 
