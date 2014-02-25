@@ -57,7 +57,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     };
 
     $scope.refresh = function (){
-	$scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
+        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
     };
 
     

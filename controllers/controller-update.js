@@ -11,9 +11,10 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 	});
 
 	this.update = function update(cr){
-	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
-		$location.path('#');
-	    })};
+        $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
+            $location.path('#');
+        });
+    };
 		
 });
 

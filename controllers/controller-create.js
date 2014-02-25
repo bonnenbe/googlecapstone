@@ -9,34 +9,40 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr.endTime.setMinutes(0);
     $scope.cr.id = null;
     var self = this;
+
     self.cancelDrafts = $interval(function (){
-	self.sendDraft($scope.cr);
+        self.sendDraft($scope.cr);
     }, 10000);
+
     $scope.$on('$destroy', function() {
-	$interval.cancel(self.cancelDrafts);
+        $interval.cancel(self.cancelDrafts);
     });
+    
     this.remove = function remove(){
-	$http.delete('/drafts/' + $scope.cr.id).success(function(){
+        $http.delete('/drafts/' + $scope.cr.id).success(function(){
 	})};
+    
     this.add = function add(cr){
-	$interval.cancel(self.cancelDrafts);
-	if (cr.id)
-	    self.remove();
-	$http.post('/changerequests',JSON.stringify(cr)).success(function(data) {
-	    cr.id = data.id;
-	    console.log("Successful add");
-	    $location.path('#');
-	}).error(function() {
-	    console.log("Unsuccessful add");
-	});
+        $interval.cancel(self.cancelDrafts);
+        if (cr.id)
+            self.remove();
+        $http.post('/changerequests',JSON.stringify(cr)).success(function(data) {
+            cr.id = data.id;
+            console.log("Successful add");
+            $location.path('#');
+        }).error(function() {
+            console.log("Unsuccessful add");
+        });
     };    
+    
     this.sendDraft = function sendDraft(cr){
-	if (cr.id)
-	    $http.put('/drafts/' + cr.id, JSON.stringify(cr));
-	else
-	    $http.post('/drafts', JSON.stringify(cr)).success(function(data){
-		cr.id = data.id;
-	    })};
+        if (cr.id)
+            $http.put('/drafts/' + cr.id, JSON.stringify(cr));
+        else
+            $http.post('/drafts', JSON.stringify(cr)).success(function(data){
+                cr.id = data.id;
+            });
+    };
     
 });
 
