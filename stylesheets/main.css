@@ -43,3 +43,9 @@ label {
     margin: 3 auto;
 }
 
+#tabs {
+    float: left;
+}
+#search {
+    float: right;
+}

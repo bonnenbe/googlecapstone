@@ -4,15 +4,19 @@
     
     <a ng-href="#/Create"><button>Create new request</button></a>
     <br><br>
-
-    <div id="search">
+    <div width="100%">
+      <tabset  id="tabs" type="'pills'">
+	<tab heading="My Drafts"></tab>
+	<tab heading="Awaiting Approval"></tab>
+      </tabset>
+      <div id="search">
         <select ng-model="searchParams.field" required ng-options="f for f in searchableFields">
         </select>
-        
         <input type=text ng-model="searchParams.text">
         <button ng-click="ctrl.search()">Search</button>
-
+      </div>
     </div>
+    <br><br>
     <button ng-click="ctrl.getDrafts()">Get Drafts</button>
     <button ng-click="ctrl.clearDrafts()">Clear Drafts</button>
     <br>
