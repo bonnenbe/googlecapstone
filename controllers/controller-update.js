@@ -2,6 +2,10 @@
 
 app.controller('updateController', function($routeParams, $http, $scope, $location){
 	$scope.priorities = ['routine', 'sensitive'];
+    
+    $scope.heading = "Edit Change Request";
+    $("#heading").text($scope.heading);
+    
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;
 	    $scope.cr.startDate = new Date($scope.cr.startTime);

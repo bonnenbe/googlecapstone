@@ -12,7 +12,8 @@ import logging
 import datetime
 
 #directly editable properties
-properties = {	'summary',
+properties = {	
+        'summary',
 		'description',
 		'impact',
 		'documentation',
@@ -25,10 +26,9 @@ properties = {	'summary',
 		'backout_plan',
 		'communication_plan',
 		'layman_description',
-                'startTime',
-                'endTime'}
-
-
+        'startTime',
+        'endTime'
+}
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -40,21 +40,21 @@ class JSONEncoder(json.JSONEncoder):
 def encodeChangeRequest(cr):
     obj = {
         'summary': cr.summary,
-	'description': cr.description,
-	'impact': cr.impact,
-	'documentation': cr.documentation,
-	'rationale': cr.rationale,
-	'implementation_steps': cr.implementation_steps,
-	'technician': cr.technician,
-	'priority': cr.priority,
+        'description': cr.description,
+        'impact': cr.impact,
+        'documentation': cr.documentation,
+        'rationale': cr.rationale,
+        'implementation_steps': cr.implementation_steps,
+        'technician': cr.technician,
+        'priority': cr.priority,
         'id': cr.key.id(),
-	'created_on': cr.created_on,
+        'created_on': cr.created_on,
         'audit_trail': cr.audit_trail,
-	'tests_conducted': cr.tests_conducted,
-	'risks': cr.risks,
-	'backout_plan': cr.backout_plan,
-	'communication_plan': cr.communication_plan,
-	'layman_description': cr.layman_description,
+        'tests_conducted': cr.tests_conducted,
+        'risks': cr.risks,
+        'backout_plan': cr.backout_plan,
+        'communication_plan': cr.communication_plan,
+        'layman_description': cr.layman_description,
         'startTime': cr.startTime,
         'endTime': cr.endTime
 	}
@@ -67,8 +67,10 @@ class CRListHandler(webapp2.RequestHandler):
         logging.debug(self.request.params)
         crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved'])) 
         params = self.request.params
+        
         for field in set(params.keys()) & properties:
             crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
+        
         crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
         objs = []
@@ -124,6 +126,7 @@ class CRHandler(webapp2.RequestHandler):
     def delete(self, id):
         key = ndb.Key('ChangeRequest',int(id))
         key.delete()
+
 class DraftListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
