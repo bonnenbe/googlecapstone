@@ -9,7 +9,12 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr.endTime.setMinutes(0);
     $scope.cr.id = null;
     var self = this;
-
+    
+    this.onload = function onload() {
+        $scope.heading = "Create Change Request";
+        $("#heading").text($scope.heading);
+    }
+    
     self.cancelDrafts = $interval(function (){
         self.sendDraft($scope.cr);
     }, 10000);
@@ -20,7 +25,8 @@ app.controller('createController', function($http,$scope,$location,$interval){
     
     this.remove = function remove(){
         $http.delete('/drafts/' + $scope.cr.id).success(function(){
-	})};
+        });
+    };
     
     this.add = function add(cr){
         $interval.cancel(self.cancelDrafts);
