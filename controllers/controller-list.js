@@ -12,6 +12,7 @@ app.filter('datetime', function() {
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     var self = this;
     $scope.priorities = ['routine', 'sensitive'];
+    $scope.status = ['draft', 'created', 'approved'];
     $scope.searchableFields = ['technician','priority'];
     $scope.searchParams = {
                 field: $scope.searchableFields[0],
@@ -98,6 +99,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 			{ field:"priority", displayName: "Priority"},
 			{ field:"startTime | datetime", displayName: "Start Time"},
 			{ field:"endTime | datetime", displayName: "End Time"},
+			{ field:"status", displayName: "Status"},
 			{ field:"id", displayName: "ID", cellTemplate: cellTemplate}
 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
         ]

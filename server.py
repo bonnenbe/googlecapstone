@@ -56,7 +56,8 @@ def encodeChangeRequest(cr):
         'communication_plan': cr.communication_plan,
         'layman_description': cr.layman_description,
         'startTime': cr.startTime,
-        'endTime': cr.endTime
+        'endTime': cr.endTime,
+	'status': cr.status
 	}
     return obj
 
@@ -174,6 +175,32 @@ class UserHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write(json.dumps({'user': users.get_current_user().email()}))
        
+class ApprovalHandler(webapp2.RequestHandler):
+    def put(self, id):
+        form = json.loads(self.request.body)
+        key = ndb.Key('ChangeRequest',int(id))
+        cr = key.get()
+	form['status'] = 'approved'
+
+        audit_entry = dict()
+        audit_entry['date'] = datetime.datetime.now().isoformat()
+        audit_entry['user'] = users.get_current_user().email()
+        audit_entry['changes'] = []
+        
+        
+        if (form['status'] and str(getattr(cr,'status')) != form['status']):
+            	change = dict()
+	    	change['property'] = 'status'
+            	change['from'] = str(getattr(cr,'status'))
+            	change['to'] = form['status']
+            	audit_entry['changes'].append(change)
+            	setattr(cr,'status',form['status'])
+
+        if len(audit_entry['changes']) != 0:
+            cr.audit_trail.append(audit_entry)
+            cr.put()
+        self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
+	
         
         
     
@@ -183,6 +210,7 @@ application = webapp2.WSGIApplication([
         webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
         webapp2.Route('/user',handler=UserHandler),
         webapp2.Route('/drafts',handler=DraftListHandler),
-        webapp2.Route('/drafts/<id:.*>',handler=DraftHandler)
+        webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
+	webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler)
 
 ], debug=True)
