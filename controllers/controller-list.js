@@ -14,10 +14,10 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     $scope.priorities = ['routine', 'sensitive'];
     $scope.status = ['draft', 'created', 'approved'];
     $scope.searchableFields = ['technician','priority'];
-    $scope.searchParams = {
-                field: $scope.searchableFields[0],
-                text: ""
-    };
+    $scope.searchParams = [{
+        field: $scope.searchableFields[0],
+        text: ""
+    }];
 
     $scope.filterOptions = {
         filterText: "",
@@ -46,9 +46,11 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
             var params = {};
             params["offset"] = (page - 1) * pageSize;
             params["limit"] = pageSize;
-            if (searchParams.text)
-            params[searchParams.field] = searchParams.text;
-            var obj = {};
+	    searchParams.forEach(function(s){
+		if (s.text)
+		    params[s.field] = s.text;
+	    });
+	    var obj = {};
             obj["params"] = params;
         
             $http.get('/changerequests', obj).success(function (data){

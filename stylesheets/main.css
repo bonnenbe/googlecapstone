@@ -44,8 +44,11 @@ label {
 }
 
 #tabs {
-    float: left;
+    //float: left;
 }
 #search {
     float: right;
+}
+.inline {
+    float: left;
 }

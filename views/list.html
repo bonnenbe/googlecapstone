@@ -1,30 +1,31 @@
 <div id="otherListStuff">
-
-    <h1>Current Change Requests</h1>
-    
-    <a ng-href="#/Create"><button>Create new request</button></a>
-    <br><br>
-    <div width="100%">
-      <tabset  id="tabs" type="'pills'">
-	<tab heading="My Drafts"></tab>
-	<tab heading="Awaiting Approval"></tab>
-      </tabset>
-      <div id="search">
-        <select ng-model="searchParams.field" required ng-options="f for f in searchableFields">
+  <h1>Current Change Requests</h1>
+  <a ng-href="#/Create"><button>Create new request</button></a>
+  <br><br>
+  <div width="100%">
+    <span id="search">
+      <a  href ng-click="searchParams.push({})" ><font size="5">+</font></a>	  
+      <span ng-repeat="s in searchParams">
+        <select ng-model="s.field" required ng-options="f for f in searchableFields">
         </select>
-        <input type=text ng-model="searchParams.text">
-        <button ng-click="ctrl.search()">Search</button>
-      </div>
-    </div>
-    <br><br>
-    <button ng-click="ctrl.getDrafts()">Get Drafts</button>
-    <button ng-click="ctrl.clearDrafts()">Clear Drafts</button>
-    <br>
-    <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
-        <a ng-href="#/id={{cr.id}}">[Edit]</a>
-        <a href ng-click="ctrl.remove($index)">[X]</a>
-    </div>-->
+        <input type=text ng-model="s.text">
+	<a href ng-click="searchParams.splice($index,1)">X</a>
+	<br>
+      </span>
+      <button ng-click="ctrl.search()">Search</button>
+    </span>
+    <tabset  id="tabs" type="'pills'">
+      <tab heading="My Drafts"></tab>
+      <tab heading="Awaiting Approval"></tab>
+    </tabset>
+  </div>
+  <button ng-click="ctrl.getDrafts()">Get Drafts</button>
+  <button ng-click="ctrl.clearDrafts()">Clear Drafts</button>
+  <br>
+  <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
+      <a ng-href="#/id={{cr.id}}">[Edit]</a>
+      <a href ng-click="ctrl.remove($index)">[X]</a>
+  </div>-->
 </div>
-
 <div class="gridStyle" ng-grid="gridOptions" id="grid"></div>
 
