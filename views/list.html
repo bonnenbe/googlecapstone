@@ -3,17 +3,18 @@
   <a ng-href="#/Create"><button>Create new request</button></a>
   <br><br>
   <div width="100%">
-    <span id="search">
-      <a  href ng-click="searchParams.push({})" ><font size="5">+</font></a>	  
-      <span ng-repeat="s in searchParams">
+    <div id="search">
+      <a  id="addSearch" href ng-click="searchParams.push({})" ><font size="5">+</font></a>
+      <ul id="searchList">	  
+      <li class="searchItem" ng-repeat="s in searchParams">
         <select ng-model="s.field" required ng-options="f for f in searchableFields">
         </select>
         <input type=text ng-model="s.text">
 	<a href ng-click="searchParams.splice($index,1)">X</a>
-	<br>
-      </span>
-      <button ng-click="ctrl.search()">Search</button>
-    </span>
+      </li>
+      </ul>
+      <button id="searchButton" ng-click="ctrl.search()">Search</button>
+    </div>
     <tabset  id="tabs" type="'pills'">
       <tab heading="My Drafts"></tab>
       <tab heading="Awaiting Approval"></tab>
