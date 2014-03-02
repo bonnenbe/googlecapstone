@@ -173,7 +173,7 @@ class DraftHandler(webapp2.RequestHandler):
     def delete(self, id):
         cr = ChangeRequest.get_by_id(int(id))
         if cr.status == 'draft' and cr.author == users.get_current_user():
-            cr.delete()
+            cr.key.delete()
 class UserHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write(json.dumps({'user': users.get_current_user().email()}))
