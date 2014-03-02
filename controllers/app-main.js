@@ -22,7 +22,7 @@ app.config(function ($routeProvider) {
 	      {
 		  controller: 'listController',
 		  templateUrl: '/views/list.html',
-		  controllerAs: 'ctrl'
+		  controllerAs: 'list'
 	      })
 	.when('/Create',
 	      {

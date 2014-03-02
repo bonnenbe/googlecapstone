@@ -1,5 +1,5 @@
 <div id="otherListStuff">
-  <h1>Current Change Requests</h1>
+  <br>
   <a ng-href="#/Create"><button>Create new request</button></a>
   <br><br>
   <div width="100%">
@@ -13,19 +13,19 @@
 	<a href ng-click="searchParams.splice($index,1)">X</a>
       </li>
       </ul>
-      <button id="searchButton" ng-click="ctrl.search()">Search</button>
+      <button id="searchButton" ng-click="list.search()">Search</button>
     </div>
     <tabset  id="tabs" type="'pills'">
+      <tab heading="Change Requests"></tab>
       <tab heading="My Drafts"></tab>
-      <tab heading="Awaiting Approval"></tab>
     </tabset>
   </div>
-  <button ng-click="ctrl.getDrafts()">Get Drafts</button>
-  <button ng-click="ctrl.clearDrafts()">Clear Drafts</button>
+  <button ng-click="list.getDrafts()">Get Drafts</button>
+  <button ng-click="list.clearDrafts()">Clear Drafts</button>
   <br>
   <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
       <a ng-href="#/id={{cr.id}}">[Edit]</a>
-      <a href ng-click="ctrl.remove($index)">[X]</a>
+      <a href ng-click="list.remove($index)">[X]</a>
   </div>-->
 </div>
 <div class="gridStyle" ng-grid="gridOptions" id="grid"></div>
