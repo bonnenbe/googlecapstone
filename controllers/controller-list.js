@@ -11,6 +11,7 @@ app.filter('datetime', function() {
 // List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     var self = this;
+    $scope.draftsMode = false;
     $scope.priorities = ['routine', 'sensitive'];
     $scope.status = ['draft', 'created', 'approved'];
     $scope.searchableFields = ['technician','priority'];
@@ -34,14 +35,14 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
     // Sets paging data
     $scope.setPagingData = function(pageSize, page, data){
-	$scope.crs = data.changerequests;
+	$scope.crs = data;
         if (!$scope.$$phase) {
             $scope.$apply();
         }
     };
 
     // On get new page
-    $scope.getPagedDataAsync = function (pageSize, page, searchParams) {
+    $scope.getPagedDataAsync = function (pageSize, page, searchParams, draftsMode) {
         setTimeout(function () {
             var params = {};
             params["offset"] = (page - 1) * pageSize;
@@ -52,15 +53,20 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    });
 	    var obj = {};
             obj["params"] = params;
-        
-            $http.get('/changerequests', obj).success(function (data){
-                $scope.setPagingData(pageSize, page, data);
-            });
+            if (draftsMode)
+		$http.get('/drafts', obj).success(function(data){
+		    $scope.setPagingData(pageSize, page, data.drafts);
+		});
+	    else
+		$http.get('/changerequests', obj).success(function (data){
+                    $scope.setPagingData(pageSize, page, data.changerequests);
+		});
         }, 100);
     };
 
     $scope.refresh = function (){
-        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, $scope.searchParams);
+        $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
+				 $scope.searchParams, $scope.draftsMode);
     };
 
     
@@ -144,16 +150,18 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.refresh();
     };
     
-    // Load drafts instead of the normal change requests.
-    this.getDrafts = function () {
-        $http.get('/drafts').success(function(data){
-            $scope.crs = data.drafts;
-        });
-    };
     this.clearDrafts = function (){
 	$http.delete('/drafts').success(function (){
-	    self.getDrafts;
+	    $scope.refresh();
 	})};
+    $scope.onSelectCRs = function(){
+	$scope.draftsMode = false;
+	$scope.refresh();
+    };
+    $scope.onSelectMyDrafts = function(){
+	$scope.draftsMode = true;
+	$scope.refresh();
+    };
 
 }]);
 

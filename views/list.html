@@ -16,12 +16,11 @@
       <button id="searchButton" ng-click="list.search()">Search</button>
     </div>
     <tabset  id="tabs" type="'pills'">
-      <tab heading="Change Requests"></tab>
-      <tab heading="My Drafts"></tab>
+      <tab heading="Change Requests" select="onSelectCRs()"></tab>
+      <tab heading="My Drafts" select="onSelectMyDrafts()"></tab>
     </tabset>
   </div>
-  <button ng-click="list.getDrafts()">Get Drafts</button>
-  <button ng-click="list.clearDrafts()">Clear Drafts</button>
+  <button ng-click="list.clearDrafts()" ng-show="draftsMode">Clear Drafts</button>
   <br>
   <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
       <a ng-href="#/id={{cr.id}}">[Edit]</a>
