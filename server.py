@@ -142,7 +142,10 @@ class DraftListHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'id': cr.key.id()}))
     def get(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(100)
+        params = self.request.params
+        for field in set(params.keys()) & properties:
+            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
         objs = []
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
