@@ -30,6 +30,12 @@ app.config(function ($routeProvider) {
 		  templateUrl: '/views/create.html',
 		  controllerAs: 'ctrl'
 	      })
+	.when('/groups',
+	      {
+		  controller: 'groupController',
+		  templateUrl: '/views/groups.html',
+		  controllerAs: 'ctrl'
+	      })
 	.otherwise({ redirectTo: '/' });
 });
 

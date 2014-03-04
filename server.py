@@ -5,7 +5,7 @@ import string
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from datamodel import ChangeRequest
+from datamodel import ChangeRequest, UserGroup
 
 import webapp2
 import logging
@@ -204,7 +204,24 @@ class ApprovalHandler(webapp2.RequestHandler):
             cr.put()
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
 	
-        
+class GroupHandler(webapp2.RequestHandler):
+	def post(self):
+        	form = json.loads(self.request.body)
+        	group = UserGroup()
+        	for k in (set(form.keys())):
+			if k != 'name':
+				UserList = []
+				for s in form[k].split(','):
+					newUser = users.User(email=s)
+					UserList.append(newUser)
+				setattr(group,k,UserList)
+			else: 
+				setattr(group,k,form[k])
+        	group.put()
+        	logging.debug(group.key.id())
+        	self.response.write(json.dumps({'id': group.key.id()},cls=JSONEncoder))
+
+		
         
     
 application = webapp2.WSGIApplication([
@@ -214,6 +231,7 @@ application = webapp2.WSGIApplication([
         webapp2.Route('/user',handler=UserHandler),
         webapp2.Route('/drafts',handler=DraftListHandler),
         webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
-	webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler)
+	webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
+	webapp2.Route('/usergroups', handler = GroupHandler)
 
 ], debug=True)

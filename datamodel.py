@@ -5,6 +5,11 @@ from google.appengine.ext import ndb
 from google.appengine.api import users
 
 
+class UserGroup(ndb.Model):
+    name = ndb.StringProperty(required=True)
+    owners = ndb.UserProperty(repeated=True)
+    members = ndb.UserProperty(repeated=True)
+
 class ChangeRequest(ndb.Model):
     summary = ndb.TextProperty()
     description = ndb.TextProperty()

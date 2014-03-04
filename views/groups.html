@@ -1,0 +1,21 @@
+
+<h1 id="heading", text="Create a user Group"></h1>
+
+<p class="formfield">
+    <label for="name">Name: </label>
+    <textarea id="name" ng-model="group.name" > </textarea>
+</p>
+<p class="formfield">
+    <label for="owners">Owners: </label>
+    <textarea id="owners" cols="80" rows="5" ng-model="group.owners" > </textarea>
+</p>
+<p class="formfield">
+    <label for="members">Members: </label>
+    <textarea id="members" cols="80" rows="5" ng-model="group.members" > </textarea>
+</p>
+
+<div>
+    <button ng-click="ctrl.add(group)">Add</button>
+</div>
+
+

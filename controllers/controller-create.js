@@ -39,7 +39,7 @@ app.controller('createController', function($http,$scope,$location,$interval){
         }).error(function() {
             console.log("Unsuccessful add");
         });
-    };    
+    }; 
     
     this.sendDraft = function sendDraft(cr){
         if (cr.id)
