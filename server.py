@@ -35,8 +35,22 @@ class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
         if isinstance(obj,datetime.datetime):
             return obj.isoformat()
-        return json.JSONEncoder.default(obj)
+        return json.JSONEncoder.default(self,obj)
 
+def intersperse(iterable, delimiter):
+    it = iter(iterable)
+    yield next(it)
+    for x in it:
+        yield delimiter
+        yield x
+def IDsToKey(IDstring):
+    IDs = string.split(IDstring, '-')
+    pairs = []
+    for id in IDs:
+        pairs.append(('ChangeRequest', int(id)))
+    return ndb.Key(pairs=pairs)
+
+    
 def encodeChangeRequest(cr):
     obj = {
         'summary': cr.summary,
@@ -47,7 +61,7 @@ def encodeChangeRequest(cr):
         'implementation_steps': cr.implementation_steps,
         'technician': cr.technician,
         'priority': cr.priority,
-        'id': cr.key.id(),
+        'id': string.join(intersperse(map(lambda x: str(x[1]), cr.key.pairs()), '-')),
         'created_on': cr.created_on,
         'audit_trail': cr.audit_trail,
         'tests_conducted': cr.tests_conducted,
@@ -96,12 +110,15 @@ class CRListHandler(webapp2.RequestHandler):
         
 class CRHandler(webapp2.RequestHandler):
     def get(self, id):
-        cr = ChangeRequest.get_by_id(int(id))
+        key = IDsToKey(id)
+        cr = key.get()
         self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
-        key = ndb.Key('ChangeRequest',int(id))
+        key = IDsToKey(id)
         cr = key.get()
+
+            
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
@@ -131,7 +148,15 @@ class CRHandler(webapp2.RequestHandler):
 class DraftListHandler(webapp2.RequestHandler):
     def post(self):
         form = json.loads(self.request.body)
-        cr = ChangeRequest()
+        if 'id' in form.keys() and form['id']:
+            key = IDsToKey(form['id'])
+            parentCR = key.get()
+            if parentCR.status in ['created', 'approved']:
+                cr = ChangeRequest(parent=key) #TODO include parent key
+            else:
+                cr = ChangeRequest()
+        else:
+            cr = ChangeRequest()
         cr.audit_trail = []
         cr.status = 'draft'
         cr.author = users.get_current_user()
@@ -157,8 +182,9 @@ class DraftListHandler(webapp2.RequestHandler):
         
 class DraftHandler(webapp2.RequestHandler):
     def get(self, id):
-        cr = ChangeRequest.get_by_id(int(id))
-        self.response.write(json.dumps({'draft': encodeChangeRequest(cr)},cls=JSONEncoder))
+        key = IDsToKey(id)
+        cr = key.get()
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False

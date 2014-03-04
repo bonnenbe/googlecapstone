@@ -1,12 +1,8 @@
 <div>
     <ng-include onload="ctrl.onload()" src="'/views/requestform.html'"></ng-include>
-
-    <button ng-click="ctrl.update(cr)">Update</button>
-    <!-- This div is experimental. Remove once we can check user priveleges -->
-    <div ng-init="scope = { isDisabled: true }">
-	
-    	<button ng-hide="scope.isDisabled", ng-click="ctrl.approve(cr)", disabled="{{scope.isDisabled}}">Approve</button>
-    </div>
+    <button ng-click="ctrl.update(cr)">Publish</button>
+    <button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
+    <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
     <div ng-controller="CollapseDemoCtrl">
         <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
         <div collapse="isCollapsed">

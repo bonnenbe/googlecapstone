@@ -1,8 +1,6 @@
-
-
 app.controller('updateController', function($routeParams, $http, $scope, $location){
-	$scope.priorities = ['routine', 'sensitive'];
-	$scope.status = ['created', 'approved', 'draft'];
+    $scope.priorities = ['routine', 'sensitive'];
+    $scope.status = ['created', 'approved', 'draft'];
 
     
     this.onload = function onload() {
@@ -10,26 +8,34 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
         $("#heading").text($scope.heading);
     }
     
-	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
-	    $scope.cr = data.changerequest;
-	    $scope.cr.startDate = new Date($scope.cr.startTime);
-	    $scope.cr.startTime = new Date($scope.cr.startTime);
-	    $scope.cr.endDate = new Date($scope.cr.endTime);
-	    $scope.cr.endTime = new Date($scope.cr.endTime);
-	});
+    $http.get('/changerequests/' + $routeParams.id).success(function(data) {
+	$scope.cr = data.changerequest;
+	$scope.cr.startTime = new Date($scope.cr.startTime);
+	$scope.cr.endTime = new Date($scope.cr.endTime);
+    });
 
-	this.update = function update(cr){
-	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
-		$location.path('#');
-	    })
-	};
+    this.update = function update(cr){
+	$http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
+	    $location.path('#');
+	})
+    };
 
-	this.approve = function approve(cr){
-	    $http.put('/approve/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
-		$location.path('#');
-	    })
-	};
-		
+    this.approve = function approve(cr){
+	$http.put('/approve/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
+	    $location.path('#');
+	})
+    };
+    this.sendDraft = function sendDraft(cr){
+        if (cr.status == 'draft')
+            $http.put('/drafts/' + cr.id, JSON.stringify(cr));
+        else
+            $http.post('/drafts', JSON.stringify(cr)).success(function(data){
+               	$http.get('/drafts/' + data.id).success(function(data){
+		    cr = data.draft;
+		});
+            });
+    };
+    
 });
 
 
