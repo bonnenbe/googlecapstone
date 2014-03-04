@@ -15,9 +15,18 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
     });
 
     this.update = function update(cr){
-	$http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
-	    $location.path('#');
-	})
+	if (cr.status == 'draft' && cr.id.indexOf("-") == -1)
+	{
+	    $http.post('/changerequests',JSON.stringify(cr)).success(function(data){
+		cr.id = data.id;
+		$http.delete('/drafts/' + $routeParams.id);
+		$location.path('#');
+	    });
+	}
+	else
+	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
+		$location.path('#');
+	    });
     };
 
     this.approve = function approve(cr){
