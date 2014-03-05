@@ -6,13 +6,16 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
     this.onload = function onload() {
         $scope.heading = "Edit Change Request";
         $("#heading").text($scope.heading);
+
     }
-    
-    $http.get('/changerequests/' + $routeParams.id).success(function(data) {
-	$scope.cr = data.changerequest;
-	$scope.cr.startTime = new Date($scope.cr.startTime);
-	$scope.cr.endTime = new Date($scope.cr.endTime);
-    });
+ 
+	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
+	    $scope.cr = data.changerequest;
+	    $scope.cr.startDate = new Date($scope.cr.startTime);
+	    $scope.cr.startTime = new Date($scope.cr.startTime);
+	    $scope.cr.endDate = new Date($scope.cr.endTime);
+	    $scope.cr.endTime = new Date($scope.cr.endTime);
+	});
 
     this.update = function update(cr){
 	if (cr.status == 'draft' && cr.id.indexOf("-") == -1)

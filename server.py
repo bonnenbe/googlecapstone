@@ -206,18 +206,20 @@ class UserHandler(webapp2.RequestHandler):
        
 class ApprovalHandler(webapp2.RequestHandler):
     def put(self, id):
-        form = json.loads(self.request.body)
-        key = ndb.Key('ChangeRequest',int(id))
+	group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
+	key = IDsToKey(id)
         cr = key.get()
-	form['status'] = 'approved'
+	if (len(group_query.fetch()) > 0 and cr.priority == 'sensitive') or cr.priority != 'sensitive':
+	    form = json.loads(self.request.body)
+	    form['status'] = 'approved'
 
-        audit_entry = dict()
-        audit_entry['date'] = datetime.datetime.now().isoformat()
-        audit_entry['user'] = users.get_current_user().email()
-        audit_entry['changes'] = []
+            audit_entry = dict()
+            audit_entry['date'] = datetime.datetime.now().isoformat()
+            audit_entry['user'] = users.get_current_user().email()
+            audit_entry['changes'] = []
         
         
-        if (form['status'] and str(getattr(cr,'status')) != form['status']):
+            if (form['status'] and str(getattr(cr,'status')) != form['status']):
             	change = dict()
 	    	change['property'] = 'status'
             	change['from'] = str(getattr(cr,'status'))
@@ -225,11 +227,13 @@ class ApprovalHandler(webapp2.RequestHandler):
             	audit_entry['changes'].append(change)
             	setattr(cr,'status',form['status'])
 
-        if len(audit_entry['changes']) != 0:
-            cr.audit_trail.append(audit_entry)
-            cr.put()
-        self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
-	
+            if len(audit_entry['changes']) != 0:
+                cr.audit_trail.append(audit_entry)
+                cr.put()
+            self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
+	else :
+	    self.response.set_status(401)
+
 class GroupHandler(webapp2.RequestHandler):
 	def post(self):
         	form = json.loads(self.request.body)
