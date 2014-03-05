@@ -68,3 +68,13 @@ label {
 .inline {
     float: left;
 }
+.audit_entry {
+    list-style-type: none;
+    margin-bottom: 0;
+}
+.audit_change {
+    margin-bottom: 1em;
+}
+.audit_change:last-child {
+    margin-bottom: 0;
+}

@@ -4,16 +4,20 @@
     <button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
     <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
     <div ng-controller="CollapseDemoCtrl">
-        <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
-        <div collapse="isCollapsed">
-            <li ng-repeat="audit_entry in cr.audit_trail">
-                On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
-                <ul>
-                    <li ng-repeat="change in audit_entry.changes">
-                        Changed {{change.property}} from "{{change.from}}" to "{{change.to}}"
-                    </li>
-                </ul>
-            </li>
+	<button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
+	<div collapse="isCollapsed">
+            <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
+		<div class="panel-heading">
+		    On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
+		</div>
+		<div class="panel-body">
+		    <ul class="audit_entry">
+			<li class="audit_change" ng-repeat="change in audit_entry.changes">
+			    Changed {{change.property}} from "{{change.from}}" to "{{change.to}}"
+			</li>
+		    </ul>
+		</div>
+            </div>
         </div>
     </div>
 </div>
