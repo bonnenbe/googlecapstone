@@ -197,7 +197,7 @@ class DraftHandler(webapp2.RequestHandler):
         if changed:
             cr.put()
     def delete(self, id):
-        cr = ChangeRequest.get_by_id(int(id))
+        cr =IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
 class UserHandler(webapp2.RequestHandler):

@@ -11,14 +11,13 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
  
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;
-	    $scope.cr.startDate = new Date($scope.cr.startTime);
 	    $scope.cr.startTime = new Date($scope.cr.startTime);
-	    $scope.cr.endDate = new Date($scope.cr.endTime);
 	    $scope.cr.endTime = new Date($scope.cr.endTime);
 	});
 
     this.update = function update(cr){
-	if (cr.status == 'draft' && cr.id.indexOf("-") == -1)
+	if (cr.status == 'draft' && $routeParams.id.indexOf("-") == -1)
+	    //singleton draft
 	{
 	    $http.post('/changerequests',JSON.stringify(cr)).success(function(data){
 		cr.id = data.id;
@@ -26,7 +25,20 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 		$location.path('#');
 	    });
 	}
-	else
+	else if (cr.status == 'draft' && $routeParams.id.indexOf("-") != -1)
+	    //child draft
+	{
+	    var hyphen = $routeParams.id.lastIndexOf("-");
+	    var parentID = $routeParams.id.slice(0,hyphen);
+	    var draftID = $routeParams.id;
+	    $http.put('/changerequests/' + parentID,JSON.stringify(cr)).success(function(data) {
+		cr.id = parentID;
+		$http.delete('/drafts/' + draftID).success(function(data) {
+		    $location.path('#');
+		});
+	    });
+	}
+	else //created or approved
 	    $http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
 		$location.path('#');
 	    });
