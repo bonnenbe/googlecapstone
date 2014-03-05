@@ -142,8 +142,7 @@ class CRHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
     def delete(self, id):
-        key = ndb.Key('ChangeRequest',int(id))
-        key.delete()
+        IDsToKey(id).delete()
 
 class DraftListHandler(webapp2.RequestHandler):
     def post(self):
@@ -152,7 +151,7 @@ class DraftListHandler(webapp2.RequestHandler):
             key = IDsToKey(form['id'])
             parentCR = key.get()
             if parentCR.status in ['created', 'approved']:
-                cr = ChangeRequest(parent=key) #TODO include parent key
+                cr = ChangeRequest(parent=key)
             else:
                 cr = ChangeRequest()
         else:
@@ -188,7 +187,7 @@ class DraftHandler(webapp2.RequestHandler):
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
-        cr = ChangeRequest.get_by_id(int(id))
+        cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
                 if form[p] and str(getattr(cr,p)) != form[p]:
@@ -197,7 +196,7 @@ class DraftHandler(webapp2.RequestHandler):
         if changed:
             cr.put()
     def delete(self, id):
-        cr =IDsToKey(id).get()
+        cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
 class UserHandler(webapp2.RequestHandler):
