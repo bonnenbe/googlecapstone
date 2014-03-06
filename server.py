@@ -208,7 +208,7 @@ class ApprovalHandler(webapp2.RequestHandler):
 	group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
 	key = IDsToKey(id)
         cr = key.get()
-	if (len(group_query.fetch()) > 0 and cr.priority == 'sensitive') or cr.priority != 'sensitive':
+	if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
 	    form = json.loads(self.request.body)
 	    form['status'] = 'approved'
 
