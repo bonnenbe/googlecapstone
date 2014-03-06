@@ -176,8 +176,8 @@ class DraftListHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'drafts': objs},cls=JSONEncoder)) 
     def delete(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
-        for cr in crs_query.iter():
-            cr.key.delete()
+        crs = crs_query.fetch(keys_only=True)
+        ndb.delete_multi(crs)
         
 class DraftHandler(webapp2.RequestHandler):
     def get(self, id):
