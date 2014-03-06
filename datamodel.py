@@ -32,6 +32,7 @@ class ChangeRequest(ndb.Model):
     layman_description  = ndb.TextProperty()
     startTime = ndb.DateTimeProperty()
     endTime = ndb.DateTimeProperty()
+    tags = ndb.StringProperty(repeated=True)
     def __setattr__(self, attr, value):
         if (attr in ['startTime','endTime','created_on']
             and isinstance(value, basestring)):
