@@ -27,7 +27,8 @@ properties = {
 		'communication_plan',
 		'layman_description',
         'startTime',
-        'endTime'
+        'endTime',
+	'tags'
 }
 
 
@@ -71,7 +72,8 @@ def encodeChangeRequest(cr):
         'layman_description': cr.layman_description,
         'startTime': cr.startTime,
         'endTime': cr.endTime,
-	'status': cr.status
+	'status': cr.status,
+	'tags': cr.tags
 	}
     return obj
 
@@ -99,7 +101,10 @@ class CRListHandler(webapp2.RequestHandler):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
         for k in (set(form.keys()) & properties):
-            setattr(cr,k,form[k])
+	    if k == 'tags' :
+		setattr(group,k,form[k].split(','))
+	    else:
+		setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.status = 'created'
         cr.author = users.get_current_user()
@@ -134,8 +139,10 @@ class CRHandler(webapp2.RequestHandler):
                 change['from'] = str(getattr(cr,p))
                 change['to'] = form[p]
                 audit_entry['changes'].append(change)
-                setattr(cr,p,form[p])
-
+		if p != 'tags':
+		    setattr(cr,p,form[p])
+		else :
+		    setattr(cr,p,form[p].split(','))
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.append(audit_entry)
             cr.put()
