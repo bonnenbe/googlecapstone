@@ -140,17 +140,17 @@ class CRHandler(webapp2.RequestHandler):
         
         
         for p in properties:
-            if (form[p] and not equals(getattr(cr,p), form[p]) and 
-                p not in ['startTime', 'endTime', 'created_on']):
+            if (form[p] and not equals(getattr(cr,p), form[p])):
+                #p not in ['startTime', 'endTime', 'created_on']):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))
-                change['to'] = form[p]
-                audit_entry['changes'].append(change)
-		if p != 'tags':
+                if p != 'tags':
 		    setattr(cr,p,form[p])
 		else :
 		    setattr(cr,p,form[p].split(','))
+                change['to'] = str(getattr(cr,p))
+                audit_entry['changes'].append(change)
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.append(audit_entry)
             cr.put()
