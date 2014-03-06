@@ -12,7 +12,9 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 	$http.get('/changerequests/' + $routeParams.id,"").success(function(data) {
 	    $scope.cr = data.changerequest;
 	    $scope.cr.startTime = new Date($scope.cr.startTime);
+	    $scope.cr.startTime.setTime($scope.cr.startTime.getTime() - $scope.cr.startTime.getTimezoneOffset() * 60000);
 	    $scope.cr.endTime = new Date($scope.cr.endTime);
+	    $scope.cr.endTime.setTime($scope.cr.endTime.getTime() - $scope.cr.endTime.getTimezoneOffset() * 60000);
 	});
 
     this.update = function update(cr){
