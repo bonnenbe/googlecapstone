@@ -5,7 +5,7 @@ import string
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from datamodel import ChangeRequest, UserGroup
+from datamodel import *
 
 import webapp2
 import logging
@@ -75,6 +75,14 @@ def encodeChangeRequest(cr):
 	}
     return obj
 
+#returns true if property p and string s are equivalent
+def equals(p,s):
+    if isinstance(p,datetime.datetime):
+        s = stringtodatetime(s)
+    else:
+        s = str(s)
+        p = str(p)
+    return p == s
 
 
 class CRListHandler(webapp2.RequestHandler):
@@ -127,8 +135,8 @@ class CRHandler(webapp2.RequestHandler):
         
         
         for p in properties:
-            if (form[p] and str(getattr(cr,p)) != form[p] and
-                p not in ['startTime', 'endTime']):
+            if (form[p] and not equals(getattr(cr,p), form[p]) and 
+                p not in ['startTime', 'endTime', 'created_on']):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))

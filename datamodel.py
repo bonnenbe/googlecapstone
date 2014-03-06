@@ -4,7 +4,9 @@ import logging
 from google.appengine.ext import ndb
 from google.appengine.api import users
 
-
+def stringtodatetime(s):
+    return datetime.datetime.strptime(string.split(s,'.')[0],
+                                           "%Y-%m-%dT%H:%M:%S")
 class UserGroup(ndb.Model):
     name = ndb.StringProperty(required=True)
     owners = ndb.UserProperty(repeated=True)
@@ -33,8 +35,7 @@ class ChangeRequest(ndb.Model):
     def __setattr__(self, attr, value):
         if (attr in ['startTime','endTime','created_on']
             and isinstance(value, basestring)):
-            d = datetime.datetime.strptime(string.split(value,'.')[0],
-                                           "%Y-%m-%dT%H:%M:%S")
+            d = stringtodatetime(value)
             object.__setattr__(self,attr,d)
         else:
             object.__setattr__(self,attr,value)
