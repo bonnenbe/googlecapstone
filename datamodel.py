@@ -39,6 +39,12 @@ class ChangeRequest(ndb.Model):
             and isinstance(value, basestring)):
             d = stringtodatetime(value)
             object.__setattr__(self,attr,d)
+        elif (attr in ['technician','peer_reviewer'] and isinstance(value, basestring)):
+            d = users.User(value)
+            object.__setattr__(self,attr,d)
+        elif (attr == 'tags' and isinstance(value, basestring)):
+            d= value.split(',')
+            object.__setattr__(self,attr,d)
         else:
             object.__setattr__(self,attr,value)
-    
+

@@ -85,6 +85,8 @@ def encodeChangeRequest(cr):
 def equals(p,s):
     if isinstance(p,datetime.datetime):
         s = stringtodatetime(s)
+    elif isinstance(p,users.User):
+        p = p.email()
     else:
         s = str(s)
         p = str(p)
@@ -128,11 +130,9 @@ class CRListHandler(BaseHandler):
         cr = ChangeRequest()
         for k in (set(form.keys()) & properties):
 	    if k == 'tags' :
-		setattr(group,k,form[k].split(','))
-	    elif k == 'technician' or k == 'peer_reviewer': 
-		setattr(cr,k,users.User(email=form[k]))
+		    setattr(group,k,form[k].split(','))
 	    else:
-		setattr(cr,k,form[k])
+		    setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.status = 'created'
         cr.author = users.get_current_user()
@@ -160,25 +160,18 @@ class CRHandler(BaseHandler):
         
         
         for p in properties:
-	    if form[p] and not equals(p,'technician') and not equals(p,'peer_reviewer') and not equals(getattr(cr,p), form[p]):
+	    if form[p] and  not equals(getattr(cr,p), form[p]):
                 #p not in ['startTime', 'endTime', 'created_on']):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))
                 if p == 'tags':
-		    setattr(cr,p,form[p].split(','))
-	     	else :
-		    setattr(cr,p,form[p])
+                    setattr(cr,p,form[p].split(','))
+                else:
+                    setattr(cr,p,form[p])
                 change['to'] = str(getattr(cr,p))
                 audit_entry['changes'].append(change)
-	    if form[p] and (equals(p,'technician') or equals(p,'peer_reviewer')) and not equals(getattr(cr,p).email(), form[p]):
-		change = dict()
-                change['property'] = p
-                change['from'] = str(getattr(cr,p))
-		setattr(cr,p,users.User(form[p]))
-		change['to'] = str(getattr(cr,p))
-                audit_entry['changes'].append(change)
-		   
+
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.append(audit_entry)
             cr.put()
@@ -203,6 +196,7 @@ class DraftListHandler(BaseHandler):
         cr.status = 'draft'
         cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
+	 
             if form[p] and str(getattr(cr,p)) != form[p]:
                 setattr(cr,p,form[p])
         cr.put()
@@ -233,14 +227,9 @@ class DraftHandler(BaseHandler):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
-		if form[p] != 'technician' and form[p] != 'peer_reviewer':
-		    if form[p] and str(getattr(cr,p)) != form[p]:
-                	setattr(cr,p,form[p])
-                    	changed = True
-		else:
-		    if form[p] and getattr(cr,p) != users.User(form[p]):
-			setattr(cr,p,users.User(form[p]))
-			changed = True
+		        if form[p] and not equals(getattr(cr,p), form[p]):
+			        setattr(cr,p,form[p])
+			        changed = True
         if changed:
             cr.put()
     def delete(self, id):
