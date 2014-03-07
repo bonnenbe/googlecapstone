@@ -51,7 +51,7 @@
 </p>
 
 <p class="formfield">
-  <label for="startDate">Start Time: </label>
+  <label for="startDate" tooltip="{{today | timezone}}" tooltip-placement="right">Start Time: </label>
   <div id="startDate"> 
     <span ng-controller="DateCtrl" ng-model="cr.startTime">
         <input type="text" datepicker-popup="{{format}}" ng-model="cr.startDate" datepicker-options="dateOptions" is-open="opened">
@@ -61,7 +61,7 @@
   </div>
 </p>
 <p class="formfield">
-  <label for="endDate">End Time: </label>
+  <label for="endDate" tooltip="{{today | timezone}}" tooltip-placement="right">End Time: </label>
   <div id="endDate"> 
     <span ng-controller="DateCtrl" ng-model="cr.endTime">
         <input type="text" datepicker-popup="{{format}}" ng-model="cr.endDate" datepicker-options="dateOptions" is-open="opened">

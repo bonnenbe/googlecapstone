@@ -7,7 +7,10 @@ var app = angular.module('module1',['ngRoute', 'ngGrid', 'ui.bootstrap']);
 app.controller('main', function($http, $scope){
     $http.get('/user').success(function(data){
 	$scope.user = data.user;
-    })});
+    });
+    $scope.today = new Date();
+});
+
 
 
 app.config(function ($routeProvider) {

@@ -1,13 +1,3 @@
-
-// This filter allows the date time to be displayed properly in the grid.
-app.filter('datetime', function() {
-    return function(iso186) {
-	var newdate = new Date(iso186);
-	var datestring = newdate.toDateString().substring(3) + ', ' + newdate.toTimeString().substring(0,5);
-	return datestring;
-    }
-});
-
 // List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     var self = this;
