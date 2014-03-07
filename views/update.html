@@ -8,7 +8,7 @@
 	<div collapse="isCollapsed">
             <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
 		<div class="panel-heading">
-		    On {{audit_entry.date | date}} <strong>{{audit_entry.user}}</strong> edited this request: 
+		    On {{audit_entry.date | datetime}} <strong>{{audit_entry.user}}</strong> edited this request: 
 		</div>
 		<div class="panel-body">
 		    <ul class="audit_entry">
