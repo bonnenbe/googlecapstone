@@ -86,8 +86,22 @@ def equals(p,s):
         p = str(p)
     return p == s
 
+class BaseHandler(webapp2.RequestHandler):
+    def handle_exception(self, exception, debug):
+        # Log the error.
+        logging.exception(exception)
 
-class CRListHandler(webapp2.RequestHandler):
+        # Set a custom message.
+        self.response.write('An error occurred.')
+
+        # If the exception is a HTTPException, use its error code.
+        # Otherwise use a generic 500 error code.
+        if isinstance(exception, webapp2.HTTPException):
+            self.response.set_status(exception.code)
+        else:
+            self.response.set_status(500)
+
+class CRListHandler(BaseHandler):
     def get(self):
         logging.debug(self.request.params)
         crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved'])) 
@@ -121,7 +135,7 @@ class CRListHandler(webapp2.RequestHandler):
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
         
-class CRHandler(webapp2.RequestHandler):
+class CRHandler(BaseHandler):
     def get(self, id):
         key = IDsToKey(id)
         cr = key.get()
@@ -159,7 +173,7 @@ class CRHandler(webapp2.RequestHandler):
     def delete(self, id):
         IDsToKey(id).delete()
 
-class DraftListHandler(webapp2.RequestHandler):
+class DraftListHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
         if 'id' in form.keys() and form['id']:
@@ -194,7 +208,7 @@ class DraftListHandler(webapp2.RequestHandler):
         crs = crs_query.fetch(keys_only=True)
         ndb.delete_multi(crs)
         
-class DraftHandler(webapp2.RequestHandler):
+class DraftHandler(BaseHandler):
     def get(self, id):
         key = IDsToKey(id)
         cr = key.get()
@@ -214,11 +228,11 @@ class DraftHandler(webapp2.RequestHandler):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
-class UserHandler(webapp2.RequestHandler):
+class UserHandler(BaseHandler):
     def get(self):
         self.response.write(json.dumps({'user': users.get_current_user().email()}))
        
-class ApprovalHandler(webapp2.RequestHandler):
+class ApprovalHandler(BaseHandler):
     def put(self, id):
 	group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
 	key = IDsToKey(id)
@@ -246,9 +260,9 @@ class ApprovalHandler(webapp2.RequestHandler):
                 cr.put()
             self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
 	else :
-	    self.response.set_status(401)
+	    webapp2.abort(401)
 
-class GroupHandler(webapp2.RequestHandler):
+class GroupHandler(BaseHandler):
 	def post(self):
         	form = json.loads(self.request.body)
         	group = UserGroup()
