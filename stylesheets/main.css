@@ -40,7 +40,7 @@ label {
 }
 
 .formfield {
-    margin: 3 auto;
+    margin: 5px auto;
     clear: both;
 }
 
@@ -62,6 +62,7 @@ label {
 }
 #searchButton{
     display: block;
+    clear: both;
 }
 #addSearch{
     float: left;
@@ -86,4 +87,8 @@ label {
 }
 .timepicker{}
 #endDate, #startDate{}
+.formButtons{
+    margin-top: 20px;
+    margin-left: 30%;
+}
 

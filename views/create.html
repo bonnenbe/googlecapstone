@@ -1,6 +1,8 @@
 <div>
 
     <ng-include onload="ctrl.onload()" src="'/views/requestform.html'"></ng-include>
-    <button ng-click="ctrl.add(cr)">Publish</button>
-    <button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
+    <div class="formButtons">
+	<button ng-click="ctrl.add(cr)">Publish</button>
+	<button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
+    </div>
 </div>
