@@ -1,5 +1,5 @@
 import random
-
+import datetime
 
 f = open('newstuff.xml', 'w')
 
@@ -22,7 +22,7 @@ summaries = ["Software updates", "Server update", "Server maintenance",
              "Routine switch maintenance", "Failover license services to atlanta."]
 
 
-for x in range(1,101):
+for x in range(1,100):
     print x
     f.write(" <ChangeRequest>\n")
 
@@ -37,7 +37,6 @@ for x in range(1,101):
                priorities[random.randint(0, len(priorities)-1)] + "</priority>\n"
     f.write(priority)
 
-    f.write("  <created_on>2014-02-24T20:3:39</created_on>\n")
     f.write("  <key>" + str(x) + "</key>\n")
 
     f.write("  <technician>" + name + "</technician>\n")
@@ -45,17 +44,36 @@ for x in range(1,101):
     f.write("  <summary>" + summaries[random.randint(0, len(summaries)-1)] \
             + "</summary>\n")
 
+    f.write("  <description></description>\n")
+
     f.write("  <layman_description></layman_description>\n")
-    f.write("  <status>created</status>\n")
+    f.write("  <impact></impact>\n")
+    f.write("  <communication_plan></communication_plan>\n")
     f.write("  <documentation></documentation>\n")
     f.write("  <tests_conducted></tests_conducted>\n")
     f.write("  <backout_plan></backout_plan>\n")
     f.write("  <risks></risks>\n")
+    f.write("  <rationale></rationale>\n")
     
-
-    f.write("  <startTime>2014-02-20T21:00:14</startTime>\n")
-    f.write("  <endTime>2014-02-20T21:00:14</endTime>\n")
     
+    
+    initial = datetime.datetime(2014, 1, 1)
+    
+    create = initial + datetime.timedelta(random.randint(-200, 60), random.randint(0, 47)*30*60)
+    
+    f.write("  <created_on>"+create.isoformat()+"</created_on>\n")
+    
+    start = create + datetime.timedelta(random.randint(2, 14), random.randint(0, 47)*30*60)
+    f.write("  <startTime>"+start.isoformat()+"</startTime>\n")
+    
+    end = start + datetime.timedelta(0, random.randint(0, 100)*30*60)
+    f.write("  <endTime>"+end.isoformat()+"</endTime>\n")
+    
+    
+    if end < datetime.datetime.today()+datetime.timedelta(5):
+        f.write("  <status>approved</status>\n")
+    else:
+        f.write("  <status>created</status>\n")
     
     f.write(" </ChangeRequest>\n")
 

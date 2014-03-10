@@ -24,93 +24,139 @@ python_preamble:
 
 transformers:
 
-
 - kind: ChangeRequest
   connector: simplexml
   connector_options:
     xpath_to_nodes: /changes/ChangeRequest
     style: element_centric
-    
+
   property_map:
     - property: __key__
       external_name: key
       export_transform: transform.key_id_or_name_as_string
       import_transform: transform.create_foreign_key('ChangeRequest', key_is_id=True)
 
-
     - property: audit_trail
       external_name: audit_trail
-      # Type: Blob Stats: 116 properties of this type in this kind.
+      # Type: Blob Stats: 112 properties of this type in this kind.
       import_transform: transform.blobproperty_from_base64
       export_transform: base64.b64encode
 
     - property: author
       external_name: author
-      # Type: User Stats: 116 properties of this type in this kind.
+      # Type: User Stats: 112 properties of this type in this kind.
       import_transform: transform.none_if_empty(users.User)  # Assumes email address
 
     - property: backout_plan
       external_name: backout_plan
+      # Type: Text Stats: 102 properties of this type in this kind.
+      import_transform: db.Text
+
+    - property: communication_plan
+      external_name: communication_plan
       # Type: Text Stats: 2 properties of this type in this kind.
       import_transform: db.Text
 
     - property: created_on
       external_name: created_on
-      # Type: Date/Time Stats: 116 properties of this type in this kind.
+      # Type: Date/Time Stats: 112 properties of this type in this kind.
       import_transform: transform.import_date_time('%Y-%m-%dT%H:%M:%S')
       export_transform: transform.export_date_time('%Y-%m-%dT%H:%M:%S')
 
+    - property: description
+      external_name: description
+      # Type: Text Stats: 6 properties of this type in this kind.
+      import_transform: db.Text
+
     - property: documentation
       external_name: documentation
-      # Type: Text Stats: 1 properties of this type in this kind.
+      # Type: Text Stats: 102 properties of this type in this kind.
       import_transform: db.Text
 
     - property: endTime
       external_name: endTime
-      # Type: Date/Time Stats: 16 properties of this type in this kind.
+      # Type: Date/Time Stats: 112 properties of this type in this kind.
       import_transform: transform.import_date_time('%Y-%m-%dT%H:%M:%S')
       export_transform: transform.export_date_time('%Y-%m-%dT%H:%M:%S')
 
+    - property: impact
+      external_name: impact
+      # Type: Text Stats: 2 properties of this type in this kind.
+      import_transform: db.Text
+
     - property: implementation_steps
       external_name: implementation_steps
-      # Type: Text Stats: 100 properties of this type in this kind.
+      # Type: Text Stats: 102 properties of this type in this kind.
       import_transform: db.Text
 
     - property: layman_description
       external_name: layman_description
-      # Type: Text Stats: 101 properties of this type in this kind.
+      # Type: Text Stats: 102 properties of this type in this kind.
       import_transform: db.Text
 
     - property: priority
       external_name: priority
-      # Type: String Stats: 110 properties of this type in this kind.
+      # Type: String Stats: 106 properties of this type in this kind.
+
+    - property: rationale
+      external_name: rationale
+      # Type: Text Stats: 2 properties of this type in this kind.
+      import_transform: db.Text
 
     - property: risks
       external_name: risks
-      # Type: Text Stats: 4 properties of this type in this kind.
+      # Type: Text Stats: 102 properties of this type in this kind.
       import_transform: db.Text
 
     - property: startTime
       external_name: startTime
-      # Type: Date/Time Stats: 16 properties of this type in this kind.
+      # Type: Date/Time Stats: 112 properties of this type in this kind.
       import_transform: transform.import_date_time('%Y-%m-%dT%H:%M:%S')
       export_transform: transform.export_date_time('%Y-%m-%dT%H:%M:%S')
 
     - property: status
       external_name: status
-      # Type: String Stats: 116 properties of this type in this kind.
+      # Type: String Stats: 112 properties of this type in this kind.
 
     - property: summary
       external_name: summary
-      # Type: Text Stats: 115 properties of this type in this kind.
+      # Type: Text Stats: 110 properties of this type in this kind.
       import_transform: db.Text
 
     - property: technician
       external_name: technician
-      # Type: String Stats: 116 properties of this type in this kind.
+      # Type: String Stats: 112 properties of this type in this kind.
+      import_transform: transform.none_if_empty(users.User)  # Assumes email address
 
+      
     - property: tests_conducted
       external_name: tests_conducted
-      # Type: Text Stats: 2 properties of this type in this kind.
+      # Type: Text Stats: 102 properties of this type in this kind.
       import_transform: db.Text
+
+
+- kind: UserGroup
+  connector: simplexml
+  connector_options:
+    xpath_to_nodes: /changes/ChangeRequest
+    style: element_centric
+  
+  property_map:
+    - property: __key__
+      external_name: key
+      export_transform: transform.key_id_or_name_as_string
+
+    - property: members
+      external_name: members
+      # Type: User Stats: 2 properties of this type in this kind.
+      import_transform: transform.none_if_empty(users.User)  # Assumes email address
+
+    - property: name
+      external_name: name
+      # Type: String Stats: 2 properties of this type in this kind.
+
+    - property: owners
+      external_name: owners
+      # Type: User Stats: 2 properties of this type in this kind.
+      import_transform: transform.none_if_empty(users.User)  # Assumes email address
 
