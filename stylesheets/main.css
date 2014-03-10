@@ -41,6 +41,7 @@ label {
 
 .formfield {
     margin: 3 auto;
+    clear: both;
 }
 
 #tabs {
@@ -78,3 +79,11 @@ label {
 .audit_change:last-child {
     margin-bottom: 0;
 }
+.datepicker{
+    float: left;
+    margin-top: 40px;
+    margin-right: 20px;
+}
+.timepicker{}
+#endDate, #startDate{}
+
