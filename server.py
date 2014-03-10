@@ -84,13 +84,11 @@ def encodeChangeRequest(cr):
 #returns true if property p and string s are equivalent
 def equals(p,s):
     if isinstance(p,datetime.datetime):
-        s = stringtodatetime(s)
+        return p == stringtodatetime(s)
     elif isinstance(p,users.User):
-        p = p.email()
+        return p.email() == s
     else:
-        s = str(s)
-        p = str(p)
-    return p == s
+        return str(p) == str(s)
 
 class BaseHandler(webapp2.RequestHandler):
     def handle_exception(self, exception, debug):
@@ -129,10 +127,7 @@ class CRListHandler(BaseHandler):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
         for k in (set(form.keys()) & properties):
-	    if k == 'tags' :
-		    setattr(group,k,form[k].split(','))
-	    else:
-		    setattr(cr,k,form[k])
+            setattr(cr,k,form[k])
         cr.audit_trail = []
         cr.status = 'created'
         cr.author = users.get_current_user()
@@ -159,16 +154,12 @@ class CRHandler(BaseHandler):
         audit_entry['changes'] = []
         
         
-        for p in properties:
-	    if form[p] and  not equals(getattr(cr,p), form[p]):
-                #p not in ['startTime', 'endTime', 'created_on']):
+        for p in (set(form.keys()) & properties):
+	    if not equals(getattr(cr,p), form[p]):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))
-                if p == 'tags':
-                    setattr(cr,p,form[p].split(','))
-                else:
-                    setattr(cr,p,form[p])
+                setattr(cr,p,form[p])
                 change['to'] = str(getattr(cr,p))
                 audit_entry['changes'].append(change)
 
@@ -196,7 +187,6 @@ class DraftListHandler(BaseHandler):
         cr.status = 'draft'
         cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
-	 
             if form[p] and str(getattr(cr,p)) != form[p]:
                 setattr(cr,p,form[p])
         cr.put()
@@ -227,9 +217,9 @@ class DraftHandler(BaseHandler):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
-		        if form[p] and not equals(getattr(cr,p), form[p]):
-			        setattr(cr,p,form[p])
-			        changed = True
+                if not equals(getattr(cr,p), form[p]):
+                    setattr(cr,p,form[p])
+                    changed = True
         if changed:
             cr.put()
     def delete(self, id):

@@ -8,7 +8,6 @@ app.controller('main', function($http, $scope){
     $http.get('/user').success(function(data){
 	$scope.user = data.user;
     });
-    $scope.today = new Date();
 });
 
 

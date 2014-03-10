@@ -6,7 +6,9 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.cr.startTime = new Date();
     $scope.cr.endTime = new Date();
     $scope.cr.startTime.setMinutes(0);
+    $scope.cr.startTime.setSeconds(0);
     $scope.cr.endTime.setMinutes(0);
+    $scope.cr.endTime.setSeconds(0);
     $scope.cr.id = null;
     var self = this;
     
