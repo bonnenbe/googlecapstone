@@ -2,7 +2,37 @@ import datetime
 import string
 import logging
 from google.appengine.ext import ndb
-from google.appengine.api import users
+from google.appengine.api import users, search
+
+
+#directly editable properties
+properties = {	
+    'summary',
+    'description',
+    'impact',
+    'documentation',
+    'rationale',
+    'implementation_steps',
+    'technician',
+    'peer_reviewer',
+    'priority',
+    'tests_conducted',
+    'risks',
+    'backout_plan',
+    'communication_plan',
+    'layman_description',
+    'startTime',
+    'endTime',
+    'tags'
+}
+
+searchable_properties = properties | {
+    'created_on',
+    'author',
+    'status'
+}
+
+
 
 def stringtodatetime(s):
     return datetime.datetime.strptime(string.split(s,'.')[0],
@@ -47,4 +77,31 @@ class ChangeRequest(ndb.Model):
             object.__setattr__(self,attr,d)
         else:
             object.__setattr__(self,attr,value)
+            
+    
+    def toSearchDocument(self):
+        
+        fields = []
+        for property in searchable_properties:
+            attr = getattr(self, property)
+            
+            #todo: change some fields to atom fields (e.g. priority) for faster searching
+            
+            if property == "tags":
+                #multifield
+                for tag in attr:
+                    logging.info(tag)
+                    fields.append(search.TextField(name=property, value=tag))
+                    
+            elif isinstance(attr, datetime.datetime):
+                fields.append(search.DateField(name=property, value=attr))
+            elif isinstance(attr, users.User):
+                fields.append(search.TextField(name=property, value=attr.email()))
+            else:
+                fields.append(search.TextField(name=property, value=attr))
+        
+        return search.Document(
+            doc_id = self.key.urlsafe(),
+            fields = fields
+        )
 

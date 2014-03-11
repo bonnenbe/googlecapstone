@@ -11,27 +11,6 @@ import webapp2
 import logging
 import datetime
 
-#directly editable properties
-properties = {	
-        'summary',
-		'description',
-		'impact',
-		'documentation',
-		'rationale',
-		'implementation_steps',
-		'technician',
-		'peer_reviewer',
-		'priority',
-		'tests_conducted',
-		'risks',
-		'backout_plan',
-		'communication_plan',
-		'layman_description',
-        'startTime',
-        'endTime',
-	'tags'
-}
-
 
 class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
@@ -135,7 +114,13 @@ class CRListHandler(BaseHandler):
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
-        
+                                        
+        try:
+            index = search.Index(name="fullTextSearch")
+            index.put(cr.toSearchDocument())
+        except search.Error:
+            logging.exception("Put failed")
+            
 class CRHandler(BaseHandler):
     def get(self, id):
         key = IDsToKey(id)
