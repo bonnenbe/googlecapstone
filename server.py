@@ -243,7 +243,7 @@ class ApprovalHandler(BaseHandler):
                 cr.put()
             self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
 	else :
-	    webapp2.abort(401)
+	    webapp2.abort(403)
 
 class GroupHandler(BaseHandler):
 	def post(self):
