@@ -149,7 +149,7 @@ class CRHandler(BaseHandler):
                 audit_entry['changes'].append(change)
 
         if len(audit_entry['changes']) != 0:
-            cr.audit_trail.append(audit_entry)
+            cr.audit_trail.insert(0, audit_entry)
             cr.put()
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
