@@ -132,12 +132,12 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
-        mail_list = list(set(mail_list))
-        mail.send_mail( sender = appEmail, 
-                        to = mail_list,
-                        subject= "CR #" + str(cr.key.id()) + " has been edited",
-                        body = "Blah, thanks.")
+        mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
+        if mail_list:
+            mail.send_mail( sender = appEmail, 
+                            to = mail_list,
+                            subject= "CR #" + str(cr.key.id()) + " has been edited",
+                            body = "Blah, thanks.")
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -177,13 +177,13 @@ class CRHandler(BaseHandler):
 
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.insert(0, audit_entry)
-            mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
-            mail_list = list(set(mail_list))
+            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
 
-            mail.send_mail( sender = appEmail, 
-                            to = mail_list,
-                            subject= "CR #" + id + " has been edited",
-                            body = "Blah, thanks.")
+            if mail_list:
+                mail.send_mail( sender = appEmail, 
+                                to = mail_list,
+                                subject= "CR #" + str(cr.key.id()) + " has been edited",
+                                body = "Blah, thanks.")
             cr.put()
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
@@ -257,13 +257,12 @@ class ApprovalHandler(BaseHandler):
 	if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
 	    form = json.loads(self.request.body)
 	    form['status'] = 'approved'
-        mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
-        mail_list = list(set(mail_list))
-        mail.send_mail( sender = appEmail, 
-                        to = mail_list,
-                        subject= "Your CR #" + id + " has been approved",
-                        body = "Blah, thanks.")
-        
+            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
+            if mail_list:
+                mail.send_mail( sender = appEmail, 
+                                to = mail_list,
+                                subject= "CR #" + str(cr.key.id()) + " has been edited",
+                                body = "Blah, thanks.")
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
