@@ -32,33 +32,42 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     };
 
     // On get new page
-    $scope.getPagedDataAsync = function (pageSize, page, searchParams, draftsMode) {
+    $scope.getPagedDataAsync = function (pageSize, page, searchParams, draftsMode, query) {
         setTimeout(function () {
             var params = {};
             params["offset"] = (page - 1) * pageSize;
+            
+            // Send full text query
+            if (query) {
+                params["query"] = query;
+            }
+            
             params["limit"] = pageSize;
-	    searchParams.forEach(function(s){
-		if (s.text)
-		    params[s.field] = s.text;
-	    });
-	    var obj = {};
+            searchParams.forEach(function(s){
+                if (s.text) params[s.field] = s.text;
+            });
+            var obj = {};
+            
             obj["params"] = params;
             if (draftsMode)
-		$http.get('/drafts', obj).success(function(data){
-		    $scope.setPagingData(pageSize, page, data.drafts);
-		});
-	    else
-		$http.get('/changerequests', obj).success(function (data){
+                $http.get('/drafts', obj).success(function(data){
+                    $scope.setPagingData(pageSize, page, data.drafts);
+                });
+            else
+                $http.get('/changerequests', obj).success(function (data){
                     $scope.setPagingData(pageSize, page, data.changerequests);
-		});
+                });
+            
         }, 100);
     };
 
     $scope.refresh = function (){
         $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
-				 $scope.searchParams, $scope.draftsMode);
+				 $scope.searchParams, $scope.draftsMode, $scope.query);
     };
 
+    
+    
     
     //
     // Events for setting paging data when paging data is changed or page is turned	
@@ -132,25 +141,29 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         });
     };
     
+    /////// todo fix test full search function
+    this.fullsearch = function fullsearch() {
+        $scope.refresh();
+    }
     
     this.search = function search(){
         if ($scope.pagingOptions.currentPage != 1)
             $scope.pagingOptions.currentPage = 1;
         else 
-	    $scope.refresh();
+            $scope.refresh();
     };
     
-    this.clearDrafts = function (){
+    this.clearDrafts = function () {
 	$http.delete('/drafts').success(function (){
 	    $scope.refresh();
 	})};
-    $scope.onSelectCRs = function(){
-	$scope.draftsMode = false;
-	$scope.refresh();
+    $scope.onSelectCRs = function() {
+        $scope.draftsMode = false;
+        $scope.refresh();
     };
-    $scope.onSelectMyDrafts = function(){
-	$scope.draftsMode = true;
-	$scope.refresh();
+    $scope.onSelectMyDrafts = function() {
+        $scope.draftsMode = true;
+        $scope.refresh();
     };
 
 }]);

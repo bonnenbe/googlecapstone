@@ -101,8 +101,20 @@ class CRListHandler(BaseHandler):
         
         crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
+        if 'query' in params:
+            index = search.Index(name="fullTextSearch")
+            query_string = params['query']
+            try:
+                # list comprehension
+                results = [document.doc_id for document in index.search(query_string)]
+                
+                logging.info(results)
+                
+            except search.Error:
+                logging.exception('Search failed')
+                
         objs = []
-        self.response.headers['Content-Type'] = 'application/json'   
+        self.response.headers['Content-Type'] = 'application/json'
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
             
@@ -123,7 +135,7 @@ class CRListHandler(BaseHandler):
         mail_list = list(set(mail_list))
         mail.send_mail( sender = appEmail, 
                         to = mail_list,
-                        subject= "CR #" + id + " has been edited",
+                        subject= "CR #" + str(cr.key.id()) + " has been edited",
                         body = "Blah, thanks.")
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
