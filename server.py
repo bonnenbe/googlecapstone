@@ -101,18 +101,19 @@ class CRListHandler(BaseHandler):
         
         crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
+        # full text search stuff
         if 'query' in params:
             index = search.Index(name="fullTextSearch")
             query_string = params['query']
             try:
                 # list comprehension
-                results = [document.doc_id for document in index.search(query_string)]
+                doc_ids = [document.doc_id for document in index.search(query_string)]
                 
-                logging.info(results)
-                
+                keys = [ndb.Key(urlsafe=id) for id in doc_ids]
+                crs = ndb.get_multi(keys)
             except search.Error:
                 logging.exception('Search failed')
-                
+            
         objs = []
         self.response.headers['Content-Type'] = 'application/json'
         for cr in crs:
