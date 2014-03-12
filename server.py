@@ -4,13 +4,17 @@ import json
 import string
 
 from google.appengine.api import users
+from google.appengine.api import mail
 from google.appengine.ext import ndb
 from datamodel import *
+
 
 import webapp2
 import logging
 import datetime
 
+appEmail = "notifications@chromatic-tree-459.appspotmail.com"
+destinationEmail = "bbonnen@gmail.com"
 
 class JSONEncoder(json.JSONEncoder):
     def default(self,obj):
@@ -115,6 +119,12 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
+        mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
+        mail_list = list(set(mail_list))
+        mail.send_mail( sender = appEmail, 
+                        to = mail_list,
+                        subject= "CR #" + id + " has been edited",
+                        body = "Blah, thanks.")
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -154,6 +164,13 @@ class CRHandler(BaseHandler):
 
         if len(audit_entry['changes']) != 0:
             cr.audit_trail.insert(0, audit_entry)
+            mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
+            mail_list = list(set(mail_list))
+
+            mail.send_mail( sender = appEmail, 
+                            to = mail_list,
+                            subject= "CR #" + id + " has been edited",
+                            body = "Blah, thanks.")
             cr.put()
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
                 
@@ -227,24 +244,30 @@ class ApprovalHandler(BaseHandler):
 	if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
 	    form = json.loads(self.request.body)
 	    form['status'] = 'approved'
-
-            audit_entry = dict()
-            audit_entry['date'] = datetime.datetime.now().isoformat()
-            audit_entry['user'] = users.get_current_user().email()
-            audit_entry['changes'] = []
+        mail_list = [cr.author.email(), cr.peer_reviewer.email(), cr.technician.email()]
+        mail_list = list(set(mail_list))
+        mail.send_mail( sender = appEmail, 
+                        to = mail_list,
+                        subject= "Your CR #" + id + " has been approved",
+                        body = "Blah, thanks.")
         
-        
-            if (form['status'] and str(getattr(cr,'status')) != form['status']):
-            	change = dict()
-	    	change['property'] = 'status'
-            	change['from'] = str(getattr(cr,'status'))
-            	change['to'] = form['status']
-            	audit_entry['changes'].append(change)
-            	setattr(cr,'status',form['status'])
 
-            if len(audit_entry['changes']) != 0:
-                cr.audit_trail.append(audit_entry)
-                cr.put()
+        audit_entry = dict()
+        audit_entry['date'] = datetime.datetime.now().isoformat()
+        audit_entry['user'] = users.get_current_user().email()
+        audit_entry['changes'] = []
+        
+        if (form['status'] and str(getattr(cr,'status')) != form['status']):
+            change = dict()
+            change['property'] = 'status'
+            change['from'] = str(getattr(cr,'status'))
+            change['to'] = form['status']
+            audit_entry['changes'].append(change)
+            setattr(cr,'status',form['status'])
+
+        if len(audit_entry['changes']) != 0:
+            cr.audit_trail.append(audit_entry)
+            cr.put()
             self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
 	else :
 	    webapp2.abort(403)
