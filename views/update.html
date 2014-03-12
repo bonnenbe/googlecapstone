@@ -1,5 +1,12 @@
 <div>
     <ng-include onload="ctrl.onload()" src="'/views/requestform.html'"></ng-include>
+    
+    
+    <div class="formfield">
+        <label for="tags">Tags: </label>
+        <tags-input id="tags" ng-model="cr.tags"></tags-input>
+    </div>
+    
     <div class="formButtons">
         <button ng-click="ctrl.update(cr)">Publish</button>
         <button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
