@@ -3,6 +3,7 @@ app.controller('createController', function($http,$scope,$location,$interval){
     $scope.priorities = ['routine', 'sensitive'];
     $scope.cr = {};
     $scope.cr.technician = $scope.user;
+    $scope.cr.priority = 'routine';
     $scope.cr.startTime = new Date();
     $scope.cr.endTime = new Date();
     $scope.cr.startTime.setMinutes(0);

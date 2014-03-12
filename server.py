@@ -62,7 +62,9 @@ def encodeChangeRequest(cr):
 
 #returns true if property p and string s are equivalent
 def equals(p,s):
-    if isinstance(p,datetime.datetime):
+    if isinstance(s, list):
+        return set(p) == set(s)
+    elif isinstance(p,datetime.datetime):
         return p == stringtodatetime(s)
     elif isinstance(p,users.User):
         return p.email() == s
@@ -110,6 +112,8 @@ class CRListHandler(BaseHandler):
         cr.audit_trail = []
         cr.status = 'created'
         cr.author = users.get_current_user()
+        logging.info(form['tags'])
+        logging.info(cr.tags)
         cr.put()
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
