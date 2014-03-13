@@ -141,7 +141,8 @@ class CRListHandler(BaseHandler):
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
-                                        
+               
+        # add to search api full text search
         try:
             index = search.Index(name="fullTextSearch")
             index.put(cr.toSearchDocument())
@@ -158,7 +159,6 @@ class CRHandler(BaseHandler):
         key = IDsToKey(id)
         cr = key.get()
 
-            
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
@@ -185,7 +185,16 @@ class CRHandler(BaseHandler):
                                 subject= "CR #" + str(cr.key.id()) + " has been edited",
                                 body = "Blah, thanks.")
             cr.put()
+            
+            # update document in full text search api
+            try:
+                index = search.Index(name="fullTextSearch")
+                index.put(cr.toSearchDocument())
+            except search.Error:
+                logging.exception("Put failed")
+            
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
+        
                 
     def delete(self, id):
         IDsToKey(id).delete()
