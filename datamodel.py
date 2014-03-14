@@ -105,3 +105,19 @@ class ChangeRequest(ndb.Model):
             fields = fields
         )
 
+#the key id should be a tag string
+class Tag(ndb.Model):
+    frequency = ndb.IntegerProperty(default=0)
+
+    def toSearchDocument(self):
+        tag = self.key.id()
+        fields = []
+        for i in range(1,len(tag)+1):
+            for j in range(0,len(tag)-i):
+                fields.append(search.AtomField(name='text', value=tag[j:j+i]))
+        fields.append(search.NumberField(name='frequency', value=self.frequency))
+        return search.Document(
+            doc_id = tag,
+            fields = fields,
+            rank = self.frequency
+            )

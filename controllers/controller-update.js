@@ -59,7 +59,14 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
 		});
             });
     };
-    
+    $scope.getTags = function(query){
+	var params = {};
+        params["query"] = query;
+        params["limit"] = 10;
+        var obj = {};
+        obj["params"] = params;	
+	return $http.get('/tags', obj);
+    };
 });
 
 

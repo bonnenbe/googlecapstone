@@ -4,7 +4,9 @@
     
     <div class="formfield">
         <label for="tags">Tags: </label>
-        <tags-input id="tags" ng-model="cr.tags"></tags-input>
+        <tags-input id="tags" ng-model="cr.tags">
+	    <auto-complete source="getTags($query)" min-length="1"></auto-complete>
+	</tags-input>
     </div>
     
     <div class="formButtons">

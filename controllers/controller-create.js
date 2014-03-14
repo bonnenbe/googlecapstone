@@ -52,6 +52,15 @@ app.controller('createController', function($http,$scope,$location,$interval){
                 cr.id = data.id;
             });
     };
+
+    $scope.getTags = function(query){
+	var params = {};
+        params["query"] = query;
+        params["limit"] = 10;
+        var obj = {};
+        obj["params"] = params;	
+	return $http.get('/tags', obj);
+    };
     
 });
 

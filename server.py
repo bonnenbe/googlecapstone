@@ -141,8 +141,16 @@ class CRListHandler(BaseHandler):
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
-               
-        # add to search api full text search
+
+        for tagstring in cr.tags:
+            tag = Tag.get_or_insert(tagstring)
+            tag.frequency += 1
+            tag.put()
+            tagindex = search.Index(name="tags")
+            tagindex.put(tag.toSearchDocument())
+            
+
+# add to search api full text search
         try:
             index = search.Index(name="fullTextSearch")
             index.put(cr.toSearchDocument())
@@ -310,9 +318,21 @@ class GroupHandler(BaseHandler):
         	logging.debug(group.key.id())
         	self.response.write(json.dumps({'id': group.key.id()},cls=JSONEncoder))
 
-		
-        
-    
+class TagsHandler(BaseHandler):
+        def get(self):
+            params = self.request.params
+            index = search.Index(name="tags")
+            options = search.QueryOptions(
+                limit = int(params['limit']) if 'limit' in params else 10,
+                offset = int(params['offset']) if 'offset' in params else 0,
+                ids_only = True)
+            query = search.Query(options=options,
+                                 query_string="text:" + params['query'] if 'query' in params else "")
+            try:
+                results = index.search(query).results
+            except search.Error:
+                webapp2.abort(400)
+            self.response.write(json.dumps([doc.doc_id for doc in results],cls=JSONEncoder))
 application = webapp2.WSGIApplication([
         webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
         webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
@@ -321,6 +341,7 @@ application = webapp2.WSGIApplication([
         webapp2.Route('/drafts',handler=DraftListHandler),
         webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
 	webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
+        webapp2.Route('/tags', handler = TagsHandler),
 	webapp2.Route('/usergroups', handler = GroupHandler)
 
 ], debug=True)
