@@ -74,6 +74,35 @@ def equals(p,s):
         return p.email() == s
     else:
         return str(p) == str(s)
+@ndb.non_transactional
+def updateIndex(entity, indexName):
+    index = search.Index(name=indexName)
+    index.put(entity.toSearchDocument())
+@ndb.non_transactional
+def removeFromIndex(id, indexName):
+    index = search.Index(name=indexName)
+    index.delete([id])
+@ndb.transactional
+def _addTag(tagstring):
+    tag = Tag.get_or_insert(tagstring)
+    tag.frequency += 1
+    tag.put()
+    updateIndex(tag, "tags")
+@ndb.transactional
+def _removeTag(tagstring):
+    tag = Tag.get_or_insert(tagstring)
+    tag.frequency -= 1
+    if tag.frequency <= 0:
+        tag.key.delete()
+    else:
+        tag.put()
+    removeFromIndex(tag.key.id(), "tags")
+def updateTags(added, removed):
+    for tag in added:
+        _addTag(tag)
+    for tag in removed:
+        _removeTag(tag)
+
 
 class BaseHandler(webapp2.RequestHandler):
     def handle_exception(self, exception, debug):
@@ -141,16 +170,10 @@ class CRListHandler(BaseHandler):
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
+        
+        updateTags(cr.tags, [])
 
-        for tagstring in cr.tags:
-            tag = Tag.get_or_insert(tagstring)
-            tag.frequency += 1
-            tag.put()
-            tagindex = search.Index(name="tags")
-            tagindex.put(tag.toSearchDocument())
-            
-
-# add to search api full text search
+        # add to search api full text search
         try:
             index = search.Index(name="fullTextSearch")
             index.put(cr.toSearchDocument())
@@ -173,7 +196,9 @@ class CRHandler(BaseHandler):
         audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
         
-        
+        if 'tags' in form.keys():
+            updateTags(set(form['tags']) - set(cr.tags),
+                       set(cr.tags) - set(form['tags']))
         for p in (set(form.keys()) & properties):
 	    if not equals(getattr(cr,p), form[p]):
                 change = dict()
@@ -202,10 +227,10 @@ class CRHandler(BaseHandler):
                 logging.exception("Put failed")
             
         self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
-        
-                
     def delete(self, id):
-        IDsToKey(id).delete()
+        key = IDsToKey(id)
+        updateTags([], key.get().tags)
+        key.delete()
 
 class DraftListHandler(BaseHandler):
     def post(self):
