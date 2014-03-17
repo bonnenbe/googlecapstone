@@ -2,11 +2,13 @@
 
     <ng-include onload="ctrl.onload()" src="'/views/requestform.html'"></ng-include>    
     
-    <div class="formfield">
-        <label for="tags">Tags: </label>
-        <tags-input id="tags" ng-model="cr.tags">
-	    <auto-complete source="getTags($query)" min-length="1"></auto-complete>
-	</tags-input>
+    <div class="requestform">
+	<div class="formfield">
+            <label for="tags">Tags: </label>
+            <tags-input id="tags" ng-model="cr.tags"> 
+		<auto-complete id="autocomplete" source="getTags($query)" min-length="1"></auto-complete>
+	    </tags-input>
+	</div>
     </div>
     
     <div class="formButtons">

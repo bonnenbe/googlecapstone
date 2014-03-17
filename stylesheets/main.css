@@ -18,7 +18,7 @@ label {
 	float: left;
 	text-align: right;
 	margin-right: 15px;
-	width: 30%;
+	width: 20%;
 }
 
 
@@ -40,15 +40,51 @@ label {
 }
 
 .formfield {
-    margin: 5px auto;
+    //margin: 5px auto;
+    width: 100%;
     clear: both;
+    margin: 0 auto;
+    background-color: inherit;
 }
+
+textarea, .tags, input{
+    width: 70%;
+    border-style: solid;
+    resize: none;
+    background-color: inherit;
+    overflow: hidden;
+}
+textarea:focus, input:focus{
+    background-color: #FFFFFF;
+}
+.requestform{
+    background-color: #F8F8F8;
+    min-width: 800px;
+    width: 50%;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10px;
+    margin-bottom: 0;
+ }
+
+
 
 #tabs {
     /*float: left;*/
 }
 #search {
     float: right;
+}
+#fullSearch{
+    width: 30%;
+    padding-top: 20px;
+    padding-bottom: 0;
+    margin-bottom: 4px;
+}
+#otherListStuff{
+    margin: 0;
+    padding: 0;
 }
 #searchList {
     list-style-type: none;

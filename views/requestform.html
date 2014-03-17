@@ -1,9 +1,9 @@
 
-<h1 id="heading"></h1>
-
+<!-- <h1 id="heading"></h1> -->
+<div class="requestform">
 <div class="formfield">
     <label for="summary">Summary: </label>
-    <textarea id="summary" cols="80" rows="5" ng-model="cr.summary" > </textarea>
+    <textarea id="summary" ng-model="cr.summary"> </textarea>
 </div>
 <div class="formfield">
     <label for="technician">Technician: </label>
@@ -15,47 +15,47 @@
 </div>
 <div class="formfield">
     <label for="description">Description: </label>
-    <textarea id="description" cols="80" rows="5" ng-model="cr.description" > </textarea>
+    <textarea id="description" ng-model="cr.description" > </textarea>
 </div>
 <div class="formfield">
     <label for="impact">Impact: </label>
-    <textarea id="impact" cols="80" rows="5" ng-model="cr.impact" > </textarea>
+    <textarea id="impact" ng-model="cr.impact" > </textarea>
 </div>
 <div class="formfield">
     <label for="documentation">Documentation: </label>
-    <textarea id="documentation" cols="80" rows="5" ng-model="cr.documentation" > </textarea>
+    <textarea id="documentation" ng-model="cr.documentation" > </textarea>
 </div>
 <div class="formfield">
     <label for="rationale">Rationale: </label>
-    <textarea id="rationale" cols="80" rows="3" ng-model="cr.rationale" > </textarea>
+    <textarea id="rationale" rows="3" ng-model="cr.rationale" > </textarea>
 </div>
 <div class="formfield">
     <label for="implementationSteps">Implementation Steps: </label>
-    <textarea id="implementationSteps" cols="80" rows="5" ng-model="cr.implementation_steps" > </textarea>
+    <textarea id="implementationSteps" ng-model="cr.implementation_steps" > </textarea>
 </div>
 <div class="formfield">
     <label for="testsConducted">Tests Conducted: </label>
-    <textarea id="testsConducted" cols="80" rows="5" ng-model="cr.tests_conducted" > </textarea>
+    <textarea id="testsConducted" ng-model="cr.tests_conducted" > </textarea>
 </div>
 <div class="formfield">
     <label for="risks">Risks: </label>
-    <textarea id="risks" cols="80" rows="5" ng-model="cr.risks" > </textarea>
+    <textarea id="risks" ng-model="cr.risks" > </textarea>
 </div>
 <div class="formfield">
     <label for="backoutPlan">Backout Plan: </label>
-    <textarea id="backoutPlan" cols="80" rows="5" ng-model="cr.backout_plan" > </textarea>
+    <textarea id="backoutPlan" ng-model="cr.backout_plan" > </textarea>
 </div>
 <div class="formfield">
     <label for="communicationPlan">Communication Plan:  </label>
-    <textarea id="communicationPlan" cols="80" rows="5" ng-model="cr.communication_plan" > </textarea>
+    <textarea id="communicationPlan" ng-model="cr.communication_plan" > </textarea>
 </div>
 <div class="formfield">
     <label for="laymanDescription">Layman Description: </label>
-    <textarea id="laymanDescription" cols="80" rows="5" ng-model="cr.layman_description" > </textarea>
+    <textarea id="laymanDescription" ng-model="cr.layman_description" > </textarea>
 </div>
 
 <div class="formfield">
-  <label for="startDate" tooltip="{{cr.startTime | timezone}}" tooltip-placement="right">Start Time: </label>
+  <label for="startDate" tooltip="{{cr.startTime | timezone}}" tooltip-placement="left">Start Time: </label>
   <div id="startDate" ng-controller="DateCtrl"> 
       <div class="datepicker">
 	  <input type="text" datepicker-popup="{{format}}" ng-model="cr.startTime" datepicker-options="dateOptions" is-open="opened">
@@ -65,7 +65,7 @@
   </div>
 </div>
 <div class="formfield">
-  <label for="endDate" tooltip="{{cr.endTime | timezone}}" tooltip-placement="right">End Time: </label>
+  <label for="endDate" tooltip="{{cr.endTime | timezone}}" tooltip-placement="left">End Time: </label>
   <div id="endDate" ng-controller="DateCtrl"> 
       <div class="datepicker">
 	  <input type="text" datepicker-popup="{{format}}" ng-model="cr.endTime" datepicker-options="dateOptions" is-open="opened">
@@ -81,4 +81,4 @@
         <option ng-repeat="p in priorities">{{p}}</option>
     </select>
 </div>
-
+</div>
