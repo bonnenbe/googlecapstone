@@ -35,6 +35,13 @@ indexes:
   properties:
   - name: priority
   - name: status
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: priority
+  - name: status
   - name: technician
   - name: created_on
     direction: desc

@@ -348,8 +348,15 @@ class GroupHandler(BaseHandler):
 
 class AdminHandler(BaseHandler):
     def get(self):
+    
+        # force update on search index via /admin/rebuildIndex
+        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved']))
         
-        pass            
+        for cr in crs_query:
+            index = search.Index(name="fullTextSearch")
+            index.put(cr.toSearchDocument())
+            
+        
             
 class TagsHandler(BaseHandler):
     def get(self):
@@ -380,6 +387,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
     webapp2.Route('/tags', handler = TagsHandler),
     webapp2.Route('/usergroups', handler = GroupHandler),
-    webapp2.Route('/admin', handler = AdminHandler)
+    webapp2.Route('/admin/rebuildIndex', handler = AdminHandler)
 
 ], debug=True)
