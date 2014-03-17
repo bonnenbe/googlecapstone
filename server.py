@@ -21,7 +21,7 @@ class JSONEncoder(json.JSONEncoder):
         if isinstance(obj,datetime.datetime):
             return obj.isoformat() + 'Z'
         elif isinstance(obj,users.User):
-	    return obj.email()
+            return obj.email()
         return json.JSONEncoder.default(self,obj)
 
 def intersperse(iterable, delimiter):
@@ -30,6 +30,7 @@ def intersperse(iterable, delimiter):
     for x in it:
         yield delimiter
         yield x
+        
 def IDsToKey(IDstring):
     IDs = string.split(IDstring, '-')
     pairs = []
@@ -47,7 +48,7 @@ def encodeChangeRequest(cr):
         'rationale': cr.rationale,
         'implementation_steps': cr.implementation_steps,
         'technician': cr.technician,
-	'peer_reviewer': cr.peer_reviewer,
+        'peer_reviewer': cr.peer_reviewer,
         'priority': cr.priority,
         'id': string.join(intersperse(map(lambda x: str(x[1]), cr.key.pairs()), '-')),
         'created_on': cr.created_on,
@@ -59,9 +60,9 @@ def encodeChangeRequest(cr):
         'layman_description': cr.layman_description,
         'startTime': cr.startTime,
         'endTime': cr.endTime,
-	'status': cr.status,
-	'tags': cr.tags
-	}
+        'status': cr.status,
+        'tags': cr.tags
+    }
     return obj
 
 #returns true if property p and string s are equivalent
@@ -200,7 +201,7 @@ class CRHandler(BaseHandler):
             updateTags(set(form['tags']) - set(cr.tags),
                        set(cr.tags) - set(form['tags']))
         for p in (set(form.keys()) & properties):
-	    if not equals(getattr(cr,p), form[p]):
+            if not equals(getattr(cr,p), form[p]):
                 change = dict()
                 change['property'] = p
                 change['from'] = str(getattr(cr,p))
@@ -293,12 +294,12 @@ class UserHandler(BaseHandler):
        
 class ApprovalHandler(BaseHandler):
     def put(self, id):
-	group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
-	key = IDsToKey(id)
+        group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
+        key = IDsToKey(id)
         cr = key.get()
-	if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
-	    form = json.loads(self.request.body)
-	    form['status'] = 'approved'
+        if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
+            form = json.loads(self.request.body)
+            form['status'] = 'approved'
             mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
             if mail_list:
                 mail.send_mail( sender = appEmail, 
@@ -323,50 +324,62 @@ class ApprovalHandler(BaseHandler):
             cr.audit_trail.append(audit_entry)
             cr.put()
             self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
-	else :
-	    webapp2.abort(403)
+        else :
+            webapp2.abort(403)
 
 class GroupHandler(BaseHandler):
-	def post(self):
-        	form = json.loads(self.request.body)
-        	group = UserGroup()
-        	for k in (set(form.keys())):
-			if k != 'name':
-				UserList = []
-				for s in form[k].split(','):
-					newUser = users.User(email=s)
-					UserList.append(newUser)
-				setattr(group,k,UserList)
-			else: 
-				setattr(group,k,form[k])
-        	group.put()
-        	logging.debug(group.key.id())
-        	self.response.write(json.dumps({'id': group.key.id()},cls=JSONEncoder))
+    def post(self):
+        form = json.loads(self.request.body)
+        group = UserGroup()
+        for k in (set(form.keys())):
+            if k != 'name':
+                UserList = []
+                for s in form[k].split(','):
+                    newUser = users.User(email=s)
+                    UserList.append(newUser)
+                setattr(group,k,UserList)
+            else: 
+                setattr(group,k,form[k])
+        group.put()
+        logging.debug(group.key.id())
+        self.response.write(json.dumps({'id': group.key.id()},cls=JSONEncoder))
 
+            
+
+class AdminHandler(BaseHandler):
+    def get(self):
+        
+        pass            
+            
 class TagsHandler(BaseHandler):
-        def get(self):
-            params = self.request.params
-            index = search.Index(name="tags")
-            options = search.QueryOptions(
-                limit = int(params['limit']) if 'limit' in params else 10,
-                offset = int(params['offset']) if 'offset' in params else 0,
-                ids_only = True)
-            query = search.Query(options=options,
-                                 query_string="text:" + params['query'] if 'query' in params else "")
-            try:
-                results = index.search(query).results
-            except search.Error:
-                webapp2.abort(400)
-            self.response.write(json.dumps([doc.doc_id for doc in results],cls=JSONEncoder))
+    def get(self):
+        params = self.request.params
+        index = search.Index(name="tags")
+        options = search.QueryOptions(
+            limit = int(params['limit']) if 'limit' in params else 10,
+            offset = int(params['offset']) if 'offset' in params else 0,
+            ids_only = True
+        )
+        query = search.Query(options=options,
+                             query_string="text:" + params['query'] if 'query' in params else "")
+        try:
+            results = index.search(query).results
+        except search.Error:
+            webapp2.abort(400)
+        self.response.write(json.dumps([doc.doc_id for doc in results],cls=JSONEncoder))
+            
+            
+            
 application = webapp2.WSGIApplication([
-        webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
-        webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
-        webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
-        webapp2.Route('/user',handler=UserHandler),
-        webapp2.Route('/drafts',handler=DraftListHandler),
-        webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
-	webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
-        webapp2.Route('/tags', handler = TagsHandler),
-	webapp2.Route('/usergroups', handler = GroupHandler)
+    webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
+    webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
+    webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
+    webapp2.Route('/user',handler=UserHandler),
+    webapp2.Route('/drafts',handler=DraftListHandler),
+    webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
+    webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
+    webapp2.Route('/tags', handler = TagsHandler),
+    webapp2.Route('/usergroups', handler = GroupHandler),
+    webapp2.Route('/admin', handler = AdminHandler)
 
 ], debug=True)
