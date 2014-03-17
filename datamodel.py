@@ -102,7 +102,8 @@ class ChangeRequest(ndb.Model):
         
         return search.Document(
             doc_id = self.key.urlsafe(),
-            fields = fields
+            fields = fields,
+            rank = int((self.created_on - datetime.datetime(1970,1,1)).total_seconds())
         )
 
 #the key id should be a tag string
