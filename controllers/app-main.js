@@ -9,7 +9,7 @@ app.controller('main', function ($http, $scope) {
         $scope.user = data.user;
     });
     $scope.onEnter = function(event, foo){
-	if (event.key == "Enter")
+	if (event.which == 13)
 	    foo.call();
     };
 });
