@@ -2,60 +2,60 @@
 <!-- <h1 id="heading"></h1> -->
 <div class="requestform">
 <div class="formfield">
-    <label for="summary">Summary: </label>
+    <label for="summary">Summary </label>
     <textarea id="summary" ng-model="cr.summary"> </textarea>
 </div>
 <div class="formfield">
-    <label for="technician">Technician: </label>
+    <label for="technician">Technician </label>
     <input id="technician" type="text" ng-model="cr.technician" >
 </div>
 <div class="formfield">
-    <label for="peer_reviewer">Peer Reviewer: </label>
+    <label for="peer_reviewer">Peer Reviewer </label>
     <input id="peer_reviewer" type="text" ng-model="cr.peer_reviewer">
 </div>
 <div class="formfield">
-    <label for="description">Description: </label>
+    <label for="description">Description </label>
     <textarea id="description" ng-model="cr.description" > </textarea>
 </div>
 <div class="formfield">
-    <label for="impact">Impact: </label>
+    <label for="impact">Impact </label>
     <textarea id="impact" ng-model="cr.impact" > </textarea>
 </div>
 <div class="formfield">
-    <label for="documentation">Documentation: </label>
+    <label for="documentation">Documentation </label>
     <textarea id="documentation" ng-model="cr.documentation" > </textarea>
 </div>
 <div class="formfield">
-    <label for="rationale">Rationale: </label>
+    <label for="rationale">Rationale </label>
     <textarea id="rationale" rows="3" ng-model="cr.rationale" > </textarea>
 </div>
 <div class="formfield">
-    <label for="implementationSteps">Implementation Steps: </label>
+    <label for="implementationSteps">Implementation Steps </label>
     <textarea id="implementationSteps" ng-model="cr.implementation_steps" > </textarea>
 </div>
 <div class="formfield">
-    <label for="testsConducted">Tests Conducted: </label>
+    <label for="testsConducted">Tests Conducted </label>
     <textarea id="testsConducted" ng-model="cr.tests_conducted" > </textarea>
 </div>
 <div class="formfield">
-    <label for="risks">Risks: </label>
+    <label for="risks">Risks </label>
     <textarea id="risks" ng-model="cr.risks" > </textarea>
 </div>
 <div class="formfield">
-    <label for="backoutPlan">Backout Plan: </label>
+    <label for="backoutPlan">Backout Plan </label>
     <textarea id="backoutPlan" ng-model="cr.backout_plan" > </textarea>
 </div>
 <div class="formfield">
-    <label for="communicationPlan">Communication Plan:  </label>
+    <label for="communicationPlan">Communication Plan  </label>
     <textarea id="communicationPlan" ng-model="cr.communication_plan" > </textarea>
 </div>
 <div class="formfield">
-    <label for="laymanDescription">Layman Description: </label>
+    <label for="laymanDescription">Layman Description </label>
     <textarea id="laymanDescription" ng-model="cr.layman_description" > </textarea>
 </div>
 
 <div class="formfield">
-  <label for="startDate" tooltip="{{cr.startTime | timezone}}" tooltip-placement="left">Start Time: </label>
+  <label for="startDate" tooltip="{{cr.startTime | timezone}}" tooltip-placement="left">Start Time </label>
   <div id="startDate" ng-controller="DateCtrl"> 
       <div class="datepicker">
 	  <input type="text" datepicker-popup="{{format}}" ng-model="cr.startTime" datepicker-options="dateOptions" is-open="opened">
@@ -65,7 +65,7 @@
   </div>
 </div>
 <div class="formfield">
-  <label for="endDate" tooltip="{{cr.endTime | timezone}}" tooltip-placement="left">End Time: </label>
+  <label for="endDate" tooltip="{{cr.endTime | timezone}}" tooltip-placement="left">End Time </label>
   <div id="endDate" ng-controller="DateCtrl"> 
       <div class="datepicker">
 	  <input type="text" datepicker-popup="{{format}}" ng-model="cr.endTime" datepicker-options="dateOptions" is-open="opened">
@@ -76,7 +76,7 @@
 </div>
 
 <div class="formfield">
-    <label for="priority">Priority: </label>
+    <label for="priority">Priority </label>
     <select id="priority" ng-model="cr.priority">
         <option ng-repeat="p in priorities">{{p}}</option>
     </select>

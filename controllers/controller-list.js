@@ -95,10 +95,12 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
         data: 'crs',
         enablePaging: true,
         showFooter: true,
+	rowTemplate: 'templates/gridRow.html',
         footerTemplate: 'templates/footerTemplate.html',
         totalServerItems: 'totalServerItems',
         pagingOptions: $scope.pagingOptions,
         filterOptions: $scope.filterOptions,
+	enableColumnResize: true,
         columnDefs: [  	
             { field:"created_on | datetime", displayName: "Created On"},
 			{ field:"technician", displayName: "Technician"},
@@ -107,10 +109,15 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 			{ field:"startTime | datetime", displayName: "Start Time"},
 			{ field:"endTime | datetime", displayName: "End Time"},
 			{ field:"status", displayName: "Status"},
-			{ field:"id", displayName: "ID", cellTemplate: cellTemplate}
+	    { field:"id", displayName: "ID"}
 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
         ]
     };
+
+    this.redirect = function(index){
+   	$location.path('/id=' + ($scope.crs[index].id)).toString();
+    }
+
         
     //
     // Resizing grid

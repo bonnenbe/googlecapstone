@@ -37,6 +37,7 @@ label {
 
 #googleInfo {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .formfield {
@@ -52,8 +53,8 @@ textarea, .tags, input{
     border-style: solid;
     resize: none;
     background-color: inherit;
-    overflow: hidden;
 }
+
 textarea:focus, input:focus{
     background-color: #FFFFFF;
 }
@@ -66,12 +67,14 @@ textarea:focus, input:focus{
     margin-right: auto;
     margin-top: -10px;
     margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
  }
 
 
 
 #tabs {
-    /*float: left;*/
+    margin-top: 20px;
 }
 #search {
     float: right;
