@@ -8,6 +8,10 @@ app.controller('main', function ($http, $scope) {
     $http.get('/user').success(function (data) {
         $scope.user = data.user;
     });
+    $scope.onEnter = function(event, foo){
+	if (event.key == "Enter")
+	    foo.call();
+    };
 });
 
 

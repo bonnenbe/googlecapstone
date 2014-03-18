@@ -51,8 +51,13 @@ label {
 textarea, .tags, input{
     width: 70%;
     border-style: solid;
+    border-width: 1px;
+    border-color: #E0E0E0;
     resize: none;
     background-color: inherit;
+}
+#summary, #description, #impact, #documentation, #rationale, #implementation_steps{
+    height: 2cm;
 }
 
 textarea:focus, input:focus{
@@ -60,8 +65,8 @@ textarea:focus, input:focus{
 }
 .requestform{
     background-color: #F8F8F8;
-    min-width: 800px;
-    width: 50%;
+    max-width: 1500px;
+    width: 90%;
     clear: both;
     margin-left: auto;
     margin-right: auto;
@@ -69,7 +74,7 @@ textarea:focus, input:focus{
     margin-bottom: 0;
     padding-top: 10px;
     padding-bottom: 10px;
- }
+}
 
 
 
