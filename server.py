@@ -162,12 +162,18 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
+        mail_list = {user.email() for user in {cr.author, cr.technician} if user}
         if mail_list:
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
-                            subject= "CR #" + str(cr.key.id()) + " has been edited",
-                            body = "Blah, thanks.")
+                            subject= "CR #" + str(cr.key.id()) + " has been created",
+                            body = "Change request id " + str(cr.key.id()) + " has been created. \n\nSummary: \n" + str(cr.summary) + "\n\n Thanks, \nChange Management Team")
+        mail_list = {user.email() for user in {cr.peer_reviewer} if user}
+        if mail_list:    
+            mail.send_mail( sender = appEmail,
+                            to = mail_list,
+                            subject= "CR #" + str(cr.key.id()) + " needs your approval",
+                            body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\nThanks, \nChange Management Team")
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -217,7 +223,7 @@ class CRHandler(BaseHandler):
                 mail.send_mail( sender = appEmail, 
                                 to = mail_list,
                                 subject= "CR #" + str(cr.key.id()) + " has been edited",
-                                body = "Blah, thanks.")
+                                body = "Change request id " + str(cr.key.id()) + " has been edited. " + str(audit_entry["user"]))
             cr.put()
             
             # update document in full text search api
@@ -304,8 +310,8 @@ class ApprovalHandler(BaseHandler):
             if mail_list:
                 mail.send_mail( sender = appEmail, 
                                 to = mail_list,
-                                subject= "CR #" + str(cr.key.id()) + " has been edited",
-                                body = "Blah, thanks.")
+                                subject= "CR #" + str(cr.key.id()) + " has been approved",
+                                body = "CR #" + str(cr.key.id()) + " has been approved.\n\nThanks, \nChange Management Team")
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
