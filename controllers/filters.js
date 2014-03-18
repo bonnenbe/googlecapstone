@@ -12,6 +12,9 @@ app.filter('timezone', function() {
     return function(iso) {
 	var date = new Date(iso);
 	var datestring = date.toString();
-	return "UTC" + datestring.substring(datestring.indexOf("GMT")+3);
+	if (datestring.indexOf("GMT") != -1)
+	    return "UTC" + datestring.substring(datestring.indexOf("GMT")+3);
+	else
+	    return "UTC" + datestring.substring(datestring.indexOf("UTC")+3);
     }
 });
