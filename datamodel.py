@@ -23,7 +23,8 @@ properties = {
     'layman_description',
     'startTime',
     'endTime',
-    'tags'
+    'tags',
+    'cc_list'
 }
 
 searchable_properties = properties | {
@@ -52,6 +53,7 @@ class ChangeRequest(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True)
     technician = ndb.UserProperty()
     peer_reviewer = ndb.UserProperty()
+    cc_list = ndb.UserProperty(repeated=True)
     author = ndb.UserProperty()
     priority = ndb.StringProperty(choices=set(["sensitive", "routine"]))
     status = ndb.StringProperty(choices={'draft','created','approved'})
@@ -69,9 +71,12 @@ class ChangeRequest(ndb.Model):
             and isinstance(value, basestring)):
             d = stringtodatetime(value)
             object.__setattr__(self,attr,d)
-        elif (attr in ['technician','peer_reviewer'] and isinstance(value, basestring)):
+        elif (attr in ['technician','peer_reviewer','author','cc_list'] and isinstance(value, basestring)):
             d = users.User(value)
             object.__setattr__(self,attr,d)
+        elif (attr in ['technician','peer_reviewer','author','cc_list'] and isinstance(value, list)
+              and len(value) > 0 and isinstance(value[0], basestring)):
+            object.__setattr__(self,attr,[users.User(s) for s in value])
         elif (attr == 'tags' and isinstance(value, basestring)):
             d= value.split(',')
             object.__setattr__(self,attr,d)
@@ -92,11 +97,15 @@ class ChangeRequest(ndb.Model):
                 for tag in attr:
                     logging.info(tag)
                     fields.append(search.TextField(name=property, value=tag))
-                    
+            elif property == 'cc_list':
+                for user in attr:
+                    fields.append(search.TextField(name=property, value=user.email()))
+                    fields.append(search.AtomField(name=property, value=user.email()))
             elif isinstance(attr, datetime.datetime):
                 fields.append(search.DateField(name=property, value=attr))
             elif isinstance(attr, users.User):
                 fields.append(search.TextField(name=property, value=attr.email()))
+                fields.append(search.AtomField(name=property, value=attr.email()))
             else:
                 fields.append(search.TextField(name=property, value=attr))
         

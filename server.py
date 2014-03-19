@@ -61,14 +61,18 @@ def encodeChangeRequest(cr):
         'startTime': cr.startTime,
         'endTime': cr.endTime,
         'status': cr.status,
-        'tags': cr.tags
+        'tags': cr.tags,
+        'cc_list': [user.email() for user in cr.cc_list]
     }
     return obj
 
 #returns true if property p and string s are equivalent
 def equals(p,s):
     if isinstance(s, list):
-        return set(p) == set(s)
+        if len(p) > 0 and isinstance(p[0], users.User):
+            return {user.email() for user in p} == set(s)
+        else:
+            return set(p) == set(s)
     elif isinstance(p,datetime.datetime):
         return p == stringtodatetime(s)
     elif isinstance(p,users.User):
