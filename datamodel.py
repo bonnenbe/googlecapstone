@@ -39,7 +39,7 @@ def stringtodatetime(s):
     return datetime.datetime.strptime(string.split(s,'.')[0],
                                            "%Y-%m-%dT%H:%M:%S")
 class UserGroup(ndb.Model):
-    name = ndb.StringProperty(required=True)
+    name = ndb.StringProperty()
     owners = ndb.UserProperty(repeated=True)
     members = ndb.UserProperty(repeated=True)
 

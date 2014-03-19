@@ -1,7 +1,7 @@
 // List(main page) Controller
 app.controller('listController',['$http', '$scope', '$location', function($http, $scope, $location){
     var self = this;
-    $scope.draftsMode = false;
+    $scope.mode = "all"
     $scope.priorities = ['routine', 'sensitive'];
     $scope.status = ['draft', 'created', 'approved'];
     $scope.searchableFields = ['technician','priority'];
@@ -32,16 +32,17 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
     };
 
     // On get new page
-    $scope.getPagedDataAsync = function (pageSize, page, searchParams, draftsMode, query) {
+    $scope.getPagedDataAsync = function (pageSize, page, searchParams, mode, query) {
         setTimeout(function () {
             var params = {};
             params["offset"] = (page - 1) * pageSize;
             
             // Send full text query
-            if (query) {
-                params["query"] = query;
-            }
-            
+	    if (!query)
+		query = ""
+	    params["query"] = encodeURIComponent(query);
+	    
+                       
             params["limit"] = pageSize;
             searchParams.forEach(function(s){
                 if (s.text) params[s.field] = s.text;
@@ -49,7 +50,17 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
             var obj = {};
             
             obj["params"] = params;
-            if (draftsMode)
+	    if (mode == "approval")
+	    {
+		if (query)
+		    obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive (" + query + ")");
+		else
+		    obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive");
+		$http.get('/changerequests', obj).success(function (data){
+                    $scope.setPagingData(pageSize, page, data.changerequests);
+                });
+	    }
+            else if (mode == "drafts")
                 $http.get('/drafts', obj).success(function(data){
                     $scope.setPagingData(pageSize, page, data.drafts);
                 });
@@ -63,7 +74,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 
     $scope.refresh = function (){
         $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
-				 $scope.searchParams, $scope.draftsMode, $scope.query);
+				 $scope.searchParams, $scope.mode, $scope.query);
     };
 
     
@@ -165,11 +176,15 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
 	    $scope.refresh();
 	})};
     $scope.onSelectCRs = function() {
-        $scope.draftsMode = false;
+        $scope.mode = "all"
         $scope.refresh();
     };
     $scope.onSelectMyDrafts = function() {
-        $scope.draftsMode = true;
+        $scope.mode = "drafts"
+        $scope.refresh();
+    };
+    $scope.onSelectApproval = function() {
+	$scope.mode = "approval"
         $scope.refresh();
     };
 

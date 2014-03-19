@@ -7,6 +7,8 @@ var app = angular.module('module1', ['ngRoute', 'ngGrid', 'ui.bootstrap', 'ngTag
 app.controller('main', function ($http, $scope) {
     $http.get('/user').success(function (data) {
         $scope.user = data.user;
+	$scope.inAdmins = data.inAdmins;
+	$scope.inCommittee = data.inCommittee;
     });
     $scope.onEnter = function(event, foo){
 	if (event.which == 13)

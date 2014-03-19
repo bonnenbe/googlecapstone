@@ -136,9 +136,9 @@ class CRListHandler(BaseHandler):
         crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
         # full text search stuff
-        if 'query' in params:
+        if 'query' in params and params['query']:
             index = search.Index(name="fullTextSearch")
-            query_string = params['query']
+            query_string = urllib.unquote(params['query'])
             try:
                 # list comprehension
                 doc_ids = [document.doc_id for document in index.search(query_string)]
@@ -300,7 +300,14 @@ class DraftHandler(BaseHandler):
             cr.key.delete()
 class UserHandler(BaseHandler):
     def get(self):
-        self.response.write(json.dumps({'user': users.get_current_user().email()}))
+        user = users.get_current_user()
+        admins = UserGroup.get_or_insert('admins')
+        committee = UserGroup.get_or_insert('approvalcommittee')
+        inAdmins = user in admins.members
+        inCommittee = user in committee.members
+        self.response.write(json.dumps({'user': user.email(),
+                                        'inAdmins' : inAdmins,
+                                        'inCommittee' : inCommittee}))
        
 class ApprovalHandler(BaseHandler):
     def put(self, id):
@@ -356,7 +363,7 @@ class GroupHandler(BaseHandler):
 
             
 
-class AdminHandler(BaseHandler):
+class IndexHandler(BaseHandler):
     def get(self):
     
         # force update on search index via /admin/rebuildIndex
@@ -365,7 +372,21 @@ class AdminHandler(BaseHandler):
         for cr in crs_query:
             index = search.Index(name="fullTextSearch")
             index.put(cr.toSearchDocument())
-            
+class TempHandler(BaseHandler):
+    def get(self):
+        admins = UserGroup.get_or_insert('admins')
+        committee = UserGroup.get_or_insert('approvalcommittee')
+        nick = users.User("vogtnich@gmail.com")
+        if nick not in admins.members:
+            admins.members.append(nick)
+            admins.name = "admins"
+            admins.put()
+        if nick not in committee.members:
+            committee.members.append(nick)
+            admins.name = "Approval Committee"
+            committee.put()
+
+    
         
             
 class TagsHandler(BaseHandler):
@@ -397,6 +418,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
     webapp2.Route('/tags', handler = TagsHandler),
     webapp2.Route('/usergroups', handler = GroupHandler),
-    webapp2.Route('/admin/rebuildIndex', handler = AdminHandler)
+    webapp2.Route('/admin/rebuildIndex', handler = IndexHandler),
+    webapp2.Route('/admin/temp', handler = TempHandler)
 
 ], debug=True)
