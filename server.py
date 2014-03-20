@@ -166,7 +166,7 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = {user.email() for user in {cr.author, cr.technician} if user}
+        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user}
         if mail_list:
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
@@ -200,12 +200,29 @@ class CRHandler(BaseHandler):
         form = json.loads(self.request.body)
         key = IDsToKey(id)
         cr = key.get()
-
+        updated, approved = False, False
+        if cr.status not in ['created', 'approved']:
+            webapp2.abort(403) #wrong uri
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
         audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
+
+        if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
+            #attempting to approve
+            committee = UserGroup.get_or_insert('approvalcommittee').members        
+            if cr.priority != 'sensitive' or (users.get_current_user() in committee and cr.priority == 'sensitive'):
+                cr.status = 'approved'
+                change = dict()
+                change['property'] = 'status'
+                change['from'] = 'created'
+                change['to'] = 'approved'
+                audit_entry['changes'].append(change)
+                updated = True
+                approved = True
+            else:
+                webapp2.abort(403) #forbidden approval
         
         if 'tags' in form.keys():
             updateTags(set(form['tags']) - set(cr.tags),
@@ -218,17 +235,25 @@ class CRHandler(BaseHandler):
                 setattr(cr,p,form[p])
                 change['to'] = str(getattr(cr,p))
                 audit_entry['changes'].append(change)
+                updated = True
 
-        if len(audit_entry['changes']) != 0:
+        if updated:
             cr.audit_trail.insert(0, audit_entry)
-            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
+            cr.put()
+            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} | set(cr.cc_list) if user}
 
             if mail_list:
-                mail.send_mail( sender = appEmail, 
-                                to = mail_list,
-                                subject= "CR #" + str(cr.key.id()) + " has been edited",
-                                body = "Change request id " + str(cr.key.id()) + " has been edited. " + str(audit_entry["user"]))
-            cr.put()
+                if approved:
+                    mail.send_mail( sender = appEmail, 
+                                    to = mail_list,
+                                    subject= "CR #" + str(cr.key.id()) + " has been approved",
+                                    body = "CR #" + str(cr.key.id()) + " has been approved.\n\nThanks, \nChange Management Team")
+                else:
+                    mail.send_mail( sender = appEmail, 
+                                    to = mail_list,
+                                    subject= "CR #" + str(cr.key.id()) + " has been edited",
+                                    body = "Change request id " + str(cr.key.id()) + " has been edited. " + str(audit_entry["user"]))
+
             
             # update document in full text search api
             try:
@@ -236,11 +261,14 @@ class CRHandler(BaseHandler):
                 index.put(cr.toSearchDocument())
             except search.Error:
                 logging.exception("Put failed")
-            
-        self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
     def delete(self, id):
         key = IDsToKey(id)
         updateTags([], key.get().tags)
+        try:
+            index = search.Index(name="fullTextSearch")
+            index.delete([key.urlsafe()])
+        except search.Error:
+            logging.exception("Put failed")
         key.delete()
 
 class DraftListHandler(BaseHandler):
@@ -309,41 +337,6 @@ class UserHandler(BaseHandler):
                                         'inAdmins' : inAdmins,
                                         'inCommittee' : inCommittee}))
        
-class ApprovalHandler(BaseHandler):
-    def put(self, id):
-        group_query = UserGroup.query().filter( UserGroup.members == users.get_current_user(), UserGroup.name == 'admins')
-        key = IDsToKey(id)
-        cr = key.get()
-        if (group_query.count(limit=1) and cr.priority == 'sensitive') or cr.priority != 'sensitive':
-            form = json.loads(self.request.body)
-            form['status'] = 'approved'
-            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} if user}
-            if mail_list:
-                mail.send_mail( sender = appEmail, 
-                                to = mail_list,
-                                subject= "CR #" + str(cr.key.id()) + " has been approved",
-                                body = "CR #" + str(cr.key.id()) + " has been approved.\n\nThanks, \nChange Management Team")
-
-        audit_entry = dict()
-        audit_entry['date'] = datetime.datetime.now().isoformat()
-        audit_entry['user'] = users.get_current_user().email()
-        audit_entry['changes'] = []
-        
-        if (form['status'] and str(getattr(cr,'status')) != form['status']):
-            change = dict()
-            change['property'] = 'status'
-            change['from'] = str(getattr(cr,'status'))
-            change['to'] = form['status']
-            audit_entry['changes'].append(change)
-            setattr(cr,'status',form['status'])
-
-        if len(audit_entry['changes']) != 0:
-            cr.audit_trail.append(audit_entry)
-            cr.put()
-            self.response.write(json.dumps({'blah': cr.audit_trail.__repr__()},cls=JSONEncoder))
-        else :
-            webapp2.abort(403)
-
 class GroupHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
@@ -415,7 +408,6 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/user',handler=UserHandler),
     webapp2.Route('/drafts',handler=DraftListHandler),
     webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
-    webapp2.Route('/approve/<id:.*>', handler = ApprovalHandler),
     webapp2.Route('/tags', handler = TagsHandler),
     webapp2.Route('/usergroups', handler = GroupHandler),
     webapp2.Route('/admin/rebuildIndex', handler = IndexHandler),
