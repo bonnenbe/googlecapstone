@@ -369,15 +369,17 @@ class TempHandler(BaseHandler):
     def get(self):
         admins = UserGroup.get_or_insert('admins')
         committee = UserGroup.get_or_insert('approvalcommittee')
-        nick = users.User("vogtnich@gmail.com")
-        if nick not in admins.members:
-            admins.members.append(nick)
-            admins.name = "admins"
-            admins.put()
-        if nick not in committee.members:
-            committee.members.append(nick)
-            admins.name = "Approval Committee"
-            committee.put()
+        coolpeople = {users.User(email) for email in {"vogtnich@gmail.com", "guoalber1@gmail.com", "bbonnen@gmail.com",
+                                                  "antarus@google.com", "krelinga@google.com", "bgilmore@google.com"}}
+        for person in coolpeople:
+            if person not in admins.members:
+                admins.members.append(person)
+                admins.name = "admins"
+                admins.put()
+            if person not in committee.members:
+                committee.members.append(person)
+                admins.name = "Approval Committee"
+                committee.put()
 
     
         
