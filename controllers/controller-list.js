@@ -37,7 +37,7 @@ app.controller('listController',['$http', '$scope', '$location', function($http,
             var params = {};
             params["offset"] = (page - 1) * pageSize;
             
-            // Send full text query
+        // Send full text query
 	    if (!query)
 		query = ""
 	    params["query"] = encodeURIComponent(query);

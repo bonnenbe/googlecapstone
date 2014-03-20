@@ -135,15 +135,27 @@ class CRListHandler(BaseHandler):
         
         crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
 
+
         # full text search stuff
         if 'query' in params and params['query']:
+                             
             index = search.Index(name="fullTextSearch")
+            
             query_string = urllib.unquote(params['query'])
+            options = search.QueryOptions(
+                limit = int(params['limit']) if 'limit' in params else 10,
+                offset = int(params['offset']) if 'offset' in params else 0,
+                ids_only = True
+            )
+            query = search.Query(options=options, query_string=query_string)
+            
             try:
                 # list comprehension
-                doc_ids = [document.doc_id for document in index.search(query_string)]
+                results = index.search(query).results
+                #logging.debug(results)
+                #doc_ids = [document.doc_id for document in index.search(query_string)]
                 
-                keys = [ndb.Key(urlsafe=id) for id in doc_ids]
+                keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
                 crs = ndb.get_multi(keys)
             except search.Error:
                 logging.exception('Search failed')
@@ -401,7 +413,10 @@ class TagsHandler(BaseHandler):
             webapp2.abort(400)
         self.response.write(json.dumps([doc.doc_id for doc in results],cls=JSONEncoder))
             
-            
+class SearchHandler(BaseHandler):
+    def get(self):
+        pass
+
             
 application = webapp2.WSGIApplication([
     webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
@@ -413,6 +428,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/tags', handler = TagsHandler),
     webapp2.Route('/usergroups', handler = GroupHandler),
     webapp2.Route('/admin/rebuildIndex', handler = IndexHandler),
-    webapp2.Route('/admin/temp', handler = TempHandler)
+    webapp2.Route('/admin/temp', handler = TempHandler), 
+    webapp2.Route('/search', handler = SearchHandler)
 
 ], debug=True)

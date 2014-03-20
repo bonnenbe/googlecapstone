@@ -21,6 +21,7 @@
 	<div id="fullSearch">
             <input type=text ng-model="$parent.query" ng-keypress="onEnter($event, list.fullsearch)">
             <button id="searchButton2" ng-click="list.fullsearch()">Search</button>
+            <a href="#/search" ><button>Advanced</button></a>
 	</div>
     </div>
     <button ng-click="list.clearDrafts()" ng-show="draftsMode">Clear Drafts</button>
