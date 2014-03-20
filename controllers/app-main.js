@@ -41,7 +41,7 @@ app.config(function ($routeProvider) {
         .when('/search', {
             controller: 'searchController',
             templateUrl: '/views/search.html',
-            controllerAs: 'ctrl'
+            controllerAs: 'list'
         })
         .otherwise({
             redirectTo: '/'
