@@ -45,7 +45,8 @@ app.controller('updateController', function($routeParams, $http, $scope, $locati
     };
 
     this.approve = function approve(cr){
-	$http.put('/approve/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
+	cr.status = 'approved';
+	$http.put('/changerequests/' + $routeParams.id,JSON.stringify(cr)).success(function(data) {
 	    $location.path('#');
 	})
     };
