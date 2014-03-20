@@ -1,5 +1,4 @@
 
-app.controller('searchController', function($http,$scope,$location,$interval){
-    
-});
+app.controller('searchController', function ($http, $scope, $location, $interval) {
 
+});
