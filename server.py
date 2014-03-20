@@ -171,13 +171,13 @@ class CRListHandler(BaseHandler):
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
                             subject= "CR #" + str(cr.key.id()) + " has been created",
-                            body = "Change request id " + str(cr.key.id()) + " has been created. \n\nSummary: \n" + str(cr.summary) + "\n\n Thanks, \nChange Management Team")
+                            body = "Change request id " + str(cr.key.id()) + " has been created. \n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\n Thanks, \nChange Management Team")
         mail_list = {user.email() for user in {cr.peer_reviewer} if user}
         if mail_list:    
             mail.send_mail( sender = appEmail,
                             to = mail_list,
                             subject= "CR #" + str(cr.key.id()) + " needs your approval",
-                            body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\nThanks, \nChange Management Team")
+                            body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\nThanks, \nChange Management Team")
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.key.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -247,12 +247,12 @@ class CRHandler(BaseHandler):
                     mail.send_mail( sender = appEmail, 
                                     to = mail_list,
                                     subject= "CR #" + str(cr.key.id()) + " has been approved",
-                                    body = "CR #" + str(cr.key.id()) + " has been approved.\n\nThanks, \nChange Management Team")
+                                    body = "CR #" + str(cr.key.id()) + " has been approved." + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\nThanks, \nChange Management Team")
                 else:
                     mail.send_mail( sender = appEmail, 
                                     to = mail_list,
                                     subject= "CR #" + str(cr.key.id()) + " has been edited",
-                                    body = "Change request id " + str(cr.key.id()) + " has been edited. " + str(audit_entry["user"]))
+                                    body = "Change request id " + str(cr.key.id()) + " has been edited by " + str(audit_entry["user"]) +"\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()))
 
             
             # update document in full text search api
