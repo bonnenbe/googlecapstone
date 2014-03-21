@@ -178,7 +178,7 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user}
+        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user | set(cr.cc_list) if user}
         if mail_list:
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
@@ -213,14 +213,22 @@ class CRHandler(BaseHandler):
         key = IDsToKey(id)
         cr = key.get()
         updated, approved = False, False
-        if cr.status not in ['created', 'approved']:
+        if cr.status not in ['created', 'approved', 'succeeded', 'failed']:
             webapp2.abort(403) #wrong uri
 
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now().isoformat()
         audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
-
+        
+        if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine':
+            cr.status = 'created'
+            change = dict()
+            change['property'] = 'priority'
+            change['from'] = 'sensitive'
+            change['to'] = 'routine'
+            audit_entry['changes'].append(change)
+            updated = True
         if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
             #attempting to approve
             committee = UserGroup.get_or_insert('approvalcommittee').members        
@@ -235,7 +243,15 @@ class CRHandler(BaseHandler):
                 approved = True
             else:
                 webapp2.abort(403) #forbidden approval
-        
+        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+                cr.status = form['status']
+                change = dict()
+                change['property'] = 'status'
+                change['from'] = 'created'
+                change['to'] = 'approved'
+                audit_entry['changes'].append(change)
+                updated = True
+
         if 'tags' in form.keys():
             updateTags(set(form['tags']) - set(cr.tags),
                        set(cr.tags) - set(form['tags']))
@@ -264,7 +280,7 @@ class CRHandler(BaseHandler):
                     mail.send_mail( sender = appEmail, 
                                     to = mail_list,
                                     subject= "CR #" + str(cr.key.id()) + " has been edited",
-                                    body = "Change request id " + str(cr.key.id()) + " has been edited by " + str(audit_entry["user"]) +"\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()))
+                                    body = "Change request id " + str(cr.key.id()) + " has been edited by " + str(audit_entry["user"]) +".\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()))
 
             
             # update document in full text search api
