@@ -13,6 +13,7 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         $scope.cr = data.changerequest;
         $scope.cr.startTime = new Date($scope.cr.startTime);
         $scope.cr.endTime = new Date($scope.cr.endTime);
+        $scope.showComment = ($scope.cr.status == 'created' || $scope.cr.status == 'approved');
     });
 
     this.update = function update(cr) {
@@ -82,8 +83,3 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     };
 });
 
-
-// This function is used to close the audit trail button. It's a part of a bootstrap demo.
-function CollapseDemoCtrl($scope) {
-    $scope.isCollapsed = false;
-}

@@ -220,6 +220,8 @@ class CRHandler(BaseHandler):
         audit_entry['date'] = datetime.datetime.now().isoformat()
         audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
+        if 'comment' in form.keys():
+            audit_entry['comment'] = form['comment']
         
         if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine':
             cr.status = 'created'

@@ -17,7 +17,7 @@
             <tab heading="Change Requests" select="onSelectCRs()"></tab>
             <tab heading="My Drafts" select="onSelectMyDrafts()"></tab>
             <tab heading="Awaiting Approval" select="onSelectApproval()" ng-show="inCommittee"></tab>
-	    <tab heading="Recently Approved" select="onSelectRecentlyApproved()" ng-show="inCommittee"></tab>
+            <tab heading="Recently Approved" select="onSelectRecentlyApproved()" ng-show="inCommittee"></tab>
         </tabset>
         <div id="fullSearch">
             <input type=text ng-model="$parent.query" ng-keypress="onEnter($event, list.fullsearch)">
@@ -35,3 +35,5 @@
     </div>-->
 </div>
 <div class="gridStyle" ng-grid="gridOptions" id="grid"></div>
+indent-tabs-mode
+sgml-basic-offset

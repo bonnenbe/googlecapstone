@@ -10,6 +10,7 @@
 	    </tags-input>
 	</div>
     </div>
+    <textarea id="comment" ng-show="showComment" ng-model="cr.comment"></textarea>
 
     <div class="formButtons">
         <button ng-click="ctrl.update(cr)">Publish</button>
@@ -17,20 +18,21 @@
         <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
         <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>
         <button ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">Failure</button>
-        <div ng-controller="CollapseDemoCtrl">
-            <button class="btn btn-default" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
-            <div collapse="isCollapsed">
-                <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
-                    <div class="panel-heading">
-                        On {{audit_entry.date | datetime}} <strong>{{audit_entry.user}}</strong> edited this request:
-                    </div>
-                    <div class="panel-body">
-                        <ul class="audit_entry">
-                            <li class="audit_change" ng-repeat="change in audit_entry.changes">
-                                Changed {{change.property}} from "{{change.from}}" to "{{change.to}}"
-                            </li>
-                        </ul>
-                    </div>
+    </div>
+    <button id="audit_trail_button" class="btn btn-default" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
+    <div class="audit_trail" collapse="isCollapsed">
+        <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
+            <div class="panel-heading">
+                On {{audit_entry.date | datetime}} <strong>{{audit_entry.user}}</strong> edited this request:
+            </div>
+            <div class="panel-body audit_entry">
+                <ul class="audit_changes">
+                    <li class="audit_change" ng-repeat="change in audit_entry.changes">
+                        Changed {{change.property}} from "{{change.from}}" to "{{change.to}}"
+                    </li>
+                </ul>
+                <div class="well audit_comment" ng-show="audit_entry.comment">
+                    {{audit_entry.comment}}
                 </div>
             </div>
         </div>

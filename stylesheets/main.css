@@ -75,8 +75,11 @@ textarea:focus, input:focus{
     padding-top: 10px;
     padding-bottom: 10px;
 }
-
-
+#comment{
+    width: 30%;
+    display: block;
+    margin: 10px auto;
+}
 
 #tabs {
     margin-top: 20px;
@@ -114,12 +117,33 @@ textarea:focus, input:focus{
 .inline {
     float: left;
 }
-.audit_entry {
+.audit_changes {
     list-style-type: none;
     margin-bottom: 0;
+    padding-left: 0;
 }
 .audit_change {
     margin-bottom: 1em;
+}
+.audit_entry{
+ 
+}
+.audit_trail{
+    width: 70%;
+    max-width: 1200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+#audit_trail_button{
+    width: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.audit_entry .audit_comment{
+    margin-top: 20px;
+    margin-bottom: 0;
 }
 .audit_change:last-child {
     margin-bottom: 0;
