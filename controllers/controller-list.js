@@ -59,7 +59,22 @@ app.controller('listController', ['$http', '$scope', '$location',
                     $http.get('/changerequests', obj).success(function (data) {
                         $scope.setPagingData(pageSize, page, data.changerequests);
                     });
-                } else if (mode == "drafts")
+                }
+		else if (mode == 'recentlyApproved')
+		{
+		    var weekago = new Date();
+		    weekago.setDate(weekago.getDate() - 7);
+		    var date = weekago.toJSON().substring(0,10);
+		    if (query)
+			obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date + " (" + query + ")");
+		    else
+			obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
+
+		    $http.get('/changerequests', obj).success(function (data){
+			$scope.setPagingData(pageSize, page, data.changerequests);
+                    });
+		}
+		else if (mode == "drafts")
                     $http.get('/drafts', obj).success(function (data) {
                         $scope.setPagingData(pageSize, page, data.drafts);
                     });
@@ -203,6 +218,10 @@ app.controller('listController', ['$http', '$scope', '$location',
             $scope.mode = "approval"
             $scope.refresh();
         };
+	$scope.onSelectRecentlyApproved = function() {
+	    $scope.mode = "recentlyApproved"
+	    $scope.refresh();
+	};
 
     }
 ]);
