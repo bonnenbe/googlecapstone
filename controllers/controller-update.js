@@ -48,6 +48,20 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
             $location.path('#');
         })
     };
+    this.succeeded = function approve(cr, a) {
+        if(a == true) {
+            cr.status = 'succeeded';
+            $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
+            $location.path('#');
+            })
+        }
+        else {
+            cr.status = 'failed';
+            $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
+            $location.path('#');
+            })
+        }
+    };
     this.sendDraft = function sendDraft(cr) {
         if (cr.status == 'draft')
             $http.put('/drafts/' + cr.id, JSON.stringify(cr));

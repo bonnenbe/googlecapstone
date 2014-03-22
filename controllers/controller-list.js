@@ -4,7 +4,7 @@ app.controller('listController', ['$http', '$scope', '$location',
         var self = this;
         $scope.mode = "all"
         $scope.priorities = ['routine', 'sensitive'];
-        $scope.status = ['draft', 'created', 'approved'];
+        $scope.status = ['draft', 'created', 'approved', 'succeeded', 'failed'];
         $scope.searchableFields = ['technician', 'priority'];
         $scope.searchParams = [{
             field: $scope.searchableFields[0],
