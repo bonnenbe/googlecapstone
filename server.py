@@ -178,7 +178,7 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user | set(cr.cc_list) if user}
+        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user}
         if mail_list:
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
