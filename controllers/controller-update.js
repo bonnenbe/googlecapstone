@@ -70,9 +70,11 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     };
     this.subscribe = function subscribe(cr){
         $scope.cr.cc_list.push($scope.user);
-        $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function(data){
-            $location.path('#');
-        })
+        $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr));
+    };
+    this.unsubscribe = function unsubscribe(cr){
+        $scope.cr.cc_list.splice($scope.cr.cc_list.indexOf($scope.user),1)
+        $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr));
     };
     this.sendDraft = function sendDraft(cr) {
         if (cr.status == 'draft')

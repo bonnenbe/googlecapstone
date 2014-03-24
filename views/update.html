@@ -18,7 +18,8 @@
         <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
         <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>
         <button ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">Failure</button>
-        <button ng-click="ctrl.subscribe(cr)"  tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
+        <button ng-click="ctrl.subscribe(cr)" ng-show="cr.cc_list.indexOf(user) < 0 " tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
+        <button ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0 " tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Unsubscribe</button>
     </div>
 
     <textarea id="comment" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>
