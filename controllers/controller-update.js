@@ -55,13 +55,18 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
             $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
             $location.path('#');
             })
-        }
-        else {
+        } else {
             cr.status = 'failed';
             $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
             $location.path('#');
             })
         }
+    };
+    this.subscribe = function subscribe(cr){
+        $scope.cr.cc_list.push($scope.user);
+        $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function(data){
+            $location.path('#');
+        })
     };
     this.sendDraft = function sendDraft(cr) {
         if (cr.status == 'draft')

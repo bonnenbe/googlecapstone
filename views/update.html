@@ -10,7 +10,7 @@
 	    </tags-input>
 	</div>
     </div>
-    <textarea id="comment" ng-show="showComment" ng-model="cr.comment"></textarea>
+    
 
     <div class="formButtons">
         <button ng-click="ctrl.update(cr)">Publish</button>
@@ -18,7 +18,11 @@
         <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
         <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>
         <button ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">Failure</button>
+        <button ng-click="ctrl.subscribe(cr)"  tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
     </div>
+
+    <textarea id="comment" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>
+
     <button id="audit_trail_button" class="btn btn-default" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
     <div class="audit_trail" collapse="isCollapsed">
         <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
