@@ -5,19 +5,19 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /templates
+- url: /static/templates
   static_dir: templates 
 
-- url: /stylesheets
+- url: /static/stylesheets
   static_dir: stylesheets
 
-- url: /views
+- url: /static/views
   static_dir: views
 
-- url: /scripts
+- url: /static/scripts
   static_dir: scripts
 
-- url: /controllers
+- url: /static/controllers
   static_dir: controllers
   
 - url: /

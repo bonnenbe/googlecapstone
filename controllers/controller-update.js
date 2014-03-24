@@ -86,6 +86,12 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
                 });
             });
     };
+    this.clone = function(cr){
+            $http.post('/templates', JSON.stringify(cr)).success(function (data) {
+                cr.id = data.id;
+            });
+    };
+    
     $scope.getTags = function (query) {
         var params = {};
         params["query"] = query;

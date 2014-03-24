@@ -384,7 +384,7 @@ class TemplateHandler(BaseHandler):
     def get(self, id):
         key = IDsToKey(id)
         cr = key.get()
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
+        self.response.write(json.dumps({'template': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False

@@ -20,32 +20,32 @@ app.config(function ($routeProvider) {
     $routeProvider
         .when('/id=:id', {
             controller: 'updateController',
-            templateUrl: '/views/update.html',
+            templateUrl: '/static/views/update.html',
             controllerAs: 'ctrl'
         })
         .when('/', {
             controller: 'listController',
-            templateUrl: '/views/list.html',
+            templateUrl: '/static/views/list.html',
             controllerAs: 'list'
         })
         .when('/Create', {
             controller: 'createController',
-            templateUrl: '/views/create.html',
+            templateUrl: '/static/views/create.html',
             controllerAs: 'ctrl'
         })
         .when('/CreateTemplate', {
             controller: 'createController',
-            templateUrl: '/views/createTemplate.html',
+            templateUrl: '/static/views/createTemplate.html',
             controllerAs: 'ctrl'
         })
         .when('/groups', {
             controller: 'groupController',
-            templateUrl: '/views/groups.html',
+            templateUrl: '/static/views/groups.html',
             controllerAs: 'ctrl'
         })
         .when('/search', {
             controller: 'searchController',
-            templateUrl: '/views/search.html',
+            templateUrl: '/static/views/search.html',
             controllerAs: 'list'
         })
         .otherwise({
