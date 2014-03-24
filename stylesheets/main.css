@@ -103,7 +103,7 @@ textarea:focus, input:focus{
     margin-top: 10px; 
     margin-left: 0; 
     display: inline;
-    float: right;
+    /*float: right;*/
 }
 .searchItem {
    

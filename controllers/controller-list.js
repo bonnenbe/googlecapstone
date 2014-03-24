@@ -1,6 +1,7 @@
 // List(main page) Controller
 app.controller('listController', ['$http', '$scope', '$location',
     function ($http, $scope, $location) {
+        $scope.search = {};
         var self = this;
         $scope.mode = "all"
         $scope.priorities = ['routine', 'sensitive'];
@@ -91,16 +92,19 @@ app.controller('listController', ['$http', '$scope', '$location',
         };
 
         $scope.refresh = function () {
+        
             $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
-                $scope.searchParams, $scope.mode, $scope.query);
+                $scope.searchParams, $scope.mode, $scope.search.query);
         };
 
-
+        
 
 
         //
         // Events for setting paging data when paging data is changed or page is turned	
         //
+        
+        $scope.search.query = $location.search()["query"];
         $scope.refresh();
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {

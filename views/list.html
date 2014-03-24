@@ -21,7 +21,7 @@
             <tab heading="Templates" select="onSelectTemplates()"></tab>
         </tabset>
         <div id="fullSearch">
-            <input type=text ng-model="$parent.query" ng-keypress="onEnter($event, list.fullsearch)">
+            <input type=text ng-model="search.query" ng-keypress="onEnter($event, list.fullsearch)">
             <button id="searchButton2" ng-click="list.fullsearch()">Search</button>
             <a href="#/search">
                 <button>Advanced</button>
