@@ -27,7 +27,7 @@
             </a>
         </div>
     </div>
-    <button ng-click="list.clearDrafts()" ng-show="draftsMode">Clear Drafts</button>
+    <button ng-click="list.clearDrafts()" ng-show="mode == 'drafts'">Clear Drafts</button>
     <br ng-show="draftsMode">
     <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
 	<a ng-href="#/id={{cr.id}}">[Edit]</a>
