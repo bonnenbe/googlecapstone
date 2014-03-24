@@ -16,10 +16,10 @@ app.controller('createController', function ($http, $scope, $location, $interval
         $scope.heading = "Create Change Request";
         $("#heading").text($scope.heading);
     }
-
-    self.cancelDrafts = $interval(function () {
-        self.sendDraft($scope.cr);
-    }, 10000);
+    if ($location.path().indexOf('Template') != -1)
+        self.cancelDrafts = $interval(function () {
+            self.sendDraft($scope.cr);
+        }, 10000);
 
     $scope.$on('$destroy', function () {
         $interval.cancel(self.cancelDrafts);
@@ -34,6 +34,15 @@ app.controller('createController', function ($http, $scope, $location, $interval
         if (cr.id)
             self.remove();
         $http.post('/changerequests', JSON.stringify(cr)).success(function (data) {
+            cr.id = data.id;
+            console.log("Successful add");
+            $location.path('#');
+        }).error(function () {
+            console.log("Unsuccessful add");
+        });
+    };
+    this.addTemplate = function add(cr) {
+        $http.post('/templates', JSON.stringify(cr)).success(function (data) {
             cr.id = data.id;
             console.log("Successful add");
             $location.path('#');

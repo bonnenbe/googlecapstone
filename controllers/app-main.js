@@ -33,6 +33,11 @@ app.config(function ($routeProvider) {
             templateUrl: '/views/create.html',
             controllerAs: 'ctrl'
         })
+        .when('/CreateTemplate', {
+            controller: 'createController',
+            templateUrl: '/views/createTemplate.html',
+            controllerAs: 'ctrl'
+        })
         .when('/groups', {
             controller: 'groupController',
             templateUrl: '/views/groups.html',

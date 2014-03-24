@@ -37,7 +37,13 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
                     $location.path('#');
                 });
             });
-        } else //created or approved
+        } else if (cr.status == 'template')
+        {
+            $http.put('/templates/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
+                $location.path('#');
+            });
+        }
+        else //created or approved
             $http.put('/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
                 $location.path('#');
             });

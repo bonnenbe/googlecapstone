@@ -78,6 +78,10 @@ app.controller('listController', ['$http', '$scope', '$location',
                     $http.get('/drafts', obj).success(function (data) {
                         $scope.setPagingData(pageSize, page, data.drafts);
                     });
+                else if (mode == 'templates')
+                    $http.get('/templates', obj).success(function (data) {
+                        $scope.setPagingData(pageSize, page, data.templates);
+                    });
                 else
                     $http.get('/changerequests', obj).success(function (data) {
                         $scope.setPagingData(pageSize, page, data.changerequests);
@@ -207,19 +211,23 @@ app.controller('listController', ['$http', '$scope', '$location',
             })
         };
         $scope.onSelectCRs = function () {
-            $scope.mode = "all"
+            $scope.mode = "all";
             $scope.refresh();
         };
         $scope.onSelectMyDrafts = function () {
-            $scope.mode = "drafts"
+            $scope.mode = "drafts";
             $scope.refresh();
         };
         $scope.onSelectApproval = function () {
-            $scope.mode = "approval"
+            $scope.mode = "approval";
             $scope.refresh();
         };
 	$scope.onSelectRecentlyApproved = function() {
-	    $scope.mode = "recentlyApproved"
+	    $scope.mode = "recentlyApproved";
+	    $scope.refresh();
+	};
+	$scope.onSelectTemplates = function() {
+	    $scope.mode = "templates";
 	    $scope.refresh();
 	};
 

@@ -37,7 +37,8 @@ def IDsToKey(IDstring):
     for id in IDs:
         pairs.append(('ChangeRequest', int(id)))
     return ndb.Key(pairs=pairs)
-
+def keyToIDs(key):
+    return string.join(intersperse([str(pair[1]) for pair in key.pairs()], '-'))
     
 def encodeChangeRequest(cr):
     obj = {
@@ -50,7 +51,7 @@ def encodeChangeRequest(cr):
         'technician': cr.technician,
         'peer_reviewer': cr.peer_reviewer,
         'priority': cr.priority,
-        'id': string.join(intersperse(map(lambda x: str(x[1]), cr.key.pairs()), '-')),
+        'id': keyToIDs(cr.key),
         'created_on': cr.created_on,
         'audit_trail': cr.audit_trail,
         'tests_conducted': cr.tests_conducted,
@@ -191,7 +192,7 @@ class CRListHandler(BaseHandler):
                             subject= "CR #" + str(cr.key.id()) + " needs your approval",
                             body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\nThanks, \nChange Management Team")
         logging.debug(cr.key.id())
-        self.response.write(json.dumps({'id': cr.key.id(),
+        self.response.write(json.dumps({'id': keyToIDs(cr.key),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
         
         updateTags(cr.tags, [])
@@ -317,10 +318,10 @@ class DraftListHandler(BaseHandler):
         cr.status = 'draft'
         cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
-            if form[p] and str(getattr(cr,p)) != form[p]:
-                setattr(cr,p,form[p])
+            setattr(cr,p,form[p])
         cr.put()
-        self.response.write(json.dumps({'id': cr.key.id()}))
+        logging.info("KEY ID:" + keyToIDs(cr.key))
+        self.response.write(json.dumps({'id': keyToIDs(cr.key)}))
     def get(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
         params = self.request.params
@@ -355,6 +356,49 @@ class DraftHandler(BaseHandler):
     def delete(self, id):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
+            cr.key.delete()
+class TemplateListHandler(BaseHandler):
+    def post(self):
+        form = json.loads(self.request.body)
+        cr = ChangeRequest()
+        cr.audit_trail = []
+        cr.status = 'template'
+        cr.author = users.get_current_user()
+        for p in (set(form.keys()) & properties):
+            setattr(cr,p,form[p])
+        cr.put()
+        self.response.write(json.dumps({'id': keyToIDs(cr.key)}))
+    def get(self):
+        crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'template')
+        params = self.request.params
+        for field in set(params.keys()) & properties:
+            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']) if 'limit' in params else 10,
+                                                               offset=int(params['offset']) if 'offset' in params else 0)
+        objs = []
+        for cr in crs:
+            objs.append(encodeChangeRequest(cr))
+        self.response.write(json.dumps({'templates': objs},cls=JSONEncoder)) 
+        
+class TemplateHandler(BaseHandler):
+    def get(self, id):
+        key = IDsToKey(id)
+        cr = key.get()
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
+    def put(self, id):
+        form = json.loads(self.request.body)
+        changed = False
+        cr = IDsToKey(id).get()
+        if cr.status == 'template' and cr.author == users.get_current_user():
+            for p in (set(form.keys()) & properties):
+                if not equals(getattr(cr,p), form[p]):
+                    setattr(cr,p,form[p])
+                    changed = True
+        if changed:
+            cr.put()
+    def delete(self, id):
+        cr = IDsToKey(id).get()
+        if cr.status == 'template' and cr.author == users.get_current_user():
             cr.key.delete()
 class UserHandler(BaseHandler):
     def get(self):
@@ -443,6 +487,8 @@ application = webapp2.WSGIApplication([
     webapp2.Route('/user',handler=UserHandler),
     webapp2.Route('/drafts',handler=DraftListHandler),
     webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
+    webapp2.Route('/templates',handler=TemplateListHandler),
+    webapp2.Route('/templates/<id:.*>',handler=TemplateHandler),
     webapp2.Route('/tags', handler = TagsHandler),
     webapp2.Route('/usergroups', handler = GroupHandler),
     webapp2.Route('/admin/rebuildIndex', handler = IndexHandler),

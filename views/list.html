@@ -18,6 +18,7 @@
             <tab heading="My Drafts" select="onSelectMyDrafts()"></tab>
             <tab heading="Awaiting Approval" select="onSelectApproval()" ng-show="inCommittee"></tab>
             <tab heading="Recently Approved" select="onSelectRecentlyApproved()" ng-show="inCommittee"></tab>
+            <tab heading="Templates" select="onSelectTemplates()"></tab>
         </tabset>
         <div id="fullSearch">
             <input type=text ng-model="$parent.query" ng-keypress="onEnter($event, list.fullsearch)">
