@@ -237,6 +237,7 @@ class CRHandler(BaseHandler):
             committee = UserGroup.get_or_insert('approvalcommittee').members        
             if cr.priority != 'sensitive' or (users.get_current_user() in committee and cr.priority == 'sensitive'):
                 cr.status = 'approved'
+                cr.approved_on = datetime.datetime.now()
                 change = dict()
                 change['property'] = 'status'
                 change['from'] = 'created'

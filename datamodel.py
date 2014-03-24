@@ -29,6 +29,7 @@ properties = {
 
 searchable_properties = properties | {
     'created_on',
+    'approved_on',
     'author',
     'status'
 }
@@ -51,6 +52,7 @@ class ChangeRequest(ndb.Model):
     rationale  = ndb.TextProperty()
     implementation_steps = ndb.TextProperty()    
     created_on = ndb.DateTimeProperty(auto_now_add=True)
+    approved_on = ndb.DateTimeProperty()
     technician = ndb.UserProperty()
     peer_reviewer = ndb.UserProperty()
     cc_list = ndb.UserProperty(repeated=True)
