@@ -105,6 +105,8 @@ app.controller('listController', ['$http', '$scope', '$location',
         //
         
         $scope.search.query = $location.search()["query"];
+        $scope.search.sort = $location.search()["sort"];
+        $scope.search.direction = $location.search()["direction"];
         $scope.refresh();
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
