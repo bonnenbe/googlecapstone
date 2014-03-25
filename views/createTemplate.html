@@ -1,0 +1,13 @@
+<ng-include onload="ctrl.onload()" src="'static/views/requestform.html'"></ng-include>
+
+<div class="requestform">
+    <div class="formfield">
+        <label for="tags">Tags:</label>
+        <tags-input id="tags" ng-model="cr.tags" allowed-tags-pattern="^[a-zA-Z0-9\-\.\s]+$">
+            <auto-complete id="autocomplete" source="getTags($query)" min-length="1"></auto-complete>
+        </tags-input>
+    </div>
+</div>
+<div class="formButtons">
+    <button ng-click="ctrl.addTemplate(cr)">Create Template</button>
+</div>
