@@ -225,12 +225,19 @@ class CRHandler(BaseHandler):
             audit_entry['comment'] = form['comment']
             commented = True
         
-        if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine':
+        if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine' and cr.status != 'created':
+            #reset status if making CR sensitive            
+            audit_entry['changes'].append({'change': {'property': 'status',
+                                                      'from': cr.status,
+                                                      'to': 'created'}})
             cr.status = 'created'
+            form.pop('status', None)
             change = dict()
             change['property'] = 'priority'
-            change['from'] = 'sensitive'
-            change['to'] = 'routine'
+            change['from'] = 'routine'
+            change['to'] = 'sensitive'
+            cr.priority = 'sensitive'
+            form.pop('priority', None)
             audit_entry['changes'].append(change)
             updated = True
         if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
@@ -244,16 +251,18 @@ class CRHandler(BaseHandler):
                 change['from'] = 'created'
                 change['to'] = 'approved'
                 audit_entry['changes'].append(change)
+                form.pop('status', None)
                 updated = True
                 approved = True
             else:
                 webapp2.abort(403) #forbidden approval
         if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'):
-                cr.status = form['status']
                 change = dict()
                 change['property'] = 'status'
-                change['from'] = 'created'
-                change['to'] = 'approved'
+                change['from'] = cr.status
+                change['to'] = form['status']
+                cr.status = form['status']
+                form.pop('status', None)
                 audit_entry['changes'].append(change)
                 updated = True
 
