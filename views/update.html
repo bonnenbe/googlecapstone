@@ -24,10 +24,9 @@
         <button ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0 " tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Unsubscribe</button>
     </div>
 
-    <textarea id="comment" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>
+    <textarea id="comment" class="well" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>
 
-    <button id="audit_trail_button" class="btn btn-default" ng-init="isCollapsed = true" ng-click="isCollapsed = !isCollapsed">Audit Trail</button>
-    <div class="audit_trail" collapse="isCollapsed">
+    <div class="audit_trail">
         <div class="panel panel-default" ng-repeat="audit_entry in cr.audit_trail">
             <div class="panel-heading">
                 On {{audit_entry.date | datetime}} <strong>{{audit_entry.user}}</strong> edited this request:

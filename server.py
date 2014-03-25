@@ -213,7 +213,7 @@ class CRHandler(BaseHandler):
         form = json.loads(self.request.body)
         key = IDsToKey(id)
         cr = key.get()
-        updated, approved = False, False
+        updated, approved, commented = False, False, False
         if cr.status not in ['created', 'approved', 'succeeded', 'failed']:
             webapp2.abort(403) #wrong uri
 
@@ -221,8 +221,9 @@ class CRHandler(BaseHandler):
         audit_entry['date'] = datetime.datetime.now().isoformat()
         audit_entry['user'] = users.get_current_user().email()
         audit_entry['changes'] = []
-        if 'comment' in form.keys():
+        if 'comment' in form.keys() and form['comment']:
             audit_entry['comment'] = form['comment']
+            commented = True
         
         if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine':
             cr.status = 'created'
@@ -269,12 +270,13 @@ class CRHandler(BaseHandler):
                 audit_entry['changes'].append(change)
                 updated = True
 
-        if updated:
+        if updated or commented:
             cr.audit_trail.insert(0, audit_entry)
             cr.put()
             mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} | set(cr.cc_list) if user}
 
             if mail_list:
+                #TODO tailor email for commented but not updated
                 if approved:
                     mail.send_mail( sender = appEmail, 
                                     to = mail_list,
