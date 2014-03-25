@@ -15,6 +15,7 @@
     <div class="formButtons">
         <button ng-click="ctrl.update(cr)">Publish</button>
         <button ng-click="ctrl.clone(cr)" ng-show="cr.status == 'template'">Clone</button>
+        <button ng-click="ctrl.templateToDraft(cr)" ng-show="cr.status == 'template'">Edit as draft</button>
         <button ng-click="ctrl.sendDraft(cr)" ng-show="cr.status != 'template'">Save as Draft</button>
         <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
         <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>

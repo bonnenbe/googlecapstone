@@ -88,9 +88,15 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     };
     this.clone = function(cr){
             $http.post('/templates', JSON.stringify(cr)).success(function (data) {
-                cr.id = data.id;
+                $location.path('/id=' + data.id);
             });
     };
+    this.templateToDraft = function(cr){
+        $http.post('/drafts', JSON.stringify(cr)).success(function (data) {
+            $location.path('/id=' + data.id);
+        });
+    };
+        
     
     $scope.getTags = function (query) {
         var params = {};
