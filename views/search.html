@@ -10,5 +10,16 @@
             <a href ng-click="searchParams.splice($index,1)">X</a>
         </li>
     </ul>
+    <div> 
+        Sort by:
+        <select ng-model="sortField" required>
+            <option ng-selected="f=='created_on'" ng-repeat="f in searchableFields">{{f}}</option>
+        </select>
+        <select>
+            <option value="0">Ascending</option>
+            <option value="1" selected="selected">Descending</option>
+        </select>
+    </div>
+    
     <button id="searchButton" ng-click="list.search()">Search</button>
 </div>

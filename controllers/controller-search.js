@@ -1,6 +1,9 @@
 app.controller('searchController', ['$http', '$scope', '$location', '$interval', '$routeParams',
     function ($http, $scope, $location, $interval, $routeParams) {
-
+        
+        
+        // Note: initialization of sortfield is here and in search.html
+        $scope.sortField = "created_on";
         $scope.query = "";
         $scope.priorities = ['routine', 'sensitive'];
         $scope.status = ['draft', 'created', 'approved'];
@@ -61,12 +64,13 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         }
         
         this.search = function search() {
-        
             
             this.buildQuery();            
-            alert($scope.query);
+            alert($scope.sortField);
             
             $location.url("/?query="+$scope.query);
+            
+            
             //$location.search({query:$scope.query});
             //$location.path("#");
             
