@@ -214,7 +214,7 @@ class CRHandler(BaseHandler):
         form = json.loads(self.request.body)
         key = IDsToKey(id)
         cr = key.get()
-        updated, approved, commented = False, False, False
+        updated, approved, commented, unapproved = False, False, False, False
         if cr.status not in ['created', 'approved', 'succeeded', 'failed']:
             webapp2.abort(403) #wrong uri
 
@@ -241,6 +241,20 @@ class CRHandler(BaseHandler):
             form.pop('priority', None)
             audit_entry['changes'].append(change)
             updated = True
+        if 'status' in form.keys() and form['status'] == 'created' and cr.status == 'approved':
+            committee = UserGroup.get_or_insert('approvalcommittee').members        
+            if cr.priority != 'sensitive' or (users.get_current_user() in committee and cr.priority == 'sensitive'):
+                cr.status = 'created'
+                change = dict()
+                change['property'] = 'status'
+                change['from'] = 'approved'
+                change['to'] = 'created'
+                audit_entry['changes'].append(change)
+                form.pop('status', None)
+                updated = True
+                unapproved = True
+            else:
+                webapp2.abort(403) #forbidden approval
         if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
             #attempting to approve
             committee = UserGroup.get_or_insert('approvalcommittee').members        

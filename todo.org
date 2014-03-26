@@ -13,7 +13,6 @@
 * optimization
 ** use async, tasklets in server
 * approval
-** unapprove button
 ** check special cases
 * code organization
 ** have equals look at the property itself

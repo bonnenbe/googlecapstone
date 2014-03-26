@@ -96,6 +96,10 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
             $location.path('/id=' + data.id);
         });
     };
+    $scope.unapprove = function (){
+        $scope.cr.status = 'created';
+        $http.put('changerequests/' + $scope.cr.id, $scope.cr)
+    }
         
     
     $scope.getTags = function (query) {
