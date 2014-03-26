@@ -154,3 +154,16 @@ class Tag(ndb.Model):
             fields = fields,
             rank = self.frequency
             )
+
+class Preferences(ndb.Model):
+    resultsPerPage = ndb.IntegerProperty(default=20)
+    notifyAuthor = ndb.BooleanProperty(default=True)
+    notifyTechnician = ndb.BooleanProperty(default=True)
+    notifyReviewer = ndb.BooleanProperty(default=True)
+    notifyCommittee = ndb.BooleanProperty(default=False)
+    def toJSON(self):
+        return {'resultsPerPage' : self.resultsPerPage,
+                'notifyAuthor' : self.notifyAuthor,
+                'notifyTechnician' : self.notifyTechnician,
+                'notifyReviewer' : self.notifyReviewer,
+                'notifyCommittee' : self.notifyCommittee}

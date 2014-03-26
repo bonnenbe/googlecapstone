@@ -1,0 +1,11 @@
+<h1>Preferences</h1>
+
+<form>
+    <input type="number" ng-model="preferences.resultsPerPage"></input><br>
+    <input type="checkbox" ng-model="preferences.notifyAuthor">Notify author</input><br>
+    <input type="checkbox" ng-model="preferences.notifyTechnician">Notify technician</input><br>
+    <input type="checkbox" ng-model="preferences.notifyReviewer">Notify reviewer</input><br>
+    <input type="checkbox" ng-model="preferences.notifyCommittee">Notify committee</input><br>
+    <button ng-click="submit()">Submit</button>
+    <button ng-click="reset()">Reset to defaults</button>
+</form>

@@ -68,7 +68,7 @@
 		 tooltip-trigger="focus blur mouseenter mouseleave" datepicker-options="dateOptions" is-open="opened">
 	  <button ng-click="open($event)">Select</button>
       </div>
-      <timepicker class="timepicker" minute-step="10" ng-model="cr.startTime"></timepicker>
+      <timepicker class="timepicker" minute-step="10" ng-model="cr.startTime" mousewheel="false"></timepicker>
   </div>
 </div>
 <div class="formfield">
@@ -80,7 +80,7 @@
 		 tooltip-trigger="focus blur mouseenter mouseleave" datepicker-options="dateOptions" is-open="opened">
 	  <button ng-click="open($event)">Select</button>
       </div>
-      <timepicker class="timepicker" minute-step="10" ng-model="cr.endTime"></timepicker>
+      <timepicker class="timepicker" minute-step="10" ng-model="cr.endTime" mousewheel="false"></timepicker>
   </div>
 </div>
 

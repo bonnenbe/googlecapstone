@@ -8,6 +8,7 @@ app.controller('main', function ($http, $scope) {
         $scope.user = data.user;
         $scope.inAdmins = data.inAdmins;
         $scope.inCommittee = data.inCommittee;
+        $scope.preferences = data.preferences;
     });
     $scope.onEnter = function (event, foo) {
         if (event.which == 13)
@@ -36,6 +37,11 @@ app.config(function ($routeProvider) {
         .when('/CreateTemplate', {
             controller: 'createController',
             templateUrl: '/static/views/createTemplate.html',
+            controllerAs: 'ctrl'
+        })
+        .when('/Preferences', {
+            controller: 'preferencesController',
+            templateUrl: '/static/views/preferences.html',
             controllerAs: 'ctrl'
         })
         .when('/groups', {

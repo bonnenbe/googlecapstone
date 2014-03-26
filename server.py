@@ -193,7 +193,7 @@ class CRListHandler(BaseHandler):
                             subject= "CR #" + str(cr.key.id()) + " needs your approval",
                             body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\nThanks, \nChange Management Team")
         logging.debug(cr.key.id())
-        self.response.write(json.dumps({'id': keyToIDs(cr.key),
+        self.response.write(json.dumps({'id': cr.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
         
         updateTags(cr.tags, [])
@@ -333,8 +333,8 @@ class DraftListHandler(BaseHandler):
         for p in (set(form.keys()) & properties):
             setattr(cr,p,form[p])
         cr.put()
-        logging.info("KEY ID:" + keyToIDs(cr.key))
-        self.response.write(json.dumps({'id': keyToIDs(cr.key)}))
+
+        self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
         params = self.request.params
@@ -380,7 +380,7 @@ class TemplateListHandler(BaseHandler):
         for p in (set(form.keys()) & properties):
             setattr(cr,p,form[p])
         cr.put()
-        self.response.write(json.dumps({'id': keyToIDs(cr.key)}))
+        self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'template')
         params = self.request.params
@@ -418,12 +418,26 @@ class UserHandler(BaseHandler):
         user = users.get_current_user()
         admins = UserGroup.get_or_insert('admins')
         committee = UserGroup.get_or_insert('approvalcommittee')
+        preferences = Preferences.get_or_insert(user.email())
         inAdmins = user in admins.members
         inCommittee = user in committee.members
         self.response.write(json.dumps({'user': user.email(),
                                         'inAdmins' : inAdmins,
-                                        'inCommittee' : inCommittee}))
-       
+                                        'inCommittee' : inCommittee,
+                                        'preferences' : preferences.toJSON()}))
+    def put(self):
+        user = users.get_current_user()
+        preferences = Preferences.get_or_insert(user.email())
+        form = json.loads(self.request.body)
+        for k in form.keys():
+            setattr(preferences,k,form[k])
+        preferences.put()
+    def delete(self):
+        user = users.get_current_user()
+        preferences = Preferences.get_or_insert(user.email())
+        preferences.key.delete()
+        
+        
 class GroupHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
@@ -461,12 +475,12 @@ class TempHandler(BaseHandler):
         for person in coolpeople:
             if person not in admins.members:
                 admins.members.append(person)
-                admins.name = "admins"
-                admins.put()
             if person not in committee.members:
                 committee.members.append(person)
-                admins.name = "Approval Committee"
-                committee.put()
+        admins.name = "admins"
+        admins.put()
+        committee.name = "Approval Committee"
+        committee.put()
 
     
         
@@ -491,7 +505,6 @@ class TagsHandler(BaseHandler):
 class SearchHandler(BaseHandler):
     def get(self):
         pass
-
             
 application = webapp2.WSGIApplication([
     webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
