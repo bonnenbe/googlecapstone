@@ -24,21 +24,7 @@ class JSONEncoder(json.JSONEncoder):
             return obj.email()
         return json.JSONEncoder.default(self,obj)
 
-def intersperse(iterable, delimiter):
-    it = iter(iterable)
-    yield next(it)
-    for x in it:
-        yield delimiter
-        yield x
-        
-def IDsToKey(IDstring):
-    IDs = string.split(IDstring, '-')
-    pairs = []
-    for id in IDs:
-        pairs.append(('ChangeRequest', int(id)))
-    return ndb.Key(pairs=pairs)
-def keyToIDs(key):
-    return string.join(intersperse([str(pair[1]) for pair in key.pairs()], '-'))
+
     
 def encodeChangeRequest(cr):
     obj = {

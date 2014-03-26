@@ -39,6 +39,22 @@ searchable_properties = properties | {
 def stringtodatetime(s):
     return datetime.datetime.strptime(string.split(s,'.')[0],
                                            "%Y-%m-%dT%H:%M:%S")
+def intersperse(iterable, delimiter):
+    it = iter(iterable)
+    yield next(it)
+    for x in it:
+        yield delimiter
+        yield x
+        
+def IDsToKey(IDstring):
+    IDs = string.split(IDstring, '-')
+    pairs = []
+    for id in IDs:
+        pairs.append(('ChangeRequest', int(id)))
+    return ndb.Key(pairs=pairs)
+def keyToIDs(key):
+    return string.join(intersperse([str(pair[1]) for pair in key.pairs()], '-'))
+
 class UserGroup(ndb.Model):
     name = ndb.StringProperty()
     owners = ndb.UserProperty(repeated=True)
@@ -68,6 +84,10 @@ class ChangeRequest(ndb.Model):
     startTime = ndb.DateTimeProperty()
     endTime = ndb.DateTimeProperty()
     tags = ndb.StringProperty(repeated=True)
+
+    def id(self):
+        return keyToIDs(self.key)
+
     def __setattr__(self, attr, value):
         if (attr in ['startTime','endTime','created_on']
             and isinstance(value, basestring)):
@@ -111,6 +131,7 @@ class ChangeRequest(ndb.Model):
             else:
                 fields.append(search.TextField(name=property, value=attr))
         
+        fields.append(search.TextField(name='id', value=self.id()))
         return search.Document(
             doc_id = self.key.urlsafe(),
             fields = fields,
