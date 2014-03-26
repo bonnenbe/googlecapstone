@@ -227,9 +227,9 @@ class CRHandler(BaseHandler):
         
         if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine' and cr.status != 'created':
             #reset status if making CR sensitive            
-            audit_entry['changes'].append({'change': {'property': 'status',
-                                                      'from': cr.status,
-                                                      'to': 'created'}})
+            audit_entry['changes'].append({'property': 'status',
+                                           'from': cr.status,
+                                           'to': 'created'})
             cr.status = 'created'
             form.pop('status', None)
             change = dict()
