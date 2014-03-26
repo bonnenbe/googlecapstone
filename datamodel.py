@@ -131,7 +131,7 @@ class ChangeRequest(ndb.Model):
             else:
                 fields.append(search.TextField(name=property, value=attr))
         
-        fields.append(search.TextField(name='id', value=self.id()))
+        fields.append(search.AtomField(name='id', value=self.id()))
         return search.Document(
             doc_id = self.key.urlsafe(),
             fields = fields,
