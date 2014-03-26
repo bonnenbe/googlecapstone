@@ -20,13 +20,16 @@
             <tab heading="Recently Approved" select="onSelectRecentlyApproved()" ng-show="inCommittee"></tab>
             <tab heading="Templates" select="onSelectTemplates()"></tab>
         </tabset>
-        <div id="fullSearch">
-            <input type=text ng-model="search.query" ng-keypress="onEnter($event, list.fullsearch)">
-            <button id="searchButton2" ng-click="list.fullsearch()">Search</button>
-            <a href="#/search">
-                <button>Advanced</button>
-            </a>
+        <div class="input-group" id="fullSearch">
+            <input type="text" class="form-control" ng-model="search.query" ng-keypress="onEnter($event, list.fullsearch)">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-search" ng-click="list.fullsearch()"></span>
+            </span>
+            
         </div>
+        <a href="#/search">
+            <button>Advanced</button>
+        </a>
     </div>
     <button ng-click="list.clearDrafts()" ng-show="mode == 'drafts'">Clear Drafts</button>
     <br ng-show="draftsMode">
