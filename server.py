@@ -6,6 +6,7 @@ import string
 from google.appengine.api import users
 from google.appengine.api import mail
 from google.appengine.ext import ndb
+from google.appengine.ext import search
 from datamodel import *
 
 
@@ -129,11 +130,25 @@ class CRListHandler(BaseHandler):
             index = search.Index(name="fullTextSearch")
             
             query_string = urllib.unquote(params['query'])
+            
+            sort_opts = search.SortOptions()
+            # sort options
+            logging.debug(params['sort'])
+            if 'sort' in params and params['sort']:
+                direction = search.SortExpression.DESCENDING
+                if direction in params and params['direction'] == 'ascending':
+                    direction = search.sortExpression.ASCENDING
+                    
+                sort1 = search.SortExpression(expression=params['sort'], direction=direction, default_value=0)
+                sort_opts = search.SortOptions(expressions = [sort1])
+            
             options = search.QueryOptions(
                 limit = int(params['limit']) if 'limit' in params else 10,
                 offset = int(params['offset']) if 'offset' in params else 0,
-                ids_only = True
+                ids_only = True,
+                sort_options = sort_opts
             )
+            
             query = search.Query(options=options, query_string=query_string)
             
             try:

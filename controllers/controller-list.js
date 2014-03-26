@@ -2,6 +2,9 @@
 app.controller('listController', ['$http', '$scope', '$location',
     function ($http, $scope, $location) {
         $scope.search = {};
+        $scope.search.sort = "created_on";
+        $scope.search.direction = "descending";
+        
         var self = this;
         $scope.mode = "all"
         $scope.priorities = ['routine', 'sensitive'];
@@ -42,9 +45,10 @@ app.controller('listController', ['$http', '$scope', '$location',
                 // Send full text query
                 if (!query)
                     query = ""
+                
                 params["query"] = encodeURIComponent(query);
-
-
+                params["sort"] = encodeURIComponent($scope.search.sort);
+                params["direction"] = encodeURIComponent($scope.search.direction);
                 params["limit"] = pageSize;
                 searchParams.forEach(function (s) {
                     if (s.text) params[s.field] = s.text;
@@ -61,21 +65,20 @@ app.controller('listController', ['$http', '$scope', '$location',
                         $scope.setPagingData(pageSize, page, data.changerequests);
                     });
                 }
-		else if (mode == 'recentlyApproved')
-		{
-		    var weekago = new Date();
-		    weekago.setDate(weekago.getDate() - 7);
-		    var date = weekago.toJSON().substring(0,10);
-		    if (query)
-			obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date + " (" + query + ")");
-		    else
-			obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
+                else if (mode == 'recentlyApproved') {
+                    var weekago = new Date();
+                    weekago.setDate(weekago.getDate() - 7);
+                    var date = weekago.toJSON().substring(0, 10);
+                    if (query)
+                        obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date + " (" + query + ")");
+                    else
+                        obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
 
-		    $http.get('/changerequests', obj).success(function (data){
-			$scope.setPagingData(pageSize, page, data.changerequests);
+                    $http.get('/changerequests', obj).success(function (data) {
+                        $scope.setPagingData(pageSize, page, data.changerequests);
                     });
-		}
-		else if (mode == "drafts")
+                }
+                else if (mode == "drafts")
                     $http.get('/drafts', obj).success(function (data) {
                         $scope.setPagingData(pageSize, page, data.drafts);
                     });
@@ -92,18 +95,18 @@ app.controller('listController', ['$http', '$scope', '$location',
         };
 
         $scope.refresh = function () {
-        
+
             $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
                 $scope.searchParams, $scope.mode, $scope.search.query);
         };
 
-        
+
 
 
         //
         // Events for setting paging data when paging data is changed or page is turned	
         //
-        
+
         $scope.search.query = $location.search()["query"];
         $scope.search.sort = $location.search()["sort"];
         $scope.search.direction = $location.search()["direction"];
@@ -228,14 +231,14 @@ app.controller('listController', ['$http', '$scope', '$location',
             $scope.mode = "approval";
             $scope.refresh();
         };
-	$scope.onSelectRecentlyApproved = function() {
-	    $scope.mode = "recentlyApproved";
-	    $scope.refresh();
-	};
-	$scope.onSelectTemplates = function() {
-	    $scope.mode = "templates";
-	    $scope.refresh();
-	};
+        $scope.onSelectRecentlyApproved = function () {
+            $scope.mode = "recentlyApproved";
+            $scope.refresh();
+        };
+        $scope.onSelectTemplates = function () {
+            $scope.mode = "templates";
+            $scope.refresh();
+        };
 
     }
 ]);
