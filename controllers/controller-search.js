@@ -8,6 +8,7 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         $scope.priorities = ['routine', 'sensitive'];
         $scope.status = ['draft', 'created', 'approved'];
         $scope.searchableFields = [
+            'GLOBAL',
             'summary',
             'description',
             'impact',
@@ -32,6 +33,9 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         ];
 
         $scope.searchParams = [{
+            field: "GLOBAL",
+            text: ""
+        }, {
             field: "summary",
             text: ""
         }, {
@@ -52,7 +56,10 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         this.buildQuery = function buildQuery() {
             $scope.query = ""
             $scope.searchParams.forEach(function (s) {
-                if (s.field != "" && s.text) {
+                if (s.field == "GLOBAL" && s.text) {
+                    $scope.query += s.text + " ";
+                }
+                else if (s.field != "" && s.text) {
                     $scope.query += s.field + ":" + s.text;
                     $scope.query += " ";
                 }
