@@ -5,7 +5,7 @@
     <div class="requestform">
         <div class="formfield">
             <label for="tags">Tags:</label>
-            <tags-input id="tags" ng-model="cr.tags" allowed-tags-pattern="^[a-zA-Z0-9\-\.\s]+$">
+            <tags-input id="tags" ng-model="cr.tags" allowed-tags-pattern="^[a-zA-Z0-9\-\.\s:]+$">
                 <auto-complete id="autocomplete" source="getTags($query)" min-length="1"></auto-complete>
             </tags-input>
         </div>
