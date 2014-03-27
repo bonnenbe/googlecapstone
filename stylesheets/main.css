@@ -86,6 +86,9 @@ textarea:focus, input:focus{
 #tabs {
     margin-top: 20px;
 }
+.nav li{
+    cursor: pointer;
+}
 #search {
     float: right;
 }
@@ -94,6 +97,9 @@ textarea:focus, input:focus{
     padding-top: 20px;
     padding-bottom: 0;
     margin-bottom: 4px;
+}
+#search-icon{
+    cursor: pointer;
 }
 #otherListStuff{
     margin: 0;
