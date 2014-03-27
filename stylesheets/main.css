@@ -57,6 +57,11 @@ textarea, .tags, input{
     resize: none;
     background-color: inherit;
 }
+
+.checkbox {
+    width: auto;
+}
+
 #summary, #description, #impact, #documentation, #rationale, #implementation_steps{
     height: 2cm;
 }
@@ -109,7 +114,6 @@ textarea:focus, input:focus{
     list-style-type: none;
     margin-top: 10px; 
     margin-left: 0; 
-    display: inline;
     /*float: right;*/
 }
 .searchItem {

@@ -1,13 +1,15 @@
 
 
 <div>
-    <a  id="addField" href ng-click="searchParams.push({})" ><font size="5">+</font></a>
+    <a  id="addField" href ng-click="searchParams.push({})" >Add Search Field</a>
     <ul id="searchList">	  
         <li class="searchItem" ng-repeat="s in searchParams">
+            <input class='checkbox' type='checkbox' ng-model="s.ignore">NOT
             <select ng-model="s.field" required ng-options="f for f in searchableFields">
             </select>
             <input type=text ng-model="s.text">
-            <a href ng-click="searchParams.splice($index,1)">X</a>
+            <a href ng-click="searchParams.splice($index,1)">X</a><br><br>
+            
         </li>
     </ul>
     <div> 

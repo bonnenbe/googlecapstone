@@ -34,33 +34,42 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
 
         $scope.searchParams = [{
             field: "GLOBAL",
-            text: ""
+            text: "",
+            ignore: false
         }, {
             field: "summary",
-            text: ""
+            text: "",
+            ignore: false
         }, {
             field: "technician",
-            text: ""
+            text: "",
+            ignore: false            
         }, {
             field: "priority",
-            text: "routine"
+            text: "routine",
+            ignore: false
         }, {
             field: "tags",
-            text: ""
+            text: "",
+            ignore: false
         }, {
             field: "startTime",
-            text: ""
+            text: "",
+            ignore: false
         }];
 
 
         this.buildQuery = function buildQuery() {
             $scope.query = ""
             $scope.searchParams.forEach(function (s) {
+                if (s.ignore) {
+                    $scope.query += "NOT ";
+                }
                 if (s.field == "GLOBAL" && s.text) {
-                    $scope.query += s.text + " ";
+                    $scope.query += "(" + s.text + ") ";
                 }
                 else if (s.field != "" && s.text) {
-                    $scope.query += s.field + ":" + s.text;
+                    $scope.query += s.field + ":" + "(" + s.text + ")";
                     $scope.query += " ";
                 }
             });
