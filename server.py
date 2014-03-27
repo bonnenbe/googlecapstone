@@ -364,10 +364,10 @@ class DraftListHandler(BaseHandler):
         self.response.write(json.dumps({'drafts': self.encodeCRList(crs)},cls=JSONEncoder)) 
     def delete(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
-        crs = crs_query.fetch(keys_only=True)
-        for id in [cr.key.urlsafe() for cr in crs]:
+        keys = crs_query.fetch(keys_only=True)
+        for id in [key.urlsafe() for key in keys]:
             removeFromIndex(id,'drafts')
-        ndb.delete_multi(crs)
+        ndb.delete_multi(keys)
         
 class DraftHandler(BaseHandler):
     def get(self, id):
