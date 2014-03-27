@@ -2,6 +2,12 @@
 
 <div>
     <a  id="addField" href ng-click="searchParams.push({})" >Add Search Field</a>
+    <select ng-model="match">
+        <option value="0">Match ANY Query</option>
+        <option value="1" selected="selected">Match ALL Queries</option>
+    </select>
+    
+
     <ul id="searchList">	  
         <li class="searchItem" ng-repeat="s in searchParams">
             <input class='checkbox' type='checkbox' ng-model="s.ignore">NOT
@@ -17,9 +23,9 @@
         <select ng-model="sortField" required>
             <option ng-selected="f=='created_on'" ng-repeat="f in searchableFields">{{f}}</option>
         </select>
-        <select>
-            <option value="0">Ascending</option>
-            <option value="1" selected="selected">Descending</option>
+        <select ng-model="direction">
+            <option value="ascending">Ascending</option>
+            <option value="descending" selected="selected">Descending</option>
         </select>
     </div>
     

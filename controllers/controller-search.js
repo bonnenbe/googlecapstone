@@ -4,6 +4,8 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         // Note: initialization of sortfield is here and in search.html
         $scope.sortField = "created_on";
         $scope.direction = "descending";
+        $scope.match = 1; // match all
+
         $scope.query = "";
         $scope.priorities = ['routine', 'sensitive'];
         $scope.status = ['draft', 'created', 'approved'];
@@ -61,17 +63,33 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
 
         this.buildQuery = function buildQuery() {
             $scope.query = ""
-            $scope.searchParams.forEach(function (s) {
+            $scope.searchParams.forEach(function (s, index) {
                 if (s.ignore) {
                     $scope.query += "NOT ";
                 }
                 if (s.field == "GLOBAL" && s.text) {
                     $scope.query += "(" + s.text + ") ";
+                    
+                    // match any
+                    if (index != $scope.searchParams.length-1) {
+                        if ($scope.match == 0) {
+                            $scope.query += "OR ";
+                        }
+                    }
                 }
                 else if (s.field != "" && s.text) {
                     $scope.query += s.field + ":" + "(" + s.text + ")";
-                    $scope.query += " ";
+                    
+                    if (index != $scope.searchParams.length-1) {
+                        $scope.query += " ";
+                        // match any
+                        if ($scope.match == 0) {
+                            $scope.query += "OR ";
+                        }
+                    }
+
                 }
+
             });
         }
 
