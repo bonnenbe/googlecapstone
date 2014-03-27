@@ -69,12 +69,18 @@ def equals(p,s):
         return str(p) == str(s)
 @ndb.non_transactional
 def updateIndex(entity, indexName):
-    index = search.Index(name=indexName)
-    index.put(entity.toSearchDocument())
+    try:
+        index = search.Index(name=indexName)
+        index.put(entity.toSearchDocument())
+    except search.Error:
+        logging.exception("Put failed")
 @ndb.non_transactional
 def removeFromIndex(id, indexName):
-    index = search.Index(name=indexName)
-    index.delete([id])
+    try:
+        index = search.Index(name=indexName)
+        index.delete([id])
+    except search.Error:
+        logging.exception("Delete failed")
 @ndb.transactional
 def _addTag(tagstring):
     tag = Tag.get_or_insert(tagstring)
@@ -111,64 +117,76 @@ class BaseHandler(webapp2.RequestHandler):
             self.response.set_status(exception.code)
         else:
             self.response.set_status(500)
-
-class CRListHandler(BaseHandler):
-    def get(self):
-        logging.debug(self.request.params)
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved'])) 
+    def queryIndex(self, indexName):
         params = self.request.params
-        
-        for field in set(params.keys()) & properties:
-            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
-        
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
-
-
-        # full text search stuff
-        if 'query' in params and params['query']:
-                             
-            index = search.Index(name="fullTextSearch")
-            
+        index = search.Index(name=indexName)
+        if 'query' in params:
             query_string = urllib.unquote(params['query'])
+        else:
+            query_string = ""
+        sort_opts = search.SortOptions()
             
-            sort_opts = search.SortOptions()
-            # sort options
-            logging.debug(params['sort'])
-            if 'sort' in params and params['sort']:
-                direction = search.SortExpression.DESCENDING
-                if direction in params and params['direction'] == 'ascending':
-                    direction = search.sortExpression.ASCENDING
+        logging.debug(params['sort'])
+        if 'sort' in params and params['sort']:
+            direction = search.SortExpression.DESCENDING
+            if 'direction' in params and params['direction'] == 'ascending':
+                direction = search.sortExpression.ASCENDING
                     
-                sort1 = search.SortExpression(expression=params['sort'], direction=direction, default_value=0)
-                sort_opts = search.SortOptions(expressions = [sort1])
-            
-            options = search.QueryOptions(
-                limit = int(params['limit']) if 'limit' in params else 10,
-                offset = int(params['offset']) if 'offset' in params else 0,
-                ids_only = True,
-                sort_options = sort_opts
+            sort1 = search.SortExpression(expression=params['sort'], direction=direction, default_value=0)
+            sort_opts = search.SortOptions(expressions = [sort1])
+            if direction == search.SortExpression.DESCENDING and params['sort'] == 'created_on':
+                sort_opts = None #default rank sort
+        else:
+            sort_opts = None
+        options = search.QueryOptions(
+            limit = int(params['limit']) if 'limit' in params else 10,
+            offset = int(params['offset']) if 'offset' in params else 0,
+            ids_only = True,
+            sort_options = sort_opts
             )
             
-            query = search.Query(options=options, query_string=query_string)
-            
-            try:
-                # list comprehension
-                results = index.search(query).results
+        query = search.Query(options=options, query_string=query_string)
+        try:
+            # list comprehension
+            results = index.search(query).results
                 #logging.debug(results)
                 #doc_ids = [document.doc_id for document in index.search(query_string)]
                 
-                keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
-                crs = ndb.get_multi(keys)
-            except search.Error:
-                logging.exception('Search failed')
-            
+            keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
+            crs = ndb.get_multi(keys)
+        except search.Error:
+            logging.exception('Search failed') 
+        return crs
+    def queryDatastore(self, statuses=None, private=False):
+        params = self.request.params
+        crs_query = ChangeRequest.query()
+        if statuses:
+            crs_query = crs_query.filter(ChangeRequest.status.IN(statuses))
+        if private:
+            crs_query = crs_query.filter(ChangeRequest.author == users.get_current_user())
+        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']) if 'limit' in params else 10,
+                                                               offset=int(params['offset']) if 'offset' in params else 0)
+        return crs
+    def isDefaultSort(self):
+        params = self.request.params
+        return ('sort' not in params or not params['sort']) and ('query' not in params or not params['query'])
+    def encodeCRList(self, crs):
         objs = []
-        self.response.headers['Content-Type'] = 'application/json'
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
+        return objs
+    
             
-        logging.info(self.response.body)
-        self.response.write(json.dumps({'changerequests': objs},cls=JSONEncoder))
+
+class CRListHandler(BaseHandler):
+    def get(self):
+        if self.isDefaultSort():
+            crs = self.queryDatastore(['created','approved', 'succeeded', 'failed'])
+        else:
+            crs = self.queryIndex('fullTextSearch')
+        self.response.headers['Content-Type'] = 'application/json'
+
+        self.response.write(json.dumps({'changerequests': self.encodeCRList(crs)},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
@@ -197,13 +215,9 @@ class CRListHandler(BaseHandler):
                                         'blah': cr.__repr__()},cls=JSONEncoder))
         
         updateTags(cr.tags, [])
-
-        # add to search api full text search
-        try:
-            index = search.Index(name="fullTextSearch")
-            index.put(cr.toSearchDocument())
-        except search.Error:
-            logging.exception("Put failed")
+        updateIndex(cr, 'fullTextSearch')
+        
+        
             
 class CRHandler(BaseHandler):
     def get(self, id):
@@ -312,21 +326,11 @@ class CRHandler(BaseHandler):
                                     subject= "CR #" + str(cr.key.id()) + " has been edited",
                                     body = "Change request id " + str(cr.key.id()) + " has been edited by " + str(audit_entry["user"]) +".\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()))
 
-            
-            # update document in full text search api
-            try:
-                index = search.Index(name="fullTextSearch")
-                index.put(cr.toSearchDocument())
-            except search.Error:
-                logging.exception("Put failed")
+            updateIndex(cr, 'fullTextSearch')
     def delete(self, id):
         key = IDsToKey(id)
         updateTags([], key.get().tags)
-        try:
-            index = search.Index(name="fullTextSearch")
-            index.delete([key.urlsafe()])
-        except search.Error:
-            logging.exception("Put failed")
+        removeFromIndex(key.urlsafe(),"fullTextSearch")
         key.delete()
 
 class DraftListHandler(BaseHandler):
@@ -347,21 +351,22 @@ class DraftListHandler(BaseHandler):
         for p in (set(form.keys()) & properties):
             setattr(cr,p,form[p])
         cr.put()
+        updateIndex(cr, 'drafts')
 
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
-        params = self.request.params
-        for field in set(params.keys()) & properties:
-            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']), offset=int(params['offset']))
-        objs = []
-        for cr in crs:
-            objs.append(encodeChangeRequest(cr))
-        self.response.write(json.dumps({'drafts': objs},cls=JSONEncoder)) 
+        if self.isDefaultSort():
+            crs = self.queryDatastore(['drafts'], True)
+        else:
+            crs = self.queryIndex('drafts')
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps({'drafts': self.encodeCRList(crs)},cls=JSONEncoder)) 
     def delete(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
         crs = crs_query.fetch(keys_only=True)
+        for id in [cr.key.urlsafe() for cr in crs]:
+            removeFromIndex(id,'drafts')
         ndb.delete_multi(crs)
         
 class DraftHandler(BaseHandler):
@@ -380,10 +385,12 @@ class DraftHandler(BaseHandler):
                     changed = True
         if changed:
             cr.put()
+            updateIndex(cr, 'drafts')
     def delete(self, id):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
+            removeFromIndex(cr.key.urlsafe(),'drafts')
 class TemplateListHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
@@ -394,18 +401,16 @@ class TemplateListHandler(BaseHandler):
         for p in (set(form.keys()) & properties):
             setattr(cr,p,form[p])
         cr.put()
+        updateIndex(cr, 'templates')
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'template')
-        params = self.request.params
-        for field in set(params.keys()) & properties:
-            crs_query = crs_query.filter(getattr(ChangeRequest,field) == params[field])
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']) if 'limit' in params else 10,
-                                                               offset=int(params['offset']) if 'offset' in params else 0)
-        objs = []
-        for cr in crs:
-            objs.append(encodeChangeRequest(cr))
-        self.response.write(json.dumps({'templates': objs},cls=JSONEncoder)) 
+        if self.isDefaultSort():
+            crs = self.queryDatastore(['template'])
+        else:
+            crs = self.queryIndex('templates')
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps({'templates': self.encodeCRList(crs)},cls=JSONEncoder)) 
         
 class TemplateHandler(BaseHandler):
     def get(self, id):
@@ -423,10 +428,12 @@ class TemplateHandler(BaseHandler):
                     changed = True
         if changed:
             cr.put()
+            updateIndex(cr, 'templates')
     def delete(self, id):
         cr = IDsToKey(id).get()
         if cr.status == 'template' and cr.author == users.get_current_user():
             cr.key.delete()
+            removeFromIndex(cr.key.urlsafe(),'templates')
 class UserHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
