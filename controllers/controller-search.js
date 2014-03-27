@@ -62,30 +62,41 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
 
 
         this.buildQuery = function buildQuery() {
-            $scope.query = ""
+            $scope.query = "";
+            var fields = 0;
+            for (var i = 0; i < $scope.searchParams.length; i++) {
+                if ($scope.searchParams[i].field != "" && $scope.searchParams[i].text) {
+                    fields++;
+                }
+            }
+            
+            var count = 0;
             $scope.searchParams.forEach(function (s, index) {
                 if (s.ignore) {
                     $scope.query += "NOT ";
                 }
                 if (s.field == "GLOBAL" && s.text) {
+                    // increment count of valid fields
+                    count++;
+                    
                     $scope.query += "(" + s.text + ") ";
                     
                     // match any
-                    if (index != $scope.searchParams.length-1) {
-                        if ($scope.match == 0) {
-                            $scope.query += "OR ";
-                        }
+                    if (count != fields && $scope.match == 0) {
+                        $scope.query += "OR ";
                     }
                 }
                 else if (s.field != "" && s.text) {
+                    
+                    // increment count of valid fields
+                    count++;
                     $scope.query += s.field + ":" + "(" + s.text + ")";
                     
-                    if (index != $scope.searchParams.length-1) {
-                        $scope.query += " ";
-                        // match any
-                        if ($scope.match == 0) {
-                            $scope.query += "OR ";
-                        }
+
+                    $scope.query += " ";
+                    // match any
+                    if (count != fields && $scope.match == 0) {
+                        $scope.query += "OR ";
                     }
 
                 }
