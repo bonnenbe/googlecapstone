@@ -1,3 +1,4 @@
+/* site wide */
 body, html {
     height: 100%;
     min-height: 100%;
@@ -8,90 +9,31 @@ body {
   background-color: #DDDDDD;
   padding: 15px;
 }
-.gridStyle {
-    border: 1px solid rgb(212,212,212);
-    /*width: 400px; */
-}
-
-label {
-	font-weight: bold;
-	float: left;
-	text-align: right;
-	margin-right: 15px;
-	width: 20%;
-        padding-top: 10px;
-}
-
-
-
-#home button {
+/* nav bar */
+#home {
     width: 100px;
     float: left;
 }
-
 #login {
     float: right;
+
 }
 #login button {
-    margin-left: 10px;
+    margin-left: 10px; 
 }
-
-#googleInfo {
+#navbar {
     width: 100%;
     margin-bottom: 20px;
 }
-
-.formfield {
-    //margin: 5px auto;
-    width: 100%;
-    clear: both;
-    margin: 0 auto;
-    background-color: inherit;
+/* grid page */
+#otherListStuff{
+    margin: 0;
+    padding: 0;
 }
-
-textarea, .tags, input{
-    width: 70%;
-    border-style: solid;
-    border-width: 1px;
-    border-color: #E0E0E0;
-    resize: none;
-    background-color: inherit;
-}
-
-.checkbox {
-    width: auto;
-}
-
-#summary, #description, #impact, #documentation, #rationale, #implementation_steps{
-    height: 2cm;
-}
-
-textarea:focus, input:focus{
-    background-color: #FFFFFF;
-}
-.requestform{
-    background-color: #F8F8F8;
-    max-width: 1500px;
-    width: 90%;
-    clear: both;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -10px;
-    margin-bottom: 0;
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-#comment{
-    width: 30%;
-    display: block;
-    margin: 10px auto;
-    background-color: #FFFFFF;
-}
-
 #tabs {
     margin-top: 20px;
 }
-.nav li{
+#tabs .nav li{
     cursor: pointer;
 }
 #search {
@@ -106,28 +48,70 @@ textarea:focus, input:focus{
 #search-icon{
     cursor: pointer;
 }
-#otherListStuff{
-    margin: 0;
-    padding: 0;
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    /*width: 400px; */
 }
-#searchList {
-    list-style-type: none;
-    margin-top: 10px; 
-    margin-left: 0; 
-    /*float: right;*/
-}
-.searchItem {
-   
-}
-#searchButton{
-    display: block;
+
+/* create/edit pages */
+.requestform{
+    background-color: #F8F8F8;
+    max-width: 1500px;
+    width: 90%;
     clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10px;
+    margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
-#addSearch{
-    float: left;
+.requestform label {
+	font-weight: bold;
+	float: left;
+	text-align: right;
+	margin-right: 15px;
+	width: 20%;
+        padding-top: 10px;
 }
-.inline {
+
+.requestform .formfield {
+    width: 100%;
+    clear: both;
+    margin: 0 auto;
+    background-color: inherit;
+}
+
+.formfield textarea, .formfield .tags, .formfield input{
+    width: 70%;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E0E0E0;
+    resize: none;
+    background-color: inherit;
+}
+.formfield textarea:focus, .formfield input:focus{
+    background-color: #FFFFFF;
+}
+.datepicker{
     float: left;
+    margin-top: 40px;
+    margin-right: 20px;
+}
+.formButtons{
+    width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+/* edit page */
+#comment{
+    width: 30%;
+    display: block;
+    margin: 10px auto;
+    background-color: #FFFFFF;
 }
 .audit_changes {
     list-style-type: none;
@@ -136,9 +120,6 @@ textarea:focus, input:focus{
 }
 .audit_change {
     margin-bottom: 1em;
-}
-.audit_entry{
- 
 }
 .audit_trail{
     width: 70%;
@@ -160,18 +141,23 @@ textarea:focus, input:focus{
 .audit_change:last-child {
     margin-bottom: 0;
 }
-.datepicker{
-    float: left;
-    margin-top: 40px;
-    margin-right: 20px;
+
+
+/* advanced search page */
+#searchList {
+    list-style-type: none;
+    margin-top: 10px; 
+    margin-left: 0; 
+    /*float: right;*/
 }
-.timepicker{}
-#endDate, #startDate{}
-.formButtons{
-    width: 100%;
+.searchItem {
+   
+}
+#searchButton{
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+    clear: both;
+}
+#addSearch{
+    float: left;
 }
 
