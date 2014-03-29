@@ -126,7 +126,7 @@ class BaseHandler(webapp2.RequestHandler):
             query_string = ""
         sort_opts = search.SortOptions()
             
-        logging.debug(params['sort'])
+
         if 'sort' in params and params['sort']:
             direction = search.SortExpression.DESCENDING
             if 'direction' in params and params['direction'] == 'ascending':
@@ -356,7 +356,7 @@ class DraftListHandler(BaseHandler):
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
         if self.isDefaultSort():
-            crs = self.queryDatastore(['drafts'], True)
+            crs = self.queryDatastore(['draft'], True)
         else:
             crs = self.queryIndex('drafts')
 
