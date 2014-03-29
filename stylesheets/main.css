@@ -25,6 +25,14 @@ body {
     width: 100%;
     margin-bottom: 20px;
 }
+/* preferences page */
+#preferences > label{
+    max-width: 500px;
+    width: 40%;
+}
+#preferences > input{
+    width: 3em;
+}
 /* grid page */
 #otherListStuff{
     margin: 0;

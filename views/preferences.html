@@ -1,11 +1,16 @@
 <h1>Preferences</h1>
 
-<form>
+<form id="preferences">
+    <label>Results per page:</label>
     <input type="number" ng-model="preferences.resultsPerPage"></input><br>
-    <input type="checkbox" ng-model="preferences.notifyAuthor">Notify author</input><br>
-    <input type="checkbox" ng-model="preferences.notifyTechnician">Notify technician</input><br>
-    <input type="checkbox" ng-model="preferences.notifyReviewer">Notify reviewer</input><br>
-    <input type="checkbox" ng-model="preferences.notifyCommittee">Notify committee</input><br>
+    <label>Send notifications when you are the author:</label>
+    <input type="checkbox" ng-model="preferences.notifyAuthor"></input><br>
+    <label>Send notifications when you are the technician:</label>
+    <input type="checkbox" ng-model="preferences.notifyTechnician"></input><br>
+    <label>Send notifications when you are the peer reviewer:</label>
+    <input type="checkbox" ng-model="preferences.notifyReviewer"></input><br>
+    <label ng-show="inCommittee">Send notifications for all sensitive changes:</label>
+    <input ng-show="inCommittee" type="checkbox" ng-model="preferences.notifyCommittee"></input><br><br>
     <button ng-click="submit()">Submit</button>
     <button ng-click="reset()">Reset to defaults</button>
 </form>
