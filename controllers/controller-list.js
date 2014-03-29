@@ -191,6 +191,7 @@ app.controller('listController', ['$http', '$scope', '$location',
                 delete search.mode;
             $location.search(search);
             $scope.refresh();
+            $('#fullSearch input').focus();
         };
 
         this.clearDrafts = function () {
