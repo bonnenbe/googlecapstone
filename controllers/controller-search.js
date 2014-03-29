@@ -154,7 +154,7 @@ app.directive('placehold', function () {
 
             var placehold = function () {
                 if (scope.dateFields.indexOf(attr.placehold) >= 0) {
-                    element.attr("placeholder", "dd-mm-yyyy");
+                    element.attr("placeholder", "yyyy-mm-dd");
                 }
             };
 
