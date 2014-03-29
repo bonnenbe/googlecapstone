@@ -52,32 +52,26 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
         $scope.searchParams = [{
             field: "GLOBAL",
             text: "",
-            ignore: false,
-            compare: ":",
+            compare: "=",
         }, {
             field: "summary",
             text: "",
-            ignore: false,
-            compare: ":",
+            compare: "=",
         }, {
             field: "technician",
             text: "",
-            ignore: false,           
-            compare: ":",
+            compare: "=",
         }, {
             field: "priority",
             text: "routine",
-            ignore: false,
-            compare: ":",
+            compare: "=",
         }, {
             field: "tags",
             text: "",
-            ignore: false,
-            compare: ":",
+            compare: "=",
         }, {
             field: "startTime",
             text: "",
-            ignore: false,
             compare: "<=",
         }];
 
@@ -93,36 +87,51 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
             
             var count = 0;
             $scope.searchParams.forEach(function (s, index) {
-                if (s.ignore) {
+            
+                if (!s.field || !s.text) {
+                    return;
+                }
+            
+                // if != then add NOT before all else, change compare to =
+                if (s.compare == "!=") {
                     $scope.query += "NOT ";
+                    s.compare = "=";
                 }
-                if (s.field == "GLOBAL" && s.text) {
+
+                // cut out whitespace
+                s.text = s.text.trim();
+                
+                if (s.text.indexOf(" ") >= 0) {
+                    s.text = "("+s.text+")";
+                }
+
+                if (s.field == "GLOBAL") {
                     // increment count of valid fields
                     count++;
                     
-                    $scope.query += "(" + s.text + ") ";
+                    $scope.query += s.text + " ";
                     
                     // match any
                     if (count != fields && $scope.match == 0) {
                         $scope.query += "OR ";
                     }
                 }
-                else if (s.field != "" && s.text) {
+                else {
                     
                     // increment count of valid fields
                     count++;
-                    $scope.query += s.field + s.compare + "(" + s.text + ")";
+                    $scope.query += s.field + s.compare + s.text;
                     
-
                     $scope.query += " ";
+                    
                     // match any
                     if (count != fields && $scope.match == 0) {
                         $scope.query += "OR ";
                     }
-
                 }
-
             });
+            // remove ending whitespace
+            $scope.query = $scope.query.trim();
         }
 
         this.search = function search() {

@@ -1,7 +1,7 @@
 
 
 <div>
-    <a  id="addField" href ng-click="searchParams.push({ignore:false, compare:':'})" >Add Search Field</a>
+    <a  id="addField" href ng-click="searchParams.push({})" >Add Search Field</a>
     <select ng-model="match">
         <option value="0">Match ANY Query</option>
         <option value="1" selected="selected">Match ALL Queries</option>
@@ -10,15 +10,17 @@
 
     <ul id="searchList">	  
         <li class="searchItem" ng-repeat="s in searchParams">
-            <input class='checkbox' type='checkbox' ng-model="s.ignore">NOT
+            <!--<input class='checkbox' type='checkbox' ng-model="s.ignore">NOT-->
             <select ng-model="s.field" required ng-options="f for f in searchableFields">
             </select>
             
-            <select ng-model="s.compare">
-                <option value=":" selected="selected">:</option>
-                <option value="=" >=</option>
-                <option value=">=" >>=</option>
-                <option value="<=" ><=</option>
+            <select required ng-model="s.compare">
+                <option value="=" selected="selected">  = </option>
+                <option value="!="> != </option>
+                <option value=">" >  > </option>
+                <option value="<" >  < </option>
+                <option value=">="> >= </option>
+                <option value="<="> <= </option>
             </select>
             
             <input type=text ng-model="s.text" placehold="{{s.field}}">
