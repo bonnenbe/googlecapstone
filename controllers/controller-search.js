@@ -34,30 +34,51 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
             'status'
         ];
 
+        $scope.sortableFields = [
+            'technician',
+            'peer_reviewer',
+            'priority',
+            'startTime',
+            'endTime',
+            'created_on',
+            'author',
+            'status'
+        ];
+        
+        $scope.dateFields = [
+            'created_on', 'startTime', 'endTime'
+        ];
+        
         $scope.searchParams = [{
             field: "GLOBAL",
             text: "",
-            ignore: false
+            ignore: false,
+            compare: ":",
         }, {
             field: "summary",
             text: "",
-            ignore: false
+            ignore: false,
+            compare: ":",
         }, {
             field: "technician",
             text: "",
-            ignore: false            
+            ignore: false,           
+            compare: ":",
         }, {
             field: "priority",
             text: "routine",
-            ignore: false
+            ignore: false,
+            compare: ":",
         }, {
             field: "tags",
             text: "",
-            ignore: false
+            ignore: false,
+            compare: ":",
         }, {
             field: "startTime",
             text: "",
-            ignore: false
+            ignore: false,
+            compare: "<=",
         }];
 
 
@@ -90,7 +111,7 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
                     
                     // increment count of valid fields
                     count++;
-                    $scope.query += s.field + ":" + "(" + s.text + ")";
+                    $scope.query += s.field + s.compare + "(" + s.text + ")";
                     
 
                     $scope.query += " ";
@@ -112,5 +133,61 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
             $location.search('direction', $scope.direction);
             $location.path("/");
         }
+        
+        $scope.CreateTooltip = function(fieldName) {
+            if (fieldName in $scope.dateFields) {
+                return "dd-mm-yyyy";
+            }
+        }
+        
     }
 ]);
+
+
+app.directive('placehold', function () {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attr, ctrl) {
+
+            var value;
+
+            var placehold = function () {
+                if (scope.dateFields.indexOf(attr.placehold) >= 0) {
+                    element.attr("placeholder", "dd-mm-yyyy");
+                }
+            };
+
+            var unplacehold = function () {
+                element.removeAttr('placeholder');
+            };
+
+            scope.$watch(attr.ngModel, function (val) {
+                //alert(attr.ngModel);
+                value = val || '';
+            });
+
+            scope.$watch(attr.placehold, function (val) {
+                // this doesn't work.
+                placehold();
+            });
+            
+            element.bind('focus', function () {
+                if (value === '') unplacehold();
+            });
+
+            element.bind('blur', function () {
+                if (element.val() === '') placehold();
+            });
+
+            ctrl.$formatters.unshift(function (val) {
+                if (!val) {
+                    placehold();
+                    value = '';
+                    return "";
+                }
+                return val;
+            });
+        }
+    };
+});
