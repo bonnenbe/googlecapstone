@@ -1,14 +1,14 @@
 <div id="otherListStuff">
     <div width="100%">
         <tabset id="tabs" type="'pills'">
-            <tab heading="Change Requests" select="onSelectCRs()"></tab>
-            <tab heading="My Drafts" select="onSelectMyDrafts()"></tab>
-            <tab heading="Awaiting Approval" select="onSelectApproval()" ng-show="inCommittee"></tab>
-            <tab heading="Recently Approved" select="onSelectRecentlyApproved()" ng-show="inCommittee"></tab>
-            <tab heading="Templates" select="onSelectTemplates()"></tab>
+            <tab heading="Change Requests" select="search.mode = 'all'"></tab>
+            <tab heading="My Drafts" select="search.mode = 'drafts'"></tab>
+            <tab heading="Awaiting Approval" select="search.mode = 'approval'" ng-show="inCommittee"></tab>
+            <tab heading="Recently Approved" select="search.mode = 'recentlyApproved'" ng-show="inCommittee"></tab>
+            <tab heading="Templates" select="search.mode = 'templates'"></tab>
         </tabset>
         <div class="input-group" id="fullSearch">
-            <input type="text" class="form-control" ng-model="search.query" ng-keypress="onEnter($event, list.fullsearch)">
+            <input type="text" class="form-control" ng-model="search.query" ng-keypress="onEnter($event, list.search)">
             <span id="search-icon" class="input-group-addon">
                 <span class="glyphicon glyphicon-search" ng-click="list.fullsearch()"></span>
             </span>

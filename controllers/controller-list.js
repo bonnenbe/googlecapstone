@@ -2,28 +2,14 @@
 app.controller('listController', ['$http', '$scope', '$location',
     function ($http, $scope, $location) {
         $scope.search = {};
-        $scope.search.sort = "created_on";
-        $scope.search.direction = "descending";
-        
+        angular.extend($scope.search, $location.search());
         var self = this;
-        $scope.mode = "all"
         $scope.priorities = ['routine', 'sensitive'];
         $scope.status = ['draft', 'created', 'approved', 'succeeded', 'failed'];
-        $scope.searchableFields = ['technician', 'priority'];
-        $scope.searchParams = [{
-            field: $scope.searchableFields[0],
-            text: ""
-        }];
-
-        $scope.filterOptions = {
-            filterText: "",
-            useExternalFilter: true
-        };
-
-        $scope.totalServerItems = 0;
+      
         $scope.pagingOptions = {
             pageSizes: [10, 20, 50, 100],
-            pageSize: 10,
+            pageSize: $scope.preferences ? $scope.preferences.resultsPerPage : 10,
             currentPage: 1,
             totalServerItems: false
         };
@@ -37,67 +23,66 @@ app.controller('listController', ['$http', '$scope', '$location',
         };
 
         // On get new page
-        $scope.getPagedDataAsync = function (pageSize, page, searchParams, mode, query) {
-            setTimeout(function () {
-                var params = {};
-                params["offset"] = (page - 1) * pageSize;
+        $scope.getPagedDataAsync = function (pagingOptions, search) {
+            var params = {};
+            var pageSize = pagingOptions.pageSize;
+            var page = pagingOptions.currentPage;
+            params["offset"] = (page - 1) * pageSize;
+            params["limit"] = pageSize;
+            
+            angular.extend(params, search);
+            for (var key in params)
+                params[key] = encodeURIComponent(params[key]);
+            var obj = {};
+            
 
-                // Send full text query
-                if (!query)
-                    query = ""
-                
-                params["query"] = encodeURIComponent(query);
-                params["sort"] = encodeURIComponent($scope.search.sort);
-                params["direction"] = encodeURIComponent($scope.search.direction);
-                params["limit"] = pageSize;
-                searchParams.forEach(function (s) {
-                    if (s.text) params[s.field] = s.text;
-                });
-                var obj = {};
-
-                obj["params"] = params;
-                if (mode == "approval") {
-                    if (query)
-                        obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive (" + query + ")");
-                    else
-                        obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive");
-                    $http.get('/changerequests', obj).success(function (data) {
-                        $scope.setPagingData(pageSize, page, data.changerequests);
-                    });
-                }
-                else if (mode == 'recentlyApproved') {
-                    var weekago = new Date();
-                    weekago.setDate(weekago.getDate() - 7);
-                    var date = weekago.toJSON().substring(0, 10);
-                    if (query)
-                        obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date + " (" + query + ")");
-                    else
-                        obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
-
-                    $http.get('/changerequests', obj).success(function (data) {
-                        $scope.setPagingData(pageSize, page, data.changerequests);
-                    });
-                }
-                else if (mode == "drafts")
-                    $http.get('/drafts', obj).success(function (data) {
-                        $scope.setPagingData(pageSize, page, data.drafts);
-                    });
-                else if (mode == 'templates')
-                    $http.get('/templates', obj).success(function (data) {
-                        $scope.setPagingData(pageSize, page, data.templates);
-                    });
+            var query = search.query;
+            var mode = search.mode;
+            if (params.mode)
+                delete params.mode;
+            obj["params"] = params;
+            
+            if (mode == "approval") {
+                if (query)
+                    obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive (" + query + ")");
                 else
-                    $http.get('/changerequests', obj).success(function (data) {
-                        $scope.setPagingData(pageSize, page, data.changerequests);
-                    });
+                    obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive");
+                $http.get('/changerequests', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data.changerequests);
+                });
+            }
+            else if (mode == 'recentlyApproved') {
+                var weekago = new Date();
+                weekago.setDate(weekago.getDate() - 7);
+                var date = weekago.toJSON().substring(0, 10);
+                if (query)
+                    obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date + " (" + query + ")");
+                else
+                    obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
 
-            }, 100);
+                $http.get('/changerequests', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data.changerequests);
+                });
+            }
+            else if (mode == "drafts")
+                $http.get('/drafts', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data.drafts);
+                });
+            else if (mode == 'templates')
+                $http.get('/templates', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data.templates);
+                });
+            else //default = all change requests
+                $http.get('/changerequests', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data.changerequests);
+                });
         };
 
         $scope.refresh = function () {
-
-            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage,
-                $scope.searchParams, $scope.mode, $scope.search.query);
+            if ($scope.pagingOptions.currentPage != 1)
+                $scope.pagingOptions.currentPage = 1;
+            else
+                $scope.getPagedDataAsync($scope.pagingOptions, $scope.search);
         };
 
 
@@ -107,9 +92,7 @@ app.controller('listController', ['$http', '$scope', '$location',
         // Events for setting paging data when paging data is changed or page is turned	
         //
 
-        $scope.search.query = $location.search()["query"];
-        $scope.search.sort = $location.search()["sort"];
-        $scope.search.direction = $location.search()["direction"];
+
         $scope.refresh();
 
         $scope.$watch('pagingOptions', function (newVal, oldVal) {
@@ -117,7 +100,7 @@ app.controller('listController', ['$http', '$scope', '$location',
                 $scope.refresh();
         }, true);
 
-        $scope.$watch('filterOptions', function (newVal, oldVal) {
+        $scope.$watch('search.mode', function (newVal, oldVal) {
             if (newVal !== oldVal)
                 $scope.refresh();
         }, true);
@@ -202,16 +185,12 @@ app.controller('listController', ['$http', '$scope', '$location',
             });
         };
 
-        /////// todo fix test full search function
-        this.fullsearch = function fullsearch() {
-            $scope.refresh();
-        }
-
         this.search = function search() {
-            if ($scope.pagingOptions.currentPage != 1)
-                $scope.pagingOptions.currentPage = 1;
-            else
-                $scope.refresh();
+            var search = angular.copy($scope.search);
+            if (search.mode)
+                delete search.mode;
+            $location.search(search);
+            $scope.refresh();
         };
 
         this.clearDrafts = function () {
@@ -219,26 +198,9 @@ app.controller('listController', ['$http', '$scope', '$location',
                 $scope.refresh();
             })
         };
-        $scope.onSelectCRs = function () {
-            $scope.mode = "all";
-            $scope.refresh();
+        var init = function (){
+            $('#fullSearch input').focus();
         };
-        $scope.onSelectMyDrafts = function () {
-            $scope.mode = "drafts";
-            $scope.refresh();
-        };
-        $scope.onSelectApproval = function () {
-            $scope.mode = "approval";
-            $scope.refresh();
-        };
-        $scope.onSelectRecentlyApproved = function () {
-            $scope.mode = "recentlyApproved";
-            $scope.refresh();
-        };
-        $scope.onSelectTemplates = function () {
-            $scope.mode = "templates";
-            $scope.refresh();
-        };
-
+        init();
     }
 ]);

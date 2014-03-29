@@ -27,7 +27,8 @@ app.config(function ($routeProvider) {
         .when('/', {
             controller: 'listController',
             templateUrl: '/static/views/list.html',
-            controllerAs: 'list'
+            controllerAs: 'list',
+            reloadOnSearch: false
         })
         .when('/Create', {
             controller: 'createController',
