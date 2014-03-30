@@ -3,7 +3,9 @@ body, html {
     height: 100%;
     min-height: 100%;
 }
-
+a>button {
+    color: black;
+}
 body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #DDDDDD;
