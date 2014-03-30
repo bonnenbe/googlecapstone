@@ -71,10 +71,10 @@ body {
     clear: both;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -10px;
+    margin-top: -15px;
     margin-bottom: 0;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 30px;
 }
 .requestform label {
 	font-weight: bold;
@@ -91,7 +91,6 @@ body {
     margin: 0 auto;
     background-color: inherit;
 }
-
 .formfield>textarea, .formfield .tags, .formfield>input{
     width: 70%;
     border-style: solid;
@@ -100,15 +99,27 @@ body {
     resize: none;
     background-color: inherit;
 }
+#editpage .formfield>textarea.ng-dirty.ng-valid, #editpage .formfield .tags-input.ng-dirty.ng-valid, #editpage .formfield>input.ng-dirty.ng-valid, #editpage .formfield .datepicker input.ng-dirty.ng-valid, #editpage .formfield .timepicker.ng-dirty.ng-valid, #editpage .formfield>select.ng-dirty.ng-valid{
+    border-color: skyblue;
+    border-width: 3px;
+    border-style: solid;
+}
+.formfield>textarea.ng-dirty.ng-invalid, .formfield .tags-input.ng-dirty.ng-invalid, .formfield>input.ng-dirty.ng-invalid, .formfield .timepicker.ng-dirty.ng-invalid{ 
+    border-color: red;
+    border-width: 1px;
+    border-style: solid;
+}
 #startDate, #endDate{
     width: 50%;
     display: flex;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
 }
 .formfield textarea:focus, .formfield input:focus{
     background-color: #FFFFFF;
 }
 .datepicker{
-    width: 15em;
+    width: 25em;
     float: left;
     margin-top: 40px;
     margin-right: 20px;
