@@ -16,10 +16,10 @@ app.controller('createController', function ($http, $scope, $location, $interval
         $scope.heading = "Create Change Request";
         $("#heading").text($scope.heading);
     }
-    if ($location.path().indexOf('Template') != -1)
+    if ($location.path().indexOf('Template') == -1)
         self.cancelDrafts = $interval(function () {
             self.sendDraft($scope.cr);
-        }, 10000);
+        }, 5000);
 
     $scope.$on('$destroy', function () {
         $interval.cancel(self.cancelDrafts);
