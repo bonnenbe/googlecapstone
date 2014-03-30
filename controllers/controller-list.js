@@ -138,15 +138,9 @@ app.controller('listController', ['$http', '$scope', '$location',
                     field: "startTime | datetime",
                     displayName: "Start Time"
                 }, {
-                    field: "endTime | datetime",
-                    displayName: "End Time"
-                }, {
                     field: "status",
                     displayName: "Status"
-                }, {
-                    field: "id",
-                    displayName: "ID"
-                }
+                },
                 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
             ]
         };
