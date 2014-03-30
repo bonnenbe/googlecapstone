@@ -90,7 +90,7 @@ body {
     background-color: inherit;
 }
 
-.formfield textarea, .formfield .tags, .formfield input{
+.formfield>textarea, .formfield .tags, .formfield>input{
     width: 70%;
     border-style: solid;
     border-width: 1px;
