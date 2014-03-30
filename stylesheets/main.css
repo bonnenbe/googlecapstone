@@ -113,6 +113,9 @@ body {
     margin-right: auto;
     text-align: center;
 }
+.calendar-icon{
+    cursor: pointer;
+}
 
 /* edit page */
 #comment{

@@ -1,9 +1,10 @@
 app.controller('DateCtrl', function ($scope) {
+    $scope.popup = {};
     $scope.format = 'dd-MMMM-yyyy';
     $scope.dateOptions = {};
     $scope.open = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
-        $scope.opened = true;
+        $scope.popup.opened = true;
     };
 });
