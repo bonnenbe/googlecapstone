@@ -78,15 +78,18 @@ app.controller('listController', ['$http', '$scope', '$location',
                 });
         };
 
-        $scope.refresh = function () {
-            if ($scope.pagingOptions.currentPage != 1)
-                $scope.pagingOptions.currentPage = 1;
-            else
+
+        // restart: if true, restart from first page
+        $scope.refresh = function (restart) {
+            restart = typeof restart !== "undefined" ? restart : false;
+            if (restart)
+                if ($scope.pagingOptions.currentPage != 1)
+                    $scope.pagingOptions.currentPage = 1;
+                else 
+                    $scope.getPagedDataAsync($scope.pagingOptions, $scope.search);
+            else 
                 $scope.getPagedDataAsync($scope.pagingOptions, $scope.search);
         };
-
-
-
 
         //
         // Events for setting paging data when paging data is changed or page is turned	
@@ -102,7 +105,7 @@ app.controller('listController', ['$http', '$scope', '$location',
 
         $scope.$watch('search.mode', function (newVal, oldVal) {
             if (newVal !== oldVal)
-                $scope.refresh();
+                $scope.refresh(true);
         }, true);
 
         //
