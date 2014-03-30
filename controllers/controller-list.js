@@ -164,8 +164,8 @@ app.controller('listController', ['$http', '$scope', '$location',
         function sizeGrid() {
             var height = $("body").height();
 
-            //todo  why -20
-            height = height - $("#googleInfo").outerHeight() - 20;
+            //todo  why -50
+            height = height - $("#googleInfo").outerHeight() - 50;
             $("#view").height(height);
             //
             height = height - $("#otherListStuff").outerHeight();
