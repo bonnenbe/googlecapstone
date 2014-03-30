@@ -98,13 +98,22 @@ body {
     resize: none;
     background-color: inherit;
 }
+#startDate, #endDate{
+    width: 50%;
+    display: flex;
+}
 .formfield textarea:focus, .formfield input:focus{
     background-color: #FFFFFF;
 }
 .datepicker{
+    width: 15em;
     float: left;
     margin-top: 40px;
     margin-right: 20px;
+    flex: 0 0 auto;
+}
+.timepicker{
+    flex: 0 0 auto;
 }
 .formButtons{
     width: 100%;
