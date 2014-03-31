@@ -88,7 +88,7 @@ body {
 .requestform .formfield {
     width: 100%;
     clear: both;
-    margin: 0 auto;
+    margin: 5px auto;
     background-color: inherit;
 }
 .formfield>textarea, .formfield .tags, .formfield>input{
@@ -100,9 +100,9 @@ body {
     background-color: inherit;
 }
 #editpage .formfield>textarea.ng-dirty.ng-valid, #editpage .formfield .tags-input.ng-dirty.ng-valid, #editpage .formfield>input.ng-dirty.ng-valid, #editpage .formfield .datepicker input.ng-dirty.ng-valid, #editpage .formfield .timepicker.ng-dirty.ng-valid, #editpage .formfield>select.ng-dirty.ng-valid{
-    border-color: skyblue;
-    border-width: 3px;
+    background-color: hsl(210, 70%, 95%);
     border-style: solid;
+    border-width: 1px;
 }
 .formfield>textarea.ng-dirty.ng-invalid, .formfield .tags-input.ng-dirty.ng-invalid, .formfield>input.ng-dirty.ng-invalid, .formfield .timepicker.ng-dirty.ng-invalid{ 
     border-color: red;
