@@ -10,38 +10,42 @@ body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #DDDDDD;
   padding: 15px;
+  padding-top: 70px;
 }
-/* nav bar */
-#home {
-    width: 100px;
-    float: left;
+#navbar{
+    height: 50px;
 }
-#login {
-    float: right;
+//* * nav bar *\/ */
+/* #home { */
+/*     width: 100px; */
+/*     float: left; */
+/* } */
+/* #login { */
+/*     float: right; */
 
-}
-#login button {
-    margin-left: 10px; 
-}
-#navbar {
-    width: 100%;
-    margin-bottom: 20px;
-}
-/* preferences page */
-#preferences > label{
-    max-width: 500px;
-    width: 40%;
-}
-#preferences > input{
-    width: 3em;
-}
+/* } */
+/* #login button { */
+/*     margin-left: 10px;  */
+/* } */
+/* #navbar { */
+/*     width: 100%; */
+/*     margin-bottom: 20px; */
+/* } */
+/* /\* preferences page *\/ */
+/* #preferences > label{ */
+/*     max-width: 500px; */
+/*     width: 40%; */
+/* } */
+/* #preferences > input{ */
+/*     width: 3em; */
+/* } */
 /* grid page */
 #otherListStuff{
     margin: 0;
     padding: 0;
 }
 #tabs {
-    margin-top: 20px;
+
 }
 #tabs .nav li{
     cursor: pointer;

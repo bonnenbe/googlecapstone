@@ -37,27 +37,36 @@
 </head>
 
 <body ng-controller="main">
-    <div id="navbar">
-        <a ng-href="#" id="home">
-            <button>Home</button>
-        </a>
-        <a ng-href="#/Create">
-            <button>Create new request</button>
-        </a>
-        <a ng-href="#/CreateTemplate">
-            <button>Create new template</button>
-        </a>
-        <div id="login">
-            Currently logged in as: <b>{{user}}</b>
-            <a href="/Logout">
-                <button>Logout</button>
-            </a>
-            <a ng-href="#/Preferences">
-                <button>Preferences</button>
-            </a>
+    <nav id="navbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" ng-href="#">
+                    <img src="static/images/logo.png" height="30">
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a ng-href="#/Create">New change request</a>
+
+
+                    <!-- <a ng-href="#/CreateTemplate"> -->
+                <li>
+                    <a ng-href="#/CreateTemplate">New template</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>                    
+                    <p class="navbar-text">Logged in as: <b>{{user}}</b></p>
+                </li>
+                <li>                    
+                    <button ng-click="link('/Logout')" type="button" class="btn btn-default navbar-btn">Logout</button>
+                </li>
+                <li>
+                    <a ng-href="#/Preferences">Preferences</a>
+                </li>
+            </ul>
         </div>
-        <br>
-    </div>
+    </nav>
 
 
     <div ng-view id="view">
