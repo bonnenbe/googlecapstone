@@ -1,4 +1,4 @@
-<div>
+<div id="editpage">
     <ng-include onload="ctrl.onload()" src="'static/views/requestform.html'"></ng-include>
     
     <div class="requestform">
@@ -21,8 +21,8 @@
         <button ng-click="unapprove()" ng-show="cr.status == 'approved'">Unapprove</button>
         <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>
         <button ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">Failure</button>
-        <button ng-click="ctrl.subscribe(cr)" ng-show="cr.cc_list.indexOf(user) < 0 " tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
-        <button ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0 " tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Unsubscribe</button>
+        <button ng-click="ctrl.subscribe(cr)" ng-show="cr.cc_list.indexOf(user) < 0 && cr.status != 'template'" tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
+        <button ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0  && cr.status != 'template'" tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Unsubscribe</button>
     </div>
 
     <textarea id="comment" class="well" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>

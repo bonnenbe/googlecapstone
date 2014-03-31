@@ -175,8 +175,12 @@ class BaseHandler(webapp2.RequestHandler):
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
         return objs
-    
-            
+    def getCR(self, id):
+        cr = IDsToKey(id).get()
+        if cr:
+            return cr
+        else:
+            self.abort(404)
 
 class CRListHandler(BaseHandler):
     def get(self):
@@ -221,13 +225,11 @@ class CRListHandler(BaseHandler):
             
 class CRHandler(BaseHandler):
     def get(self, id):
-        key = IDsToKey(id)
-        cr = key.get()
+        cr = self.getCR(id)
         self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
-        key = IDsToKey(id)
-        cr = key.get()
+        cr = self.getCR(id)
         updated, approved, commented, unapproved = False, False, False, False
         if cr.status not in ['created', 'approved', 'succeeded', 'failed']:
             webapp2.abort(403) #wrong uri
@@ -371,13 +373,12 @@ class DraftListHandler(BaseHandler):
         
 class DraftHandler(BaseHandler):
     def get(self, id):
-        key = IDsToKey(id)
-        cr = key.get()
+        cr = self.getCR(id)
         self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
-        cr = IDsToKey(id).get()
+        cr = self.getCR(id)
         if cr.status == 'draft' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
                 if not equals(getattr(cr,p), form[p]):
@@ -414,13 +415,12 @@ class TemplateListHandler(BaseHandler):
         
 class TemplateHandler(BaseHandler):
     def get(self, id):
-        key = IDsToKey(id)
-        cr = key.get()
+        cr = self.getCR(id)
         self.response.write(json.dumps({'template': encodeChangeRequest(cr)},cls=JSONEncoder))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
-        cr = IDsToKey(id).get()
+        cr = self.getCR(id)
         if cr.status == 'template' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
                 if not equals(getattr(cr,p), form[p]):
