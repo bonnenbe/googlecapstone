@@ -11,16 +11,16 @@
     <ul id="searchList">	  
         <li class="searchItem" ng-repeat="s in searchParams">
             <!--<input class='checkbox' type='checkbox' ng-model="s.ignore">NOT-->
-            <select ng-model="s.field" required ng-options="f for f in searchableFields">
+            <select ng-model="s.field" required ng-options="x.field as x.display for x in searchableFields" >
             </select>
             
             <select required ng-model="s.compare">
-                <option value="=" selected="selected">  = </option>
-                <option value="!="> != </option>
-                <option value=">" >  > </option>
-                <option value="<" >  < </option>
-                <option value=">="> >= </option>
-                <option value="<="> <= </option>
+                <option value="=" > Match (=) </option>
+                <option value="!="> Do not match (!=) </option>
+                <option value=">" > After  (>) </option>
+                <option value="<" > Before (<) </option>
+                <option value=">="> On or after  (>=) </option>
+                <option value="<="> On or before (<=) </option>
             </select>
             
             <input type=text ng-model="s.text" placehold="{{s.field}}">
