@@ -95,6 +95,9 @@ body {
     margin: 5px auto;
     background-color: inherit;
 }
+.formfield>textarea[readonly]{
+    border-style: none;
+}
 .formfield>textarea, .formfield .tags, .formfield>input{
     width: 70%;
     border-style: solid;
@@ -178,6 +181,10 @@ body {
 }
 .audit_change:last-child {
     margin-bottom: 0;
+}
+.requestform .formfield>p{
+    padding-top:10px;
+    font-weight: semibold;
 }
 
 
