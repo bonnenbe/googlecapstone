@@ -117,13 +117,16 @@ class BaseHandler(webapp2.RequestHandler):
             self.response.set_status(exception.code)
         else:
             self.response.set_status(500)
-    def queryIndex(self, indexName):
+    def queryIndex(self, indexName, private=False):
         params = self.request.params
         index = search.Index(name=indexName)
         if 'query' in params:
             query_string = urllib.unquote(params['query'])
         else:
             query_string = ""
+            
+        if private:
+            query_string = "technician:\"" + users.get_current_user().email() + '\" ' + query_string
         sort_opts = search.SortOptions()
             
 
@@ -360,7 +363,7 @@ class DraftListHandler(BaseHandler):
         if self.isDefaultSort():
             crs = self.queryDatastore(['draft'], True)
         else:
-            crs = self.queryIndex('drafts')
+            crs = self.queryIndex('drafts', True)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps({'drafts': self.encodeCRList(crs)},cls=JSONEncoder)) 
