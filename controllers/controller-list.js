@@ -125,25 +125,36 @@ app.controller('listController', ['$http', '$scope', '$location',
             pagingOptions: $scope.pagingOptions,
             filterOptions: $scope.filterOptions,
             enableColumnResize: true,
+            useExternalSorting: true,
             columnDefs: [{
                     field: "created_on | datetime",
-                    displayName: "Created On"
-                }, {
-                    field: "technician",
-                    displayName: "Technician"
-                }, {
-                    field: "summary",
-                    displayName: "Summary"
-                }, {
-                    field: "priority",
-                    displayName: "Priority"
+                displayName: "Created On",
+                width: 160
                 }, {
                     field: "startTime | datetime",
-                    displayName: "Start Time"
+                    displayName: "Start Time",
+                    width: 160,
+                    cellTemplate: 'static/templates/cell.html'
+                }, {
+                    field: "technician",
+                    displayName: "Technician",
+                    width: 200,
+                    cellTemplate: 'static/templates/cell.html'
+                }, {
+                    field: "priority",
+                    displayName: "Priority",
+                    width: 80,
+                    cellTemplate: 'static/templates/cell.html'
                 }, {
                     field: "status",
-                    displayName: "Status"
-                },
+                    displayName: "Status",
+                    width: 80,                  
+                    cellTemplate: 'static/templates/cell.html'
+                }, {
+                    field: "summary",
+                    displayName: "Summary",                  
+                    cellTemplate: 'static/templates/cell.html'
+                }
                 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
             ]
         };
