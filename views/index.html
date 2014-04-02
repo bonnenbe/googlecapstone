@@ -45,23 +45,21 @@
                 </a>
             </div>
             <ul class="nav navbar-nav navbar-left">
-                <li>
+                <li ng-class="{active: isPath('/Create')}">
                     <a ng-href="#/Create">New change request</a>
-
-
-                    <!-- <a ng-href="#/CreateTemplate"> -->
-                <li>
+                </li>
+                <li ng-class="{active: isPath('/CreateTemplate')}">
                     <a ng-href="#/CreateTemplate">New template</a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>                    
+                <li>         
                     <p class="navbar-text">Logged in as: <b>{{user}}</b></p>
                 </li>
-                <li>                    
+                <li>                 
                     <button ng-click="link('/Logout')" type="button" class="btn btn-default navbar-btn">Logout</button>
                 </li>
-                <li>
+                <li ng-class="{active: isPath('/Preferences')}">
                     <a ng-href="#/Preferences">Preferences</a>
                 </li>
             </ul>

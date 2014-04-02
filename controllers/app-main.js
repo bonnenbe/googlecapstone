@@ -3,7 +3,7 @@ var app = angular.module('module1', ['ngRoute', 'ngGrid', 'ui.bootstrap', 'ngTag
 //
 // Main Controller
 //
-app.controller('main', function ($http, $scope, $window) {
+app.controller('main', function ($http, $scope, $window, $location) {
     $http.get('/user').success(function (data) {
         $scope.user = data.user;
         $scope.inAdmins = data.inAdmins;
@@ -16,6 +16,9 @@ app.controller('main', function ($http, $scope, $window) {
     };
     $scope.link = function (path){
         $window.location.pathname = path;
+    };
+    $scope.isPath = function (path){
+        return $location.path() == path;
     };
 });
 
