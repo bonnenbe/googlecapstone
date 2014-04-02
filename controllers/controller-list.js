@@ -158,6 +158,18 @@ app.controller('listController', ['$http', '$scope', '$location',
                 //			{ field:"", displayName: "delete", cellTemplate:'<div class="ngCellText"><a ng-href ng-click="ctrl.remove(1)">[X]</a></div>'}
             ]
         };
+        
+        $scope.$watch('gridOptions.ngGrid.config.sortInfo', function (newVal, oldVal) {
+            if (newVal !== oldVal)
+            {
+                if (newVal && newVal.fields && newVal.fields.length)
+                    $scope.search.sort = newVal.fields[0].split(' ')[0];
+                if (newVal && newVal.directions && newVal.directions.length)
+                    $scope.search.direction = newVal.directions[0];
+                self.search();
+                
+            }
+        }, true);
 
         this.redirect = function (index) {
             $location.path('/id=' + ($scope.crs[index].id)).toString();
