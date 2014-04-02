@@ -3,7 +3,7 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
 
         // Note: initialization of sortfield is here and in search.html
         $scope.sortField = "created_on";
-        $scope.direction = "descending";
+        $scope.direction = "desc";
         $scope.match = 1; // match all
 
         $scope.query = "";
