@@ -135,7 +135,12 @@ class BaseHandler(webapp2.RequestHandler):
             if 'direction' in params and params['direction'] == 'asc':
                 direction = search.SortExpression.ASCENDING
                     
-            sort1 = search.SortExpression(expression=params['sort'], direction=direction)
+            # make sure the default values are correct
+            attr = getattr(ChangeRequest, params['sort']);
+            sort1 = search.SortExpression(expression=params['sort'], 
+                                          direction=direction, 
+                                          default_value=0 if isinstance(attr, ndb.DateTimeProperty) else "")
+                                          
             sort_opts = search.SortOptions(expressions = [sort1])
             if direction == search.SortExpression.DESCENDING and params['sort'] == 'created_on':
                 sort_opts = None #default rank sort
