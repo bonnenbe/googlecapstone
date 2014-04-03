@@ -161,18 +161,28 @@ class BaseHandler(webapp2.RequestHandler):
             logging.exception('Search failed') 
         return crs
     def queryDatastore(self, statuses=None, private=False):
+        logging.info('using datastore query')
         params = self.request.params
         crs_query = ChangeRequest.query()
         if statuses:
             crs_query = crs_query.filter(ChangeRequest.status.IN(statuses))
         if private:
             crs_query = crs_query.filter(ChangeRequest.author == users.get_current_user())
-        crs = crs_query.order(-ChangeRequest.created_on).fetch(int(params['limit']) if 'limit' in params else 10,
-                                                               offset=int(params['offset']) if 'offset' in params else 0)
+        if 'sort' in params and params['sort']:
+            for (sort,direction) in map(None, params.getall('sort'), params.getall('direction')):
+                if sort:
+                    if direction and direction == 'asc':
+                        crs_query = crs_query.order(getattr(ChangeRequest,sort))
+                    else:
+                        crs_query = crs_query.order(-getattr(ChangeRequest,sort))
+        else:
+            crs_query = crs_query.order(-ChangeRequest.created_on)
+        crs = crs_query.fetch(int(params['limit']) if 'limit' in params else 10,
+                              offset=int(params['offset']) if 'offset' in params else 0)
         return crs
-    def isDefaultSort(self):
-        params = self.request.params
-        return ('sort' not in params or not params['sort']) and ('query' not in params or not params['query'])
+    def isSimpleSort(self):
+        params = self.request.params    
+        return 'query' not in params or not params['query']
     def encodeCRList(self, crs):
         objs = []
         for cr in crs:
@@ -184,15 +194,17 @@ class BaseHandler(webapp2.RequestHandler):
             return cr
         else:
             self.abort(404)
+    def query(self,indexName,statuses=None,private=False):
+        # if self.isSimpleSort():
+        #     crs = self.queryDatastore(statuses=statuses,private=private)
+        # else:
+        crs = self.queryIndex(indexName=indexName,private=private)
+        return crs
 
 class CRListHandler(BaseHandler):
     def get(self):
-        if self.isDefaultSort():
-            crs = self.queryDatastore(['created','approved', 'succeeded', 'failed'])
-        else:
-            crs = self.queryIndex('fullTextSearch')
+        crs = self.query(indexName='fullTextSearch',statuses=['created','approved', 'succeeded', 'failed'])
         self.response.headers['Content-Type'] = 'application/json'
-
         self.response.write(json.dumps({'changerequests': self.encodeCRList(crs)},cls=JSONEncoder))
     def post(self):
         form = json.loads(self.request.body)
@@ -360,10 +372,7 @@ class DraftListHandler(BaseHandler):
 
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        if self.isDefaultSort():
-            crs = self.queryDatastore(['draft'], True)
-        else:
-            crs = self.queryIndex('drafts', True)
+        crs = self.query(indexName='drafts',statuses=['draft'],private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps({'drafts': self.encodeCRList(crs)},cls=JSONEncoder)) 
@@ -408,10 +417,7 @@ class TemplateListHandler(BaseHandler):
         updateIndex(cr, 'templates')
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        if self.isDefaultSort():
-            crs = self.queryDatastore(['template'])
-        else:
-            crs = self.queryIndex('templates')
+        crs = self.query(indexName='templates',statuses=['template'])
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps({'templates': self.encodeCRList(crs)},cls=JSONEncoder)) 

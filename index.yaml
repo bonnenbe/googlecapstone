@@ -50,13 +50,104 @@ indexes:
   properties:
   - name: status
   - name: created_on
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: priority
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: priority
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: startTime
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: startTime
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: summary
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: summary
     direction: desc
 
 - kind: ChangeRequest
   properties:
   - name: status
   - name: technician
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
   - name: created_on
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+  - name: priority
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+  - name: priority
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+    direction: desc
+  - name: created_on
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+    direction: desc
+  - name: created_on
+    direction: desc
+
+- kind: ChangeRequest
+  properties:
+  - name: status
+  - name: technician
+    direction: desc
+  - name: priority
     direction: desc
 
 - kind: ChangeRequest
