@@ -12,7 +12,12 @@
     </div>
 
     <div class="formButtons">
-        <button ng-click="ctrl.add(cr)">Publish</button>
-        <button ng-click="ctrl.sendDraft(cr)">Save as Draft</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="ctrl.add(cr)">
+            Publish
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.sendDraft(cr)">
+            <span class="glyphicon glyphicon-save"></span>
+            Save as Draft
+        </button>
     </div>
 </div>

@@ -15,30 +15,7 @@ body {
 #navbar{
     height: 50px;
 }
-//* * nav bar *\/ */
-/* #home { */
-/*     width: 100px; */
-/*     float: left; */
-/* } */
-/* #login { */
-/*     float: right; */
 
-/* } */
-/* #login button { */
-/*     margin-left: 10px;  */
-/* } */
-/* #navbar { */
-/*     width: 100%; */
-/*     margin-bottom: 20px; */
-/* } */
-/* /\* preferences page *\/ */
-/* #preferences > label{ */
-/*     max-width: 500px; */
-/*     width: 40%; */
-/* } */
-/* #preferences > input{ */
-/*     width: 3em; */
-/* } */
 /* grid page */
 #otherListStuff{
     margin: 0;
@@ -53,18 +30,34 @@ body {
 #search {
     float: right;
 }
-#fullSearch{
-    width: 30%;
+#grid-nav{
+    width: 100%;
     padding-top: 20px;
     padding-bottom: 0;
-    margin-bottom: 4px;
+    margin-bottom: 20px;
+    display: flex;
+}
+#fullSearch{
+    width: 40%;
+    max-width: 700px;
+    display: inline-table;
 }
 #search-icon{
     cursor: pointer;
 }
+#grid-buttons{
+    
+
+}
+#grid-buttons>*{
+  
+}
 .gridStyle {
     border: 1px solid rgb(212,212,212);
     /*width: 400px; */
+}
+#grid{
+    clear: both;
 }
 
 /* create/edit pages */

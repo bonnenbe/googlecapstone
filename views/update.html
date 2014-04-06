@@ -18,16 +18,41 @@
     
 
     <div class="formButtons">
-        <button ng-click="ctrl.update(cr)">Publish</button>
-        <button ng-click="ctrl.clone(cr)" ng-show="cr.status == 'template'">Clone</button>
-        <button ng-click="ctrl.templateToDraft(cr)" ng-show="cr.status == 'template'">Edit as draft</button>
-        <button ng-click="ctrl.sendDraft(cr)" ng-show="cr.status != 'template'">Save as Draft</button>
-        <button ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">Approve</button>
-        <button ng-click="unapprove()" ng-show="cr.status == 'approved'">Unapprove</button>
-        <button ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">Success</button>
-        <button ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">Failure</button>
-        <button ng-click="ctrl.subscribe(cr)" ng-show="cr.cc_list.indexOf(user) < 0 && cr.status != 'template'" tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Subscribe</button>
-        <button ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0  && cr.status != 'template'" tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">Unsubscribe</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="ctrl.update(cr)" ng-show="cr.status != 'template'">Publish</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-click="ctrl.templateToDraft(cr)" ng-show="cr.status == 'template'">
+            <span class="glyphicon glyphicon-plus"></span>
+            Make Change Request
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.update(cr)" ng-show="cr.status == 'template'">Edit Template</button>
+        <button type="button" class="btn btn-warning btn-lg" ng-click="ctrl.clone(cr)" ng-show="cr.status == 'template'">Clone</button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.sendDraft(cr)" ng-show="cr.status != 'template'">
+            <span class="glyphicon glyphicon-save"></span>
+            Save as Draft
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.approve(cr)" ng-show="cr.status == 'created'">
+            <span class="glyphicon glyphicon-ok"></span>
+            Approve
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="unapprove()" ng-show="cr.status == 'approved'">
+            <span class="glyphicon glyphicon-ban-circle"></span>
+            Unapprove
+        </button>
+        <button type="button" class="btn btn-success btn-lg" ng-click="ctrl.succeeded(cr,true)" ng-show="cr.status =='approved'">
+            <span class="glyphicon glyphicon-thumbs-up"></span>
+            Success
+        </button>
+        <button type="button" class="btn btn-warning btn-lg" ng-click="ctrl.succeeded(cr,false)" ng-show="cr.status =='approved'">
+            <span class="glyphicon glyphicon-fire"></span>
+            Failure
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.subscribe(cr)" ng-show="cr.cc_list.indexOf(user) < 0 && cr.status != 'template'" tooltip="Click to receive email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">
+            <span class="glyphicon glyphicon-plus"></span>
+            Subscribe
+        </button>
+        <button type="button" class="btn btn-info btn-lg" ng-click="ctrl.unsubscribe(cr)" ng-show="cr.cc_list.indexOf(user) >= 0  && cr.status != 'template'" tooltip="Click to stop email updates" tooltip-placement="up" tooltip-trigger="mouseenter mouseleave">
+            <span class="glyphicon glyphicon-minus"></span>
+            Unsubscribe
+        </button>
     </div>
 
     <textarea id="comment" class="well" ng-show="showComment" ng-model="cr.comment" placeholder="Leave a comment"></textarea>

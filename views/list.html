@@ -7,23 +7,25 @@
             <tab heading="Recently Approved" select="search.mode = 'recentlyApproved'" ng-show="inCommittee"></tab>
             <tab heading="Templates" select="search.mode = 'templates'"></tab>
         </tabset>
-        <div class="input-group" id="fullSearch">
-            <input type="text" class="form-control" ng-model="search.query" ng-keypress="onEnter($event, list.search)">
-            <span id="search-icon" class="input-group-addon" ng-click="list.search()">
-                <span class="glyphicon glyphicon-search"></span>
-            </span>
-            
+        <div id="grid-nav">
+            <div class="input-group" id="fullSearch">
+                <input type="text" class="form-control" ng-model="search.query" ng-keypress="onEnter($event, list.search)">
+                <span id="search-icon" class="input-group-addon" ng-click="list.search()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </span>
+                
+            </div>
+            <div id="grid-buttons">
+                <a href="#/search">
+                    <button type="button" class="btn btn-link">Advanced</button>
+                </a>
+                <button type="button" class="btn btn-primary" ng-click="list.clearDrafts()" ng-show="search.mode == 'drafts'">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    Clear Drafts
+                </button>
+            </div>
         </div>
-        <a href="#/search">
-            <button>Advanced</button>
-        </a>
     </div>
-    <button ng-click="list.clearDrafts()" ng-show="mode == 'drafts'">Clear Drafts</button>
-    <br ng-show="draftsMode">
-    <!--<div ng-repeat="cr in crs">{{cr.summary}} {{cr.priority}}
-	<a ng-href="#/id={{cr.id}}">[Edit]</a>
-	<a href ng-click="list.remove($index)">[X]</a>
-    </div>-->
 </div>
 <div class="gridStyle" ng-grid="gridOptions" id="grid"></div>
 
