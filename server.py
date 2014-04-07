@@ -131,19 +131,18 @@ class BaseHandler(webapp2.RequestHandler):
             
 
         if 'sort' in params and params['sort']:
-            direction = search.SortExpression.DESCENDING
-            if 'direction' in params and params['direction'] == 'asc':
-                direction = search.SortExpression.ASCENDING
-                    
-            # make sure the default values are correct
-            attr = getattr(ChangeRequest, params['sort']);
-            sort1 = search.SortExpression(expression=params['sort'], 
-                                          direction=direction, 
-                                          default_value=0 if isinstance(attr, ndb.DateTimeProperty) else "")
-                                          
-            sort_opts = search.SortOptions(expressions = [sort1])
-            if direction == search.SortExpression.DESCENDING and params['sort'] == 'created_on':
-                sort_opts = None #default rank sort
+            expressions = []
+            for (sort,direction) in map(None, params.getall('sort'), params.getall('direction')):
+                if sort:
+                    if direction == 'asc':
+                        direction = search.SortExpression.DESCENDING
+                    else:
+                        direction = search.SortExpression.ASCENDING
+                    attr = getattr(ChangeRequest, params['sort']);
+                    expressions.append(search.SortExpression(expression=sort, 
+                                                             direction=direction, 
+                                                             default_value=0 if isinstance(attr, ndb.DateTimeProperty) else ""))
+            sort_opts = search.SortOptions(expressions=expressions)
         else:
             sort_opts = None
         options = search.QueryOptions(
@@ -154,16 +153,9 @@ class BaseHandler(webapp2.RequestHandler):
             )
             
         query = search.Query(options=options, query_string=query_string)
-        try:
-            # list comprehension
-            results = index.search(query).results
-                #logging.debug(results)
-                #doc_ids = [document.doc_id for document in index.search(query_string)]
-                
-            keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
-            crs = ndb.get_multi(keys)
-        except search.Error:
-            logging.exception('Search failed') 
+        results = index.search(query).results
+        keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
+        crs = ndb.get_multi(keys)
         return crs
     def queryDatastore(self, statuses=None, private=False):
         logging.info('using datastore query')
@@ -307,7 +299,7 @@ class CRHandler(BaseHandler):
                 approved = True
             else:
                 webapp2.abort(403) #forbidden approval
-        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'): #fix permissions
                 change = dict()
                 change['property'] = 'status'
                 change['from'] = cr.status
@@ -349,7 +341,7 @@ class CRHandler(BaseHandler):
                                     body = "Change request id " + str(cr.key.id()) + " has been edited by " + str(audit_entry["user"]) +".\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()))
 
             updateIndex(cr, 'fullTextSearch')
-    def delete(self, id):
+    def delete(self, id):#fix
         key = IDsToKey(id)
         updateTags([], key.get().tags)
         removeFromIndex(key.urlsafe(),"fullTextSearch")
@@ -361,7 +353,7 @@ class DraftListHandler(BaseHandler):
         if 'id' in form.keys() and form['id']:
             key = IDsToKey(form['id'])
             parentCR = key.get()
-            if parentCR.status in ['created', 'approved']:
+            if parentCR.status in ['created', 'approved']:#fix
                 cr = ChangeRequest(parent=key)
             else:
                 cr = ChangeRequest()
