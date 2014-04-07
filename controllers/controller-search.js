@@ -76,6 +76,10 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
             compare: "<=",
         }];
 
+        $scope.sortParams = [{
+           field: "created_on",
+           direction: "desc"
+        }];
 
         this.buildQuery = function buildQuery() {
             $scope.query = "";
@@ -139,8 +143,9 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
 
             this.buildQuery();
             $location.search('query', $scope.query);
-            $location.search('sort', $scope.sortField);
-            $location.search('direction', $scope.direction);
+            // sortfield, direction still being used
+            $location.search('sort', $scope.sortParams[0].field);
+            $location.search('direction', $scope.sortParams[0].direction);
             $location.path("/");
         }
         

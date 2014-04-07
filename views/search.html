@@ -28,16 +28,21 @@
             
         </li>
     </ul>
-    <div> 
-        Sort by:
-        <select ng-model="sortField" required>
-            <option ng-selected="f=='created_on'" ng-repeat="f in sortableFields">{{f}}</option>
-        </select>
-        <select ng-model="direction">
-            <option value="asc">Ascending</option>
-            <option value="desc" selected="selected">Descending</option>
-        </select>
-    </div>
+    
+    <a  id="addSortField" href ng-click="sortParams.push({})" >Add Sort Field</a>
+    <br>Sort by:
+    
+    <ul>
+        <li class="searchItem" ng-repeat="s in sortParams">
+            <select ng-model="s.field" required>
+                <option ng-selected="f=='created_on'" ng-repeat="f in sortableFields">{{f}}</option>
+            </select>
+            <select ng-model="s.direction">
+                <option value="asc">Ascending</option>
+                <option value="desc" selected="selected">Descending</option>
+            </select>
+       </li>
+    </ul>
     
     <button id="searchButton" ng-click="list.search()">Search</button>
 </div>
