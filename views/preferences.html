@@ -1,16 +1,51 @@
 <h1>Preferences</h1>
-
-<form id="preferences">
-    <label>Results per page:</label>
-    <input type="number" ng-model="preferences.resultsPerPage"></input><br>
-    <label>Send notifications when you are the author:</label>
-    <input type="checkbox" ng-model="preferences.notifyAuthor"></input><br>
-    <label>Send notifications when you are the technician:</label>
-    <input type="checkbox" ng-model="preferences.notifyTechnician"></input><br>
-    <label>Send notifications when you are the peer reviewer:</label>
-    <input type="checkbox" ng-model="preferences.notifyReviewer"></input><br>
-    <label ng-show="inCommittee">Send notifications for all sensitive changes:</label>
-    <input ng-show="inCommittee" type="checkbox" ng-model="preferences.notifyCommittee"></input><br><br>
-    <button ng-click="submit()">Submit</button>
-    <button ng-click="reset()">Reset to defaults</button>
+<form id="preferences" class="form-horizontal" role="form">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Results per page</label>
+        <div class="col-sm-1">
+            <input type="number" ng-model="preferences.resultsPerPage" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="preferences.notifyAuthor"> Send notifications when you are the author
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="preferences.notifyTechnician"> Send notifications when you are the technician
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="preferences.notifyReviewer"> Send notifications when you are the peer reviewer
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" ng-show="inCommittee">
+        <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="preferences.notifyCommittee"> Send notifications for all sensitive changes
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-primary" ng-click="submit()">Submit</button>
+            <button class="btn btn-warning" ng-click="reset()">Reset to defaults</button>
+        </div>
+    </div>
 </form>
