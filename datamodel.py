@@ -94,7 +94,7 @@ class ChangeRequest(ndb.Model):
             d = stringtodatetime(value)
             object.__setattr__(self,attr,d)
         elif (attr in ['technician','peer_reviewer','author','cc_list'] and isinstance(value, basestring)):
-            d = users.User(value)
+            d = users.User(value) if value else None
             object.__setattr__(self,attr,d)
         elif (attr in ['technician','peer_reviewer','author','cc_list'] and isinstance(value, list)
               and len(value) > 0 and isinstance(value[0], basestring)):
