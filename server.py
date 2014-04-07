@@ -138,7 +138,7 @@ class BaseHandler(webapp2.RequestHandler):
                         direction = search.SortExpression.DESCENDING
                     else:
                         direction = search.SortExpression.ASCENDING
-                    attr = getattr(ChangeRequest, params['sort']);
+                    attr = getattr(ChangeRequest, sort);
                     expressions.append(search.SortExpression(expression=sort, 
                                                              direction=direction, 
                                                              default_value=0 if isinstance(attr, ndb.DateTimeProperty) else ""))
