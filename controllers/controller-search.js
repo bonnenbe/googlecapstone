@@ -144,8 +144,19 @@ app.controller('searchController', ['$http', '$scope', '$location', '$interval',
             this.buildQuery();
             $location.search('query', $scope.query);
             // sortfield, direction still being used
-            $location.search('sort', $scope.sortParams[0].field);
-            $location.search('direction', $scope.sortParams[0].direction);
+            
+            var sorts = [];
+            var directions = [];
+            
+            // Generate shit, check for empty fields
+            for (var i = 0; i < $scope.sortParams.length; i++) {
+                if (!$scope.sortParams[i].field || !$scope.sortParams[i].direction) continue;
+                sorts.push($scope.sortParams[i].field);
+                directions.push($scope.sortParams[i].direction);
+            }
+            $location.search('sort', sorts);
+            $location.search('direction', directions);
+            
             $location.path("/");
         }
         
