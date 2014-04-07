@@ -102,6 +102,21 @@ def updateTags(added, removed):
     for tag in removed:
         _removeTag(tag)
 
+def getMailList(cr):
+    mail_list = set()
+    if cr.author and Preferences.get_or_insert(cr.author.email()).notifyAuthor:
+        mail_list.add(cr.author.email())
+    if cr.technician and Preferences.get_or_insert(cr.technician.email()).notifyTechnician:
+        mail_list.add(cr.technician.email())
+    if cr.peer_reviewer and Preferences.get_or_insert(cr.peer_reviewer.email()).notifyReviewer:
+        mail_list.add(cr.peer_reviewer.email())
+    mail_list.update(set(cr.cc_list))
+    if cr.priority == 'sensitive':
+        committee = UserGroup.get_or_insert('approvalcommittee').members
+        for member in committee:
+            if Preferences.get_or_insert(member.email()).notifyCommittee:
+                mail_list.add(member.email())
+    return mail_list
 
 class BaseHandler(webapp2.RequestHandler):
     def handle_exception(self, exception, debug):
@@ -198,6 +213,7 @@ class BaseHandler(webapp2.RequestHandler):
         crs = self.queryIndex(indexName=indexName,private=private)
         return crs
 
+
 class CRListHandler(BaseHandler):
     def get(self):
         crs = self.query(indexName='fullTextSearch',statuses=['created','approved', 'succeeded', 'failed'])
@@ -214,18 +230,13 @@ class CRListHandler(BaseHandler):
         logging.info(form['tags'])
         logging.info(cr.tags)
         cr.put()
-        mail_list = {user.email() for user in {cr.author, cr.technician} | set(cr.cc_list) if user}
+        mail_list = getMailList(cr)
         if mail_list:
             mail.send_mail( sender = appEmail, 
                             to = mail_list,
                             subject= "CR #" + str(cr.key.id()) + " has been created",
                             body = "Change request id " + str(cr.key.id()) + " has been created. \n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\n Thanks, \nChange Management Team")
-        mail_list = {user.email() for user in {cr.peer_reviewer} if user}
-        if mail_list:    
-            mail.send_mail( sender = appEmail,
-                            to = mail_list,
-                            subject= "CR #" + str(cr.key.id()) + " needs your approval",
-                            body = "Change request id " + str(cr.key.id()) + " needs your approval.\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\nThanks, \nChange Management Team")
+            
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.id(),
                                         'blah': cr.__repr__()},cls=JSONEncoder))
@@ -325,7 +336,7 @@ class CRHandler(BaseHandler):
         if updated or commented:
             cr.audit_trail.insert(0, audit_entry)
             cr.put()
-            mail_list = {user.email() for user in {cr.author, cr.peer_reviewer, cr.technician} | set(cr.cc_list) if user}
+            mail_list = getMailList(cr)
 
             if mail_list:
                 #TODO tailor email for commented but not updated
