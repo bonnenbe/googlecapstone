@@ -31,8 +31,6 @@ app.controller('listController', ['$http', '$scope', '$location',
             params["limit"] = pageSize;
             
             angular.extend(params, search);
-            for (var key in params)
-                params[key] = encodeURIComponent(params[key]);
             var obj = {};
             
 
