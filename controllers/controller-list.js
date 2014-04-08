@@ -47,6 +47,7 @@ app.controller('listController', ['$http', '$scope', '$location',
                     obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive");
                 $http.get('/changerequests', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.changerequests);
+                    sizeGrid();
                 });
             }
             else if (mode == 'recentlyApproved') {
@@ -60,19 +61,23 @@ app.controller('listController', ['$http', '$scope', '$location',
 
                 $http.get('/changerequests', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.changerequests);
+                    sizeGrid();
                 });
             }
             else if (mode == "drafts")
                 $http.get('/drafts', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.drafts);
+                    sizeGrid();
                 });
             else if (mode == 'templates')
                 $http.get('/templates', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.templates);
+                    sizeGrid();
                 });
             else //default = all change requests
                 $http.get('/changerequests', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.changerequests);
+                    sizeGrid();
                 });
         };
 
