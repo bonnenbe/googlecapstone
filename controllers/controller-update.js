@@ -86,6 +86,28 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
                 });
             });
     };
+    this.getRemovals = function(from_list, to_list){
+        var remove_list = [];
+        for(var i=0; i<from_list.length; i++)
+        {
+            if (to_list.indexOf(from_list[i]) < 0)
+            {
+                remove_list.push(from_list[i]);
+            }
+        }
+        return remove_list;
+    };
+    this.getAdditions = function(from_list, to_list){
+        var add_list = [];
+        for(var i=0; i<to_list.length; i++)
+        {
+            if (from_list.indexOf(to_list[i]) < 0)
+            {
+                add_list.push(to_list[i]);
+            }
+        }
+        return add_list;
+    };
     this.clone = function(cr){
             $http.post('/templates', JSON.stringify(cr)).success(function (data) {
                 $location.path('/id=' + data.id);

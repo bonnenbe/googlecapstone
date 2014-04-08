@@ -327,9 +327,15 @@ class CRHandler(BaseHandler):
             if not equals(getattr(cr,p), form[p]):
                 change = dict()
                 change['property'] = p
-                change['from'] = str(getattr(cr,p))
+                if(isinstance(getattr(cr,p),list)):
+                    change['from'] = [json.dumps(value,cls=JSONEncoder) for value in getattr(cr,p)]
+                else:
+                    change['from'] = json.dumps(getattr(cr,p),cls=JSONEncoder)
                 setattr(cr,p,form[p])
-                change['to'] = str(getattr(cr,p))
+                if(isinstance(getattr(cr,p),list)):
+                    change['to'] = [json.dumps(value,cls=JSONEncoder) for value in getattr(cr,p)]
+                else:
+                    change['to'] = json.dumps(getattr(cr,p),cls=JSONEncoder)
                 audit_entry['changes'].append(change)
                 updated = True
 
