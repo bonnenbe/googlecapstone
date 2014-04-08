@@ -66,7 +66,7 @@
                 <ul class="audit_changes">
                     <li class="audit_change" ng-repeat="change in audit_entry.changes">
                         <p ng-if="change.property != 'tags' && change.property != 'cc_list' && change.property != 'startTime' && change.property != 'endTime'">Changed {{change.property}} from "{{change.from}}" to "{{change.to}}"</p>
-                        <p ng-if="change.property == 'startTime' || change.property == 'endTime'"> Insert time string parser</p>
+                        <p ng-if="change.property == 'startTime' || change.property == 'endTime'"> Changed {{change.property}} from {{change.from | datetime}} to {{change.to | datetime}}.</p>
                         <ul class="additions" ng-if="change.property == 'tags' || change.property == 'cc_list'">
                             <li class="additions" ng-repeat="add in ctrl.getAdditions(change.from, change.to) track by $index">
                                 <p> Added {{add}} to {{change.property}}.</p>
