@@ -194,7 +194,7 @@ app.directive('placehold', function () {
             });
 
             scope.$watch(attr.placehold, function (val) {
-                // this doesn't work.
+                // this doesn't work. //todo
                 placehold();
             });
             
