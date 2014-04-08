@@ -17,14 +17,17 @@ import datetime
 appEmail = "notifications@chromatic-tree-459.appspotmail.com"
 destinationEmail = "bbonnen@gmail.com"
 
-class JSONEncoder(json.JSONEncoder):
+def customizeJSON():
+    original = json.JSONEncoder.default
     def default(self,obj):
         if isinstance(obj,datetime.datetime):
             return obj.isoformat() + 'Z'
         elif isinstance(obj,users.User):
             return obj.email()
-        return json.JSONEncoder.default(self,obj)
+        return original(self,obj)
 
+    json.JSONEncoder.default = default
+customizeJSON()
 
     
 def encodeChangeRequest(cr):
@@ -218,7 +221,7 @@ class CRListHandler(BaseHandler):
     def get(self):
         crs = self.query(indexName='fullTextSearch',statuses=['created','approved', 'succeeded', 'failed'])
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'changerequests': self.encodeCRList(crs)},cls=JSONEncoder))
+        self.response.write(json.dumps({'changerequests': self.encodeCRList(crs)}))
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
@@ -239,7 +242,7 @@ class CRListHandler(BaseHandler):
             
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.id(),
-                                        'blah': cr.__repr__()},cls=JSONEncoder))
+                                        'blah': cr.__repr__()}))
         
         updateTags(cr.tags, [])
         updateIndex(cr, 'fullTextSearch')
@@ -249,7 +252,7 @@ class CRListHandler(BaseHandler):
 class CRHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
     def put(self, id):
         form = json.loads(self.request.body)
         cr = self.getCR(id)
@@ -258,8 +261,8 @@ class CRHandler(BaseHandler):
             webapp2.abort(403) #wrong uri
 
         audit_entry = dict()
-        audit_entry['date'] = datetime.datetime.now().isoformat()
-        audit_entry['user'] = users.get_current_user().email()
+        audit_entry['date'] = datetime.datetime.now()
+        audit_entry['user'] = users.get_current_user()
         audit_entry['changes'] = []
         if 'comment' in form.keys() and form['comment']:
             audit_entry['comment'] = form['comment']
@@ -327,15 +330,9 @@ class CRHandler(BaseHandler):
             if not equals(getattr(cr,p), form[p]):
                 change = dict()
                 change['property'] = p
-                if(isinstance(getattr(cr,p),list)):
-                    change['from'] = [json.dumps(value,cls=JSONEncoder) for value in getattr(cr,p)]
-                else:
-                    change['from'] = json.dumps(getattr(cr,p),cls=JSONEncoder)
+                change['from'] = getattr(cr,p)
                 setattr(cr,p,form[p])
-                if(isinstance(getattr(cr,p),list)):
-                    change['to'] = [json.dumps(value,cls=JSONEncoder) for value in getattr(cr,p)]
-                else:
-                    change['to'] = json.dumps(getattr(cr,p),cls=JSONEncoder)
+                change['to'] = getattr(cr,p)
                 audit_entry['changes'].append(change)
                 updated = True
 
@@ -389,7 +386,7 @@ class DraftListHandler(BaseHandler):
         crs = self.query(indexName='drafts',statuses=['draft'],private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'drafts': self.encodeCRList(crs)},cls=JSONEncoder)) 
+        self.response.write(json.dumps({'drafts': self.encodeCRList(crs)})) 
     def delete(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
         keys = crs_query.fetch(keys_only=True)
@@ -400,7 +397,7 @@ class DraftListHandler(BaseHandler):
 class DraftHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)},cls=JSONEncoder))
+        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
@@ -434,12 +431,12 @@ class TemplateListHandler(BaseHandler):
         crs = self.query(indexName='templates',statuses=['template'])
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'templates': self.encodeCRList(crs)},cls=JSONEncoder)) 
+        self.response.write(json.dumps({'templates': self.encodeCRList(crs)}))
         
 class TemplateHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'template': encodeChangeRequest(cr)},cls=JSONEncoder))
+        self.response.write(json.dumps({'template': encodeChangeRequest(cr)}))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
@@ -497,7 +494,7 @@ class GroupHandler(BaseHandler):
                 setattr(group,k,form[k])
         group.put()
         logging.debug(group.key.id())
-        self.response.write(json.dumps({'id': group.key.id()},cls=JSONEncoder))
+        self.response.write(json.dumps({'id': group.key.id()}))
 
             
 
@@ -544,7 +541,7 @@ class TagsHandler(BaseHandler):
             results = index.search(query).results
         except search.Error:
             webapp2.abort(400)
-        self.response.write(json.dumps([doc.doc_id for doc in results],cls=JSONEncoder))
+        self.response.write(json.dumps([doc.doc_id for doc in results]))
             
 class SearchHandler(BaseHandler):
     def get(self):
