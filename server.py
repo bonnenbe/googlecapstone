@@ -110,7 +110,7 @@ def getMailList(cr):
         mail_list.add(cr.technician.email())
     if cr.peer_reviewer and Preferences.get_or_insert(cr.peer_reviewer.email()).notifyReviewer:
         mail_list.add(cr.peer_reviewer.email())
-    mail_list.update(set(cr.cc_list))
+    mail_list.update({user.email() for user in cr.cc_list})
     if cr.priority == 'sensitive':
         committee = UserGroup.get_or_insert('approvalcommittee').members
         for member in committee:
