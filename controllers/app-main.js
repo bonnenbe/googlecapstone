@@ -62,7 +62,7 @@ app.directive('autoGrow', function() {
 			element.css('height', Math.max($shadow[0].offsetHeight + 10 /* the "threshold" */, minHeight) + 'px');
 		}
  
-		element.bind('keyup keydown keypress change', update);
+		element.bind('keyup keydown keypress change focus', update);
 		update();
 	}
 });

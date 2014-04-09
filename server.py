@@ -502,7 +502,42 @@ class IndexHandler(BaseHandler):
     def get(self):
     
         # force update on search index via /admin/rebuildIndex
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved']))
+        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved', 'failed', 'succeeded']))
+        
+        
+        #delete everything in the other indices
+        doc_index = search.Index(name="drafts")
+        while True:
+            # Get a list of documents populating only the doc_id field and extract the ids.
+            document_ids = [document.doc_id
+                            for document in doc_index.get_range(ids_only=True)]
+            if not document_ids:
+                break
+            # Delete the documents for the given ids from the Index.
+            doc_index.delete(document_ids)
+        
+        doc_index = search.Index(name="templates")
+        while True:
+            # Get a list of documents populating only the doc_id field and extract the ids.
+            document_ids = [document.doc_id
+                            for document in doc_index.get_range(ids_only=True)]
+            if not document_ids:
+                break
+            # Delete the documents for the given ids from the Index.
+            doc_index.delete(document_ids)
+        
+        
+        #delete everything in the index
+        doc_index = search.Index(name="fullTextSearch")
+        # looping because get_range by default returns up to 100 documents at a time
+        while True:
+            # Get a list of documents populating only the doc_id field and extract the ids.
+            document_ids = [document.doc_id
+                            for document in doc_index.get_range(ids_only=True)]
+            if not document_ids:
+                break
+            # Delete the documents for the given ids from the Index.
+            doc_index.delete(document_ids)
         
         for cr in crs_query:
             index = search.Index(name="fullTextSearch")
