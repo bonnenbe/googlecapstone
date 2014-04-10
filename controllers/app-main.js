@@ -3,12 +3,12 @@ var app = angular.module('module1', ['ngRoute', 'ngGrid', 'ui.bootstrap', 'ngTag
 //
 // Main Controller
 //
-app.controller('main', function ($http, $scope, $window, $location) {
-    $http.get('/user').success(function (data) {
-        $scope.user = data.user;
-        $scope.inAdmins = data.inAdmins;
-        $scope.inCommittee = data.inCommittee;
-        $scope.preferences = data.preferences;
+app.controller('main', function ($scope, $window, $location, Users) {
+    Users.getUser().then(function (response) {
+        $scope.user = response.data.user;
+        $scope.inAdmins = response.data.inAdmins;
+        $scope.inCommittee = response.data.inCommittee;
+        $scope.preferences = response.data.preferences;
     });
     $scope.onEnter = function (event, foo) {
         if (event.which == 13)
@@ -21,6 +21,20 @@ app.controller('main', function ($http, $scope, $window, $location) {
         return $location.path() == path;
     };
 });
+
+app.service('Users', function($q, $http, $rootScope){
+    var promise = null;
+    this.getUser = function(){
+        if (promise)
+            return promise;
+        else
+        {
+            promise = $http.get('/user');
+            return promise;
+        }
+    };
+});
+    
 
 // For autosizing text areas
 // https://gist.github.com/thomseddon/4703968

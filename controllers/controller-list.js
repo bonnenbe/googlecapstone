@@ -1,18 +1,19 @@
 // List(main page) Controller
-app.controller('listController', ['$http', '$scope', '$location',
-    function ($http, $scope, $location) {
-        $scope.search = {};
-        angular.extend($scope.search, $location.search());
-        var self = this;
-        $scope.priorities = ['routine', 'sensitive'];
-        $scope.status = ['draft', 'created', 'approved', 'succeeded', 'failed'];
-      
-        $scope.pagingOptions = {
-            pageSizes: [10, 20, 50, 100],
-            pageSize: $scope.preferences ? $scope.preferences.resultsPerPage : 10,
-            currentPage: 1,
-            totalServerItems: false
-        };
+app.controller('listController', function ($http, $scope, $location, Users) {
+    $scope.search = {};
+    angular.extend($scope.search, $location.search());
+    var self = this;
+    $scope.priorities = ['routine', 'sensitive'];
+    $scope.status = ['draft', 'created', 'approved', 'succeeded', 'failed'];
+    $scope.pagingOptions = {
+        pageSizes: [10, 20, 50, 100],
+        pageSize: 20,
+        currentPage: 1,
+        totalServerItems: false
+    };
+    Users.getUser().then(function(response){
+        $scope.pagingOptions.pageSize = response.data.preferences.resultsPerPage;
+    });
 
         // Sets paging data
         $scope.setPagingData = function (pageSize, page, data) {
@@ -226,5 +227,4 @@ app.controller('listController', ['$http', '$scope', '$location',
             $('#fullSearch input').focus();
         };
         init();
-    }
-]);
+});

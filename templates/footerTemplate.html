@@ -11,8 +11,8 @@
     <div class="ngPagerContainer" style="float: right; margin-top: 10px;" ng-show="enablePaging" ng-class="{'ngNoMultiSelect': !multiSelect}">
         <div style="float:left; margin-right: 10px;" class="ngRowCountPicker">
             <span style="float: left; margin-top: 3px;" class="ngLabel">{{i18n.ngPageSizeLabel}}</span>
-            <select style="float: left;height: 27px; width: 100px" ng-model="pagingOptions.pageSize" >
-                <option ng-repeat="size in pagingOptions.pageSizes">{{size}}</option>
+            <select style="float: left;height: 27px; width: 100px" ng-model="pagingOptions.pageSize" 
+                    ng-options="size for size in pagingOptions.pageSizes.concat(pagingOptions.pageSize)">
             </select>
         </div>
         <div style="float:left; margin-right: 10px; line-height:25px;" class="ngPagerControl" style="float: left; min-width: 135px;">
