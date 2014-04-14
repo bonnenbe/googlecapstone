@@ -88,6 +88,9 @@ body {
     margin: 5px auto;
     background-color: inherit;
 }
+.formfield>textarea{
+    overflow: hidden;
+}
 .formfield>textarea[readonly]{
     border-style: none;
 }

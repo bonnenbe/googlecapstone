@@ -26,26 +26,26 @@ app.controller('createController', function ($http, $scope, $location, $interval
     });
 
     this.remove = function remove() {
-        $http.delete('/drafts/' + $scope.cr.id).success(function () {});
+        $http.delete('/api/drafts/' + $scope.cr.id).success(function () {});
     };
 
     this.add = function add(cr) {
         $interval.cancel(self.cancelDrafts);
         if (cr.id)
             self.remove();
-        $http.post('/changerequests', JSON.stringify(cr)).success(function (data) {
+        $http.post('/api/changerequests', JSON.stringify(cr)).success(function (data) {
             cr.id = data.id;
             console.log("Successful add");
-            $location.path('#');
+            $location.path('/');
         }).error(function () {
             console.log("Unsuccessful add");
         });
     };
     this.addTemplate = function add(cr) {
-        $http.post('/templates', JSON.stringify(cr)).success(function (data) {
+        $http.post('/api/templates', JSON.stringify(cr)).success(function (data) {
             cr.id = data.id;
             console.log("Successful add");
-            $location.path('#');
+            $location.path('/');
         }).error(function () {
             console.log("Unsuccessful add");
         });
@@ -53,9 +53,9 @@ app.controller('createController', function ($http, $scope, $location, $interval
 
     this.sendDraft = function sendDraft(cr) {
         if (cr.id)
-            $http.put('/drafts/' + cr.id, JSON.stringify(cr));
+            $http.put('/api/drafts/' + cr.id, JSON.stringify(cr));
         else
-            $http.post('/drafts', JSON.stringify(cr)).success(function (data) {
+            $http.post('/api/drafts', JSON.stringify(cr)).success(function (data) {
                 cr.id = data.id;
             });
     };
@@ -66,7 +66,7 @@ app.controller('createController', function ($http, $scope, $location, $interval
         params["limit"] = 10;
         var obj = {};
         obj["params"] = params;
-        return $http.get('/tags', obj);
+        return $http.get('/api/tags', obj);
     };
 
 });

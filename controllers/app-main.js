@@ -1,5 +1,8 @@
 var app = angular.module('module1', ['ngRoute', 'ngGrid', 'ui.bootstrap', 'ngTagsInput']);
 
+app.config(function ($locationProvider){
+    $locationProvider.html5Mode(true);
+});
 //
 // Main Controller
 //
@@ -22,19 +25,20 @@ app.controller('main', function ($scope, $window, $location, Users) {
     };
 });
 
-app.service('Users', function($q, $http, $rootScope){
+app.service('Users', function($http){
     var promise = null;
     this.getUser = function(){
         if (promise)
             return promise;
         else
         {
-            promise = $http.get('/user');
+            promise = $http.get('/api/user');
             return promise;
         }
     };
 });
     
+
 
 // For autosizing text areas
 // https://gist.github.com/thomseddon/4703968

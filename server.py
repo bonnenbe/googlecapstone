@@ -221,7 +221,7 @@ class CRListHandler(BaseHandler):
     def get(self):
         crs = self.query(indexName='fullTextSearch',statuses=['created','approved', 'succeeded', 'failed'])
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'changerequests': self.encodeCRList(crs)}))
+        self.response.write(json.dumps(self.encodeCRList(crs)))
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
@@ -578,23 +578,18 @@ class TagsHandler(BaseHandler):
             webapp2.abort(400)
         self.response.write(json.dumps([doc.doc_id for doc in results]))
             
-class SearchHandler(BaseHandler):
-    def get(self):
-        pass
             
 application = webapp2.WSGIApplication([
-    webapp2.Route('/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
-    webapp2.Route('/changerequests/<id:.*>', handler=CRHandler),
-    webapp2.Route('/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
-    webapp2.Route('/user',handler=UserHandler),
-    webapp2.Route('/drafts',handler=DraftListHandler),
-    webapp2.Route('/drafts/<id:.*>',handler=DraftHandler),
-    webapp2.Route('/templates',handler=TemplateListHandler),
-    webapp2.Route('/templates/<id:.*>',handler=TemplateHandler),
-    webapp2.Route('/tags', handler = TagsHandler),
-    webapp2.Route('/usergroups', handler = GroupHandler),
-    webapp2.Route('/admin/rebuildIndex', handler = IndexHandler),
-    webapp2.Route('/admin/temp', handler = TempHandler), 
-    webapp2.Route('/search', handler = SearchHandler)
-
-], debug=True)
+    webapp2.Route('/api/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
+    webapp2.Route('/api/changerequests/<id:.*>', handler=CRHandler),
+    webapp2.Route('/api/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
+    webapp2.Route('/api/user',handler=UserHandler),
+    webapp2.Route('/api/drafts',handler=DraftListHandler),
+    webapp2.Route('/api/drafts/<id:.*>',handler=DraftHandler),
+    webapp2.Route('/api/templates',handler=TemplateListHandler),
+    webapp2.Route('/api/templates/<id:.*>',handler=TemplateHandler),
+    webapp2.Route('/api/tags', handler = TagsHandler),
+    webapp2.Route('/api/usergroups', handler = GroupHandler),
+    webapp2.Route('/api/admin/rebuildIndex', handler = IndexHandler),
+    webapp2.Route('/api/admin/temp', handler = TempHandler)
+    ], debug=True)

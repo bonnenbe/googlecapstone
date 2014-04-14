@@ -1,5 +1,5 @@
 // List(main page) Controller
-app.controller('listController', function ($http, $scope, $location, Users) {
+app.controller('listController', function ($http, $scope, $location, Users, $interval) {
     $scope.search = {};
     angular.extend($scope.search, $location.search());
     var self = this;
@@ -21,6 +21,7 @@ app.controller('listController', function ($http, $scope, $location, Users) {
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+            sizeGrid();
         };
 
         // On get new page
@@ -46,9 +47,8 @@ app.controller('listController', function ($http, $scope, $location, Users) {
                     obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive (" + query + ")");
                 else
                     obj["params"]["query"] = encodeURIComponent("status:created priority:sensitive");
-                $http.get('/changerequests', obj).success(function (data) {
+                $http.get('/api/changerequests', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.changerequests);
-                    sizeGrid();
                 });
             }
             else if (mode == 'recentlyApproved') {
@@ -60,25 +60,21 @@ app.controller('listController', function ($http, $scope, $location, Users) {
                 else
                     obj["params"]["query"] = encodeURIComponent("status:approved priority:sensitive approved_on >= " + date);
 
-                $http.get('/changerequests', obj).success(function (data) {
+                $http.get('/api/changerequests', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.changerequests);
-                    sizeGrid();
                 });
             }
             else if (mode == "drafts")
-                $http.get('/drafts', obj).success(function (data) {
+                $http.get('/api/drafts', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.drafts);
-                    sizeGrid();
                 });
             else if (mode == 'templates')
-                $http.get('/templates', obj).success(function (data) {
+                $http.get('/api/templates', obj).success(function (data) {
                     $scope.setPagingData(pageSize, page, data.templates);
-                    sizeGrid();
                 });
             else //default = all change requests
-                $http.get('/changerequests', obj).success(function (data) {
-                    $scope.setPagingData(pageSize, page, data.changerequests);
-                    sizeGrid();
+                $http.get('/api/changerequests', obj).success(function (data) {
+                    $scope.setPagingData(pageSize, page, data);
                 });
         };
 
@@ -189,7 +185,7 @@ app.controller('listController', function ($http, $scope, $location, Users) {
             var height = $("body").height();
 
             //todo  why -10
-            height = height - $("#googleInfo").outerHeight() - 10;
+            height = height - $("#navbar").outerHeight() - 10;
             $("#view").height(height);
             //
             height = height - $("#otherListStuff").outerHeight();
@@ -199,15 +195,6 @@ app.controller('listController', function ($http, $scope, $location, Users) {
         // These calls 1.call the function sizeGrid upon loading, and attaches the event upon window resizing.
         sizeGrid();
         $(window).resize(sizeGrid);
-
-
-        // Currently not called anywhere. Remove the change request at an *index* in the grid
-        this.remove = function remove(index) {
-            alert(index);
-            $http.delete('/changerequests/' + $scope.crs[index].id, "").success(function () {
-                $scope.crs.splice(index, 1);
-            });
-        };
 
         this.search = function search() {
             var search = angular.copy($scope.search);
@@ -219,7 +206,7 @@ app.controller('listController', function ($http, $scope, $location, Users) {
         };
 
         this.clearDrafts = function () {
-            $http.delete('/drafts').success(function () {
+            $http.delete('/api/drafts').success(function () {
                 $scope.refresh();
             })
         };

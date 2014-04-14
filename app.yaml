@@ -5,6 +5,10 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /api/.*
+  login: required
+  script: server.application
+
 - url: /static/templates
   static_dir: templates 
 
@@ -30,7 +34,9 @@ handlers:
 
 - url: /.*
   login: required
-  script: server.application
+  static_files: views/index.html
+  upload: views/index.html
+  
 
   
 libraries:
