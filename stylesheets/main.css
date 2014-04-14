@@ -115,6 +115,9 @@ body {
     flex-wrap: nowrap;
     flex: 0 0 auto;
 }
+#priority{
+    width: 10em;
+}
 .formfield textarea:focus, .formfield input:focus{
     background-color: #FFFFFF;
 }
