@@ -12,10 +12,6 @@ app.controller('createController', function ($http, $scope, $location, $interval
     $scope.cr.id = null;
     var self = this;
 
-    this.onload = function onload() {
-        $scope.heading = "Create Change Request";
-        $("#heading").text($scope.heading);
-    }
     if ($location.path().indexOf('Template') == -1)
         self.cancelDrafts = $interval(function () {
             self.sendDraft($scope.cr);

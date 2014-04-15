@@ -1,19 +1,21 @@
-app.controller('updateController', function ($routeParams, $http, $scope, $location) {
+app.controller('updateController', function ($routeParams, $http, $scope, $location, $interval) {
     $scope.priorities = ['routine', 'sensitive'];
     $scope.status = ['created', 'approved', 'draft'];
-
-
-    this.onload = function onload() {
-        $scope.heading = "Edit Change Request";
-        $("#heading").text($scope.heading);
-
-    }
+    var self = this;
 
     $http.get('/api/changerequests/' + $routeParams.id, "").success(function (data) {
-        $scope.cr = data.changerequest;
+        $scope.cr = data;
         $scope.cr.startTime = new Date($scope.cr.startTime);
         $scope.cr.endTime = new Date($scope.cr.endTime);
         $scope.showComment = $.inArray($scope.cr.status, ['draft', 'template']) < 0;
+        if (data.status != 'template')
+            self.cancelDrafts = $interval(function () {
+                self.sendDraft();
+            }, 5000);             
+    });
+
+    $scope.$on('$destroy', function () {
+        $interval.cancel(self.cancelDrafts);
     });
 
     this.update = function update(cr) {
@@ -68,21 +70,21 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
             })
         }
     };
-    this.subscribe = function subscribe(cr){
+    this.subscribe = function subscribe(){
         $scope.cr.cc_list.push($scope.user);
-        $http.put('/api/api/changerequests/' + $routeParams.id, JSON.stringify(cr));
+        $http.put('/api/api/changerequests/' + $routeParams.id, $scope.cr);
     };
-    this.unsubscribe = function unsubscribe(cr){
+    this.unsubscribe = function unsubscribe(){
         $scope.cr.cc_list.splice($scope.cr.cc_list.indexOf($scope.user),1)
-        $http.put('/api/api/changerequests/' + $routeParams.id, JSON.stringify(cr));
+        $http.put('/api/api/changerequests/' + $routeParams.id, $scope.cr);
     };
-    this.sendDraft = function sendDraft(cr) {
-        if (cr.status == 'draft')
-            $http.put('/api/drafts/' + cr.id, JSON.stringify(cr));
+    this.sendDraft = function sendDraft() {
+        if ($scope.cr.status == 'draft')
+            $http.put('/api/drafts/' + $scope.cr.id, JSON.stringify($scope.cr));
         else
-            $http.post('/api/drafts', JSON.stringify(cr)).success(function (data) {
+            $http.post('/api/drafts', $scope.cr).success(function (data) {
                 $http.get('/api/drafts/' + data.id).success(function (data) {
-                    cr = data.draft;
+                    $scope.cr = data;
                 });
             });
     };
@@ -108,13 +110,13 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         }
         return add_list;
     };
-    this.clone = function(cr){
-            $http.post('/api/templates', JSON.stringify(cr)).success(function (data) {
+    this.clone = function(){
+        $http.post('/api/templates', $scope.cr).success(function (data) {
                 $location.path('/id=' + data.id);
             });
     };
-    this.templateToDraft = function(cr){
-        $http.post('/api/drafts', JSON.stringify(cr)).success(function (data) {
+    this.templateToDraft = function(){
+        $http.post('/api/drafts', $scope.cr).success(function (data) {
             $location.path('/id=' + data.id);
         });
     };

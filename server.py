@@ -41,7 +41,7 @@ def encodeChangeRequest(cr):
         'technician': cr.technician,
         'peer_reviewer': cr.peer_reviewer,
         'priority': cr.priority,
-        'id': keyToIDs(cr.key),
+        'id': cr.id(),
         'created_on': cr.created_on,
         'audit_trail': cr.audit_trail,
         'tests_conducted': cr.tests_conducted,
@@ -241,9 +241,7 @@ class CRListHandler(BaseHandler):
                             body = "Change request id " + str(cr.key.id()) + " has been created. \n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/#/id=" + str(cr.key.id()) + "\n\n Thanks, \nChange Management Team")
             
         logging.debug(cr.key.id())
-        self.response.write(json.dumps({'id': cr.id(),
-                                        'blah': cr.__repr__()}))
-        
+        self.response.write(json.dumps({'id': cr.id()}))
         updateTags(cr.tags, [])
         updateIndex(cr, 'fullTextSearch')
         
@@ -252,7 +250,7 @@ class CRListHandler(BaseHandler):
 class CRHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
+        self.response.write(json.dumps(encodeChangeRequest(cr)))
     def put(self, id):
         form = json.loads(self.request.body)
         cr = self.getCR(id)
@@ -386,7 +384,7 @@ class DraftListHandler(BaseHandler):
         crs = self.query(indexName='drafts',statuses=['draft'],private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'drafts': self.encodeCRList(crs)})) 
+        self.response.write(json.dumps(self.encodeCRList(crs)))
     def delete(self):
         crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
         keys = crs_query.fetch(keys_only=True)
@@ -397,7 +395,7 @@ class DraftListHandler(BaseHandler):
 class DraftHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'changerequest': encodeChangeRequest(cr)}))
+        self.response.write(json.dumps(encodeChangeRequest(cr)))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
@@ -431,12 +429,12 @@ class TemplateListHandler(BaseHandler):
         crs = self.query(indexName='templates',statuses=['template'])
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.write(json.dumps({'templates': self.encodeCRList(crs)}))
+        self.response.write(json.dumps(self.encodeCRList(crs)))
         
 class TemplateHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
-        self.response.write(json.dumps({'template': encodeChangeRequest(cr)}))
+        self.response.write(json.dumps(encodeChangeRequest(cr)))
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False

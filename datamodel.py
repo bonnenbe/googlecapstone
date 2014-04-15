@@ -37,6 +37,7 @@ searchable_properties = properties | {
 
 
 def stringtodatetime(s):
+    s = filter(lambda char: char != 'Z', s) 
     return datetime.datetime.strptime(string.split(s,'.')[0],
                                            "%Y-%m-%dT%H:%M:%S")
 def intersperse(iterable, delimiter):
