@@ -153,9 +153,9 @@ class BaseHandler(webapp2.RequestHandler):
             for (sort,direction) in map(None, params.getall('sort'), params.getall('direction')):
                 if sort:
                     if direction == 'asc':
-                        direction = search.SortExpression.DESCENDING
-                    else:
                         direction = search.SortExpression.ASCENDING
+                    else:
+                        direction = search.SortExpression.DESCENDING
                     attr = getattr(ChangeRequest, sort);
                     expressions.append(search.SortExpression(expression=sort, 
                                                              direction=direction, 
