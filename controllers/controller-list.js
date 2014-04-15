@@ -175,7 +175,6 @@ app.controller('listController', function ($http, $scope, $location, Users, $int
             $location.path('/id=' + ($scope.crs[index].id)).toString();
         }
 
-
         //
         // Resizing grid
         //
@@ -185,11 +184,14 @@ app.controller('listController', function ($http, $scope, $location, Users, $int
             var height = $("body").height();
 
             //todo  why -10
-            height = height - $("#navbar").outerHeight() - 10;
-            $("#view").height(height);
-            //
-            height = height - $("#otherListStuff").outerHeight();
+            height = height - $("#navbar").outerHeight(true) + 20;
+            //$("#view").height(height);
+
+            height = height - $("#otherListStuff").outerHeight(true);
             $("#grid").height(height);
+            
+            // This fails...
+            //$("#grid").height(20*$scope.pagingOptions.pageSize+55+30);
 
         }
         // These calls 1.call the function sizeGrid upon loading, and attaches the event upon window resizing.
@@ -212,6 +214,8 @@ app.controller('listController', function ($http, $scope, $location, Users, $int
         };
         var init = function (){
             $('#fullSearch input').focus();
+            sizeGrid();
+
         };
         init();
 });
