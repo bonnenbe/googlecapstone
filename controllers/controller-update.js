@@ -10,7 +10,7 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         $scope.showComment = $.inArray($scope.cr.status, ['draft', 'template']) < 0;
         if (data.status != 'template')
             self.cancelDrafts = $interval(function () {
-                self.sendDraft();
+                //self.sendDraft();
             }, 5000);             
     });
 
