@@ -14,6 +14,11 @@
     <input id="peer_reviewer" type="email" ng-model="cr.peer_reviewer">
 </div>
 <div class="formfield">
+    <label for="tags">CC list </label>
+    <tags-input id="cc_list" ng-model="cr.cc_list" placeholder="Add a recipient" allowed-tags-pattern="^[a-zA-Z0-9\-\._]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$"> 
+    </tags-input>
+</div>
+<div class="formfield">
     <label for="description">Description </label>
     <textarea auto-grow id="description" ng-model="cr.description" > </textarea>
 </div>
