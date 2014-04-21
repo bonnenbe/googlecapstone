@@ -11,6 +11,8 @@ app.controller('createController', function ($http, $scope, $location, $interval
     $scope.cr.endTime.setSeconds(0);
     $scope.cr.id = null;
     var self = this;
+    self.copy = {};
+    angular.copy($scope.cr, self.copy);
 
     if ($location.path().indexOf('Template') == -1)
         self.cancelDrafts = $interval(function () {
@@ -48,11 +50,25 @@ app.controller('createController', function ($http, $scope, $location, $interval
     };
 
     this.sendDraft = function sendDraft(cr) {
+        var changed = false;
+        for (var prop in cr)
+        {
+            if (JSON.stringify(cr[prop]) !== JSON.stringify(self.copy[prop]))
+            {
+                changed = true;
+                break;
+            }
+        }
+        if (!changed)
+            return; //no draft necessary
         if (cr.id)
-            $http.put('/api/drafts/' + cr.id, JSON.stringify(cr));
+            $http.put('/api/drafts/' + cr.id, JSON.stringify(cr)).success(function (){
+                 angular.copy(cr, self.copy);
+            });
         else
             $http.post('/api/drafts', JSON.stringify(cr)).success(function (data) {
                 cr.id = data.id;
+                angular.copy(cr, self.copy);
             });
     };
 

@@ -2,16 +2,20 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     $scope.priorities = ['routine', 'sensitive'];
     $scope.status = ['created', 'approved', 'draft'];
     var self = this;
-
+    self.draftID = null;
+    self.copy = {};
     $http.get('/api/changerequests/' + $routeParams.id, "").success(function (data) {
         $scope.cr = data;
         $scope.cr.startTime = new Date($scope.cr.startTime);
         $scope.cr.endTime = new Date($scope.cr.endTime);
         $scope.showComment = $.inArray($scope.cr.status, ['draft', 'template']) < 0;
+        angular.copy($scope.cr, self.copy);
         if (data.status != 'template')
             self.cancelDrafts = $interval(function () {
-                //self.sendDraft();
-            }, 5000);             
+                self.sendDraft();
+            }, 5000);     
+        if (data.status == 'draft')
+            self.draftID = data.id;
     });
 
     $scope.$on('$destroy', function () {
@@ -47,7 +51,9 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         }
         else //created or approved
             $http.put('/api/changerequests/' + $routeParams.id, JSON.stringify(cr)).success(function (data) {
-                $location.path('/');
+                $http.delete('/api/drafts/' + self.draftID).success(function (data) {
+                    $location.path('/');
+                });
             });
     };
 
@@ -79,13 +85,25 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         $http.put('/api/api/changerequests/' + $routeParams.id, $scope.cr);
     };
     this.sendDraft = function sendDraft() {
-        if ($scope.cr.status == 'draft')
-            $http.put('/api/drafts/' + $scope.cr.id, JSON.stringify($scope.cr));
+        var changed = false;
+        for (var prop in $scope.cr)
+        {
+            if (JSON.stringify($scope.cr[prop]) !== JSON.stringify(self.copy[prop]))
+            {
+                changed = true;
+                break;
+            }
+        }
+        if (!changed)
+            return; //no draft necessary
+        if (self.draftID)
+            $http.put('/api/drafts/' + self.draftID, JSON.stringify($scope.cr)).success(function (){
+                 angular.copy($scope.cr, self.copy);
+            });
         else
             $http.post('/api/drafts', $scope.cr).success(function (data) {
-                $http.get('/api/drafts/' + data.id).success(function (data) {
-                    $scope.cr = data;
-                });
+                self.draftID = data.id;
+                angular.copy($scope.cr, self.copy);
             });
     };
     this.getRemovals = function(from_list, to_list){
