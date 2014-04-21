@@ -12,7 +12,11 @@
 	    <div class="formfield">
             <label for="status">Status</label>
             <p id="status">{{cr.status}}
-
+	    </div>
+	    <div class="formfield" ng-show="saved">
+            <label for="status"></label>
+            <p><span class="glyphicon glyphicon-saved"></span>
+                Draft saved {{savedTime | date:'mediumTime'}}
 	    </div>
     </div>
     

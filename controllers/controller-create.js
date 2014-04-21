@@ -10,9 +10,13 @@ app.controller('createController', function ($http, $scope, $location, $interval
     $scope.cr.endTime.setMinutes(0);
     $scope.cr.endTime.setSeconds(0);
     $scope.cr.id = null;
+    $scope.saved = false;
+    $scope.savedTime = null;
     var self = this;
     self.copy = {};
     angular.copy($scope.cr, self.copy);
+    self.copy.tags = [];
+    self.copy.cc_list = [];
 
     if ($location.path().indexOf('Template') == -1)
         self.cancelDrafts = $interval(function () {
@@ -56,19 +60,26 @@ app.controller('createController', function ($http, $scope, $location, $interval
             if (JSON.stringify(cr[prop]) !== JSON.stringify(self.copy[prop]))
             {
                 changed = true;
+                console.log(prop);
+                console.log(JSON.stringify(cr[prop]));
+                console.log(JSON.stringify(self.copy[prop]));
                 break;
             }
         }
         if (!changed)
-            return; //no draft necessary
+            return; //no draft necessary        
         if (cr.id)
             $http.put('/api/drafts/' + cr.id, JSON.stringify(cr)).success(function (){
                  angular.copy(cr, self.copy);
+                $scope.saved = true;
+                $scope.savedTime = new Date();
             });
         else
             $http.post('/api/drafts', JSON.stringify(cr)).success(function (data) {
                 cr.id = data.id;
                 angular.copy(cr, self.copy);
+                $scope.saved = true;
+                $scope.savedTime = new Date();
             });
     };
 

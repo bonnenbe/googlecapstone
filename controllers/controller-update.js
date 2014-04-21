@@ -4,6 +4,8 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     var self = this;
     self.draftID = null;
     self.copy = {};
+    $scope.saved = false;
+    $scope.savedTime = null;
     $http.get('/api/changerequests/' + $routeParams.id, "").success(function (data) {
         $scope.cr = data;
         $scope.cr.startTime = new Date($scope.cr.startTime);
@@ -99,11 +101,15 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
         if (self.draftID)
             $http.put('/api/drafts/' + self.draftID, JSON.stringify($scope.cr)).success(function (){
                  angular.copy($scope.cr, self.copy);
+                $scope.saved = true;
+                $scope.savedTime = new Date();
             });
         else
             $http.post('/api/drafts', $scope.cr).success(function (data) {
                 self.draftID = data.id;
                 angular.copy($scope.cr, self.copy);
+                $scope.saved = true;
+                $scope.savedTime = new Date();
             });
     };
     this.getRemovals = function(from_list, to_list){
