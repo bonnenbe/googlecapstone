@@ -262,9 +262,10 @@ class CRHandler(BaseHandler):
         if cr.status not in ['created', 'approved', 'succeeded', 'failed']:
             webapp2.abort(403) #wrong uri
 
+        current_user = users.get_current_user()
         audit_entry = dict()
         audit_entry['date'] = datetime.datetime.now()
-        audit_entry['user'] = users.get_current_user()
+        audit_entry['user'] = current_user
         audit_entry['changes'] = []
         if 'comment' in form.keys() and form['comment']:
             audit_entry['comment'] = form['comment']
@@ -287,7 +288,7 @@ class CRHandler(BaseHandler):
             updated = True
         if 'status' in form.keys() and form['status'] == 'created' and cr.status == 'approved':
             committee = UserGroup.get_or_insert('approvalcommittee').members        
-            if cr.priority != 'sensitive' or (users.get_current_user() in committee and cr.priority == 'sensitive'):
+            if cr.priority != 'sensitive' or (current_user in committee and cr.priority == 'sensitive'):
                 cr.status = 'created'
                 change = dict()
                 change['property'] = 'status'
@@ -298,11 +299,11 @@ class CRHandler(BaseHandler):
                 updated = True
                 unapproved = True
             else:
-                webapp2.abort(403) #forbidden approval
+                webapp2.abort(403)
         if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
             #attempting to approve
             committee = UserGroup.get_or_insert('approvalcommittee').members        
-            if cr.priority != 'sensitive' or (users.get_current_user() in committee and cr.priority == 'sensitive'):
+            if cr.priority != 'sensitive' or (current_user in committee and cr.priority == 'sensitive'):
                 cr.status = 'approved'
                 cr.approved_on = datetime.datetime.now()
                 change = dict()
@@ -314,16 +315,18 @@ class CRHandler(BaseHandler):
                 updated = True
                 approved = True
             else:
-                webapp2.abort(403) #forbidden approval
-        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'): #fix permissions
-                change = dict()
-                change['property'] = 'status'
-                change['from'] = cr.status
-                change['to'] = form['status']
-                cr.status = form['status']
-                form.pop('status', None)
-                audit_entry['changes'].append(change)
-                updated = True
+                webapp2.abort(403)
+        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+            if current_user != cr.technician:
+                webapp2.abort(403)
+            change = dict()
+            change['property'] = 'status'
+            change['from'] = cr.status
+            change['to'] = form['status']
+            cr.status = form['status']
+            form.pop('status', None)
+            audit_entry['changes'].append(change)
+            updated = True
 
         if 'tags' in form.keys():
             updateTags(set(form['tags']) - set(cr.tags),
@@ -409,6 +412,8 @@ class DraftHandler(BaseHandler):
                 if not equals(getattr(cr,p), form[p]):
                     setattr(cr,p,form[p])
                     changed = True
+        else:
+            self.abort(403)
         if changed:
             cr.put()
             updateIndex(cr, 'drafts')
@@ -417,6 +422,8 @@ class DraftHandler(BaseHandler):
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
             removeFromIndex(cr.key.urlsafe(),'drafts')
+        else:
+            self.abort(403)
 class TemplateListHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
@@ -448,6 +455,8 @@ class TemplateHandler(BaseHandler):
                 if not equals(getattr(cr,p), form[p]):
                     setattr(cr,p,form[p])
                     changed = True
+        else:
+            self.abort(403)
         if changed:
             cr.put()
             updateIndex(cr, 'templates')
@@ -456,6 +465,8 @@ class TemplateHandler(BaseHandler):
         if cr.status == 'template' and cr.author == users.get_current_user():
             cr.key.delete()
             removeFromIndex(cr.key.urlsafe(),'templates')
+        else:
+            self.abort(403)
 class UserHandler(BaseHandler):
     def get(self):
         user = users.get_current_user()
