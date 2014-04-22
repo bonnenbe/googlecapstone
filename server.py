@@ -271,7 +271,7 @@ class CRHandler(BaseHandler):
             commented = True
         
         if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine' and cr.status != 'created':
-            #reset status if making CR sensitive            
+            #reset status if making CR sensitive          
             audit_entry['changes'].append({'property': 'status',
                                            'from': cr.status,
                                            'to': 'created'})
@@ -354,9 +354,12 @@ class CRHandler(BaseHandler):
             for recipient in nonapprovers | approvers | cc:
                 mail.send_mail(sender=appEmail, to=recipient, subject=subject, body=body)
             updateIndex(cr, 'fullTextSearch')
-    def delete(self, id):#fix
+    def delete(self, id):
         key = IDsToKey(id)
-        updateTags([], key.get().tags)
+        cr = key.get()
+        if cr.author != users.get_current_user():
+            self.abort(403)
+        updateTags([], cr.tags)
         removeFromIndex(key.urlsafe(),"fullTextSearch")
         key.delete()
 
