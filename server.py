@@ -110,19 +110,19 @@ def getMailList(cr):
     nonapprovers, approvers = set(), set()
     
     
-    if cr.author and Preferences
+    if (cr.author and Preferences
                       .get_or_insert(cr.author.email())
-                      .notifyAuthor:
+                      .notifyAuthor):
         nonapprovers.add(cr.author.email())
         
-    if cr.technician and Preferences
+    if (cr.technician and Preferences
                             .get_or_insert(cr.technician.email())
-                            .notifyTechnician:
+                            .notifyTechnician):
         nonapprovers.add(cr.technician.email())
         
-    if cr.peer_reviewer and Preferences
+    if (cr.peer_reviewer and Preferences
                                 .get_or_insert(cr.peer_reviewer.email())
-                                .notifyReviewer:
+                                .notifyReviewer):
         approvers.add(cr.peer_reviewer.email())
         
     cc = {user.email() for user in cr.cc_list}
@@ -159,10 +159,10 @@ class BaseHandler(webapp2.RequestHandler):
             query_string = ""
 
         if private:
-            query_string = "technician:\"" 
+            query_string = ("technician:\"" 
                             + users.get_current_user().email() 
                             + '\" ' 
-                            + query_string
+                            + query_string)
 
         sort_opts = search.SortOptions()
 
@@ -285,12 +285,11 @@ class CRListHandler(BaseHandler):
         nonapprovers, approvers, cc = getMailList(cr)
         
         for recipient in nonapprovers | cc:
-            bodytext = 
-                "Change request id " + cr.id() + " has been created by " 
+            bodytext = ("Change request id " + cr.id() + " has been created by " 
                 + str(cr.author) + "\n\nSummary: \n" + str(cr.summary) 
                 + "\n\n View here: http://www.chromatic-tree-459"
                 + ".appspot.com/id=" + cr.id() 
-                + "\n\n Thanks, \nChange Management Team"
+                + "\n\n Thanks, \nChange Management Team")
             mail.send_mail(
                 sender = appEmail,
                 to = recipient,
@@ -298,12 +297,11 @@ class CRListHandler(BaseHandler):
                 body = bodytext)
                 
         for recipient in approvers:
-            bodytext = 
-                "Change request id " + cr.id() 
+            bodytext = ("Change request id " + cr.id() 
                 + " needs your approval. \n\nSummary: \n" + str(cr.summary) 
                 + "\n\n View here: http://www.chromatic-tree-459"
                 + ".appspot.com/id=" + cr.id() 
-                + "\n\n Thanks, \nChange Management Team"
+                + "\n\n Thanks, \nChange Management Team")
             mail.send_mail(
                 sender = appEmail,
                 to = recipient,
@@ -337,10 +335,10 @@ class CRHandler(BaseHandler):
             audit_entry['comment'] = form['comment']
             commented = True
 
-        if 'priority' in form.keys() 
+        if ('priority' in form.keys() 
             and form['priority'] == 'sensitive' 
             and cr.priority == 'routine' 
-            and cr.status != 'created':
+            and cr.status != 'created'):
             
             #reset status if making CR sensitive
             audit_entry['changes'].append({'property': 'status',
@@ -357,13 +355,13 @@ class CRHandler(BaseHandler):
             audit_entry['changes'].append(change)
             updated = True
             
-        if 'status' in form.keys() 
+        if ('status' in form.keys() 
             and form['status'] == 'created' 
-            and cr.status == 'approved':
+            and cr.status == 'approved'):
             
             committee = UserGroup.get_or_insert('approvalcommittee').members
-            if cr.priority != 'sensitive' 
-                or (current_user in committee and cr.priority == 'sensitive'):
+            if (cr.priority != 'sensitive' 
+                or (current_user in committee and cr.priority == 'sensitive')):
                 
                 cr.status = 'created'
                 change = dict()
@@ -376,14 +374,14 @@ class CRHandler(BaseHandler):
                 unapproved = True
             else:
                 webapp2.abort(403)
-        if 'status' in form.keys() 
+        if ('status' in form.keys() 
             and form['status'] == 'approved' 
-            and cr.status == 'created':
+            and cr.status == 'created'):
             
             #attempting to approve
             committee = UserGroup.get_or_insert('approvalcommittee').members
-            if cr.priority != 'sensitive' 
-                or (current_user in committee and cr.priority == 'sensitive'):
+            if (cr.priority != 'sensitive' 
+                or (current_user in committee and cr.priority == 'sensitive')):
                 
                 cr.status = 'approved'
                 cr.approved_on = datetime.datetime.now()
@@ -397,8 +395,8 @@ class CRHandler(BaseHandler):
                 approved = True
             else:
                 webapp2.abort(403)
-        if 'status' in form.keys() 
-            and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+        if ('status' in form.keys() 
+            and (form['status'] == 'failed' or form['status'] == 'succeeded')):
             
             if current_user != cr.technician:
                 webapp2.abort(403)
@@ -430,30 +428,30 @@ class CRHandler(BaseHandler):
             cr.put()
             if approved:
                 subject = "CR #" + cr.id() + " has been approved"
-                body = "Change request id " + cr.id() 
+                body = ("Change request id " + cr.id() 
                     + " has been approved by " + str(audit_entry["user"]) 
                     + "\n\nSummary: \n" + str(cr.summary) 
                     + "\n\n View here: http://www.chromatic-tree-459"
                     + ".appspot.com/id=" + cr.id() 
-                    + "\n\n Thanks, \nChange Management Team"
+                    + "\n\n Thanks, \nChange Management Team")
                     
             elif commented and not updated:
                 subject = "CR #" + cr.id() + " has a new comment"
-                body = "Change request id " + cr.id() 
+                body = ("Change request id " + cr.id() 
                         + " has a new comment by " + str(audit_entry["user"]) 
                         + "\n\nSummary: \n" + str(cr.summary) 
                         + "\n\nComment: \n" + str(audit_entry['comment']) 
                         + "\n\n View here: http://www.chromatic-tree-459"
                         + ".appspot.com/id=" + cr.id() 
-                        + "\n\n Thanks, \nChange Management Team"
+                        + "\n\n Thanks, \nChange Management Team")
             else:
                 subject = "CR #" + cr.id() + " has been edited"
-                body = "Change request id " + cr.id() + " has been edited by " 
+                body = ("Change request id " + cr.id() + " has been edited by " 
                         + str(audit_entry["user"]) + "\n\nSummary: \n" 
                         + str(cr.summary) 
                         + "\n\n View here: http://www.chromatic-tree-459"
                         + ".appspot.com/id=" + cr.id() 
-                        + "\n\n Thanks, \nChange Management Team"
+                        + "\n\n Thanks, \nChange Management Team")
                         
             nonapprovers, approvers, cc = getMailList(cr)
             for recipient in nonapprovers | approvers | cc:
@@ -493,7 +491,7 @@ class DraftListHandler(BaseHandler):
 
         self.response.write(json.dumps({'id': cr.id()}))
 
-        def get(self):
+    def get(self):
         crs = self.query(indexName='drafts', statuses=['draft'], private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
