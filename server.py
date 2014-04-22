@@ -29,7 +29,7 @@ def customizeJSON():
     json.JSONEncoder.default = default
 customizeJSON()
 
-    
+
 def encodeChangeRequest(cr):
     obj = {
         'summary': cr.summary,
@@ -107,12 +107,23 @@ def updateTags(added, removed):
 
 def getMailList(cr):
     nonapprovers, approvers = set(), set()
-    if cr.author and Preferences.get_or_insert(cr.author.email()).notifyAuthor:
+    
+    
+    if cr.author and Preferences
+                      .get_or_insert(cr.author.email())
+                      .notifyAuthor:
         nonapprovers.add(cr.author.email())
-    if cr.technician and Preferences.get_or_insert(cr.technician.email()).notifyTechnician:
+        
+    if cr.technician and Preferences
+                            .get_or_insert(cr.technician.email())
+                            .notifyTechnician:
         nonapprovers.add(cr.technician.email())
-    if cr.peer_reviewer and Preferences.get_or_insert(cr.peer_reviewer.email()).notifyReviewer:
+        
+    if cr.peer_reviewer and Preferences
+                                .get_or_insert(cr.peer_reviewer.email())
+                                .notifyReviewer:
         approvers.add(cr.peer_reviewer.email())
+        
     cc = {user.email() for user in cr.cc_list}
     if cr.priority == 'sensitive':
         committee = UserGroup.get_or_insert('approvalcommittee').members
@@ -122,6 +133,7 @@ def getMailList(cr):
     return nonapprovers - approvers, approvers, cc - nonapprovers - approvers
 
 class BaseHandler(webapp2.RequestHandler):
+
     def handle_exception(self, exception, debug):
         # Log the error.
         logging.exception(exception)
@@ -135,6 +147,8 @@ class BaseHandler(webapp2.RequestHandler):
             self.response.set_status(exception.code)
         else:
             self.response.set_status(500)
+            
+
     def queryIndex(self, indexName, private=False):
         params = self.request.params
         index = search.Index(name=indexName)
@@ -142,73 +156,104 @@ class BaseHandler(webapp2.RequestHandler):
             query_string = urllib.unquote(params['query'])
         else:
             query_string = ""
-            
+
         if private:
-            query_string = "technician:\"" + users.get_current_user().email() + '\" ' + query_string
+            query_string = "technician:\"" 
+                            + users.get_current_user().email() 
+                            + '\" ' 
+                            + query_string
+
         sort_opts = search.SortOptions()
-            
 
         if 'sort' in params and params['sort']:
             expressions = []
-            for (sort, direction) in map(None, params.getall('sort'), params.getall('direction')):
+            for (sort, direction) in map(None, 
+                                          params.getall('sort'), 
+                                          params.getall('direction')):
                 if sort:
                     if direction == 'asc':
                         direction = search.SortExpression.ASCENDING
                     else:
                         direction = search.SortExpression.DESCENDING
-                    attr = getattr(ChangeRequest, sort);
-                    expressions.append(search.SortExpression(expression=sort, 
-                                                             direction=direction, 
-                                                             default_value=0 if isinstance(attr, ndb.DateTimeProperty) else ""))
+                    attr = getattr(ChangeRequest, sort)
+                    
+                    default = 0 if isinstance(attr, 
+                                               ndb.DateTimeProperty) else ""
+                    expressions.append(
+                        search.SortExpression(
+                            expression=sort,
+                            direction=direction,
+                            default_value= default))
             sort_opts = search.SortOptions(expressions = expressions)
+
         else:
             sort_opts = None
+
         options = search.QueryOptions(
             limit = int(params['limit']) if 'limit' in params else 10,
             offset = int(params['offset']) if 'offset' in params else 0,
             ids_only = True,
-            sort_options = sort_opts
-            )
-            
+            sort_options = sort_opts)
+
         query = search.Query(options=options, query_string=query_string)
         results = index.search(query).results
         keys = [ndb.Key(urlsafe=doc.doc_id) for doc in results]
         crs = ndb.get_multi(keys)
         return crs
+
     def queryDatastore(self, statuses=None, private=False):
         logging.info('using datastore query')
         params = self.request.params
         crs_query = ChangeRequest.query()
         if statuses:
             crs_query = crs_query.filter(ChangeRequest.status.IN(statuses))
+
         if private:
-            crs_query = crs_query.filter(ChangeRequest.author == users.get_current_user())
+            crs_query = crs_query.filter(
+                ChangeRequest.author == users.get_current_user())
+
         if 'sort' in params and params['sort']:
-            for (sort, direction) in map(None, params.getall('sort'), params.getall('direction')):
+            for (sort, direction) in map(
+                None, 
+                params.getall('sort'), 
+                params.getall('direction')):
+                
                 if sort:
                     if direction and direction == 'asc':
-                        crs_query = crs_query.order(getattr(ChangeRequest, sort))
+                        crs_query = crs_query.order(
+                                        getattr(ChangeRequest, sort))
                     else:
-                        crs_query = crs_query.order(-getattr(ChangeRequest, sort))
+                        crs_query = crs_query.order(
+                                        -getattr(ChangeRequest, sort))
         else:
             crs_query = crs_query.order(-ChangeRequest.created_on)
-        crs = crs_query.fetch(int(params['limit']) if 'limit' in params else 10,
-                              offset=int(params['offset']) if 'offset' in params else 0)
+        crs = crs_query.fetch(
+                int(params['limit']) if 'limit' in params else 10,
+                offset=int(params['offset']) if 'offset' in params else 0)
+                
         return crs
+        
+        
     def isSimpleSort(self):
-        params = self.request.params    
+        params = self.request.params
         return 'query' not in params or not params['query']
+        
+        
     def encodeCRList(self, crs):
         objs = []
         for cr in crs:
             objs.append(encodeChangeRequest(cr))
         return objs
+        
+        
     def getCR(self, id):
         cr = IDsToKey(id).get()
         if cr:
             return cr
         else:
             self.abort(404)
+            
+            
     def query(self, indexName, statuses=None,private=False):
         # if self.isSimpleSort():
         #     crs = self.queryDatastore(statuses=statuses, private=private)
@@ -219,9 +264,12 @@ class BaseHandler(webapp2.RequestHandler):
 
 class CRListHandler(BaseHandler):
     def get(self):
-        crs = self.query(indexName='fullTextSearch', statuses=['created', 'approved', 'succeeded', 'failed'])
+        crs = self.query(
+            indexName='fullTextSearch', 
+            statuses=['created', 'approved', 'succeeded', 'failed'])
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
+        
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
@@ -234,23 +282,40 @@ class CRListHandler(BaseHandler):
         logging.info(cr.tags)
         cr.put()
         nonapprovers, approvers, cc = getMailList(cr)
+        
         for recipient in nonapprovers | cc:
-            mail.send_mail(sender = appEmail,
-                           to = recipient,
-                           subject = "CR #" + cr.id() + " has been created",
-                           body = "Change request id " + cr.id() + " has been created by " + str(cr.author) + "\n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/id=" + cr.id() + "\n\n Thanks, \nChange Management Team")
+            bodytext = 
+                "Change request id " + cr.id() + " has been created by " 
+                + str(cr.author) + "\n\nSummary: \n" + str(cr.summary) 
+                + "\n\n View here: http://www.chromatic-tree-459"
+                + ".appspot.com/id=" + cr.id() 
+                + "\n\n Thanks, \nChange Management Team"
+            mail.send_mail(
+                sender = appEmail,
+                to = recipient,
+                subject = "CR #" + cr.id() + " has been created",
+                body = bodytext)
+                
         for recipient in approvers:
-            mail.send_mail(sender = appEmail,
-                           to = recipient,
-                           subject= "CR #" + cr.id() + " needs your approval",
-                           body = "Change request id " + cr.id() + " needs your approval. \n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/id=" + cr.id() + "\n\n Thanks, \nChange Management Team")
+            bodytext = 
+                "Change request id " + cr.id() 
+                + " needs your approval. \n\nSummary: \n" + str(cr.summary) 
+                + "\n\n View here: http://www.chromatic-tree-459"
+                + ".appspot.com/id=" + cr.id() 
+                + "\n\n Thanks, \nChange Management Team"
+            mail.send_mail(
+                sender = appEmail,
+                to = recipient,
+                subject= "CR #" + cr.id() + " needs your approval",
+                body = bodytext)
+        
         logging.debug(cr.key.id())
         self.response.write(json.dumps({'id': cr.id()}))
         updateTags(cr.tags, [])
         updateIndex(cr, 'fullTextSearch')
-        
-        
-            
+
+
+
 class CRHandler(BaseHandler):
     def get(self, id):
         cr = self.getCR(id)
@@ -270,9 +335,13 @@ class CRHandler(BaseHandler):
         if 'comment' in form.keys() and form['comment']:
             audit_entry['comment'] = form['comment']
             commented = True
-        
-        if 'priority' in form.keys() and form['priority'] == 'sensitive' and cr.priority == 'routine' and cr.status != 'created':
-            #reset status if making CR sensitive          
+
+        if 'priority' in form.keys() 
+            and form['priority'] == 'sensitive' 
+            and cr.priority == 'routine' 
+            and cr.status != 'created':
+            
+            #reset status if making CR sensitive
             audit_entry['changes'].append({'property': 'status',
                                            'from': cr.status,
                                            'to': 'created'})
@@ -286,9 +355,15 @@ class CRHandler(BaseHandler):
             form.pop('priority', None)
             audit_entry['changes'].append(change)
             updated = True
-        if 'status' in form.keys() and form['status'] == 'created' and cr.status == 'approved':
-            committee = UserGroup.get_or_insert('approvalcommittee').members        
-            if cr.priority != 'sensitive' or (current_user in committee and cr.priority == 'sensitive'):
+            
+        if 'status' in form.keys() 
+            and form['status'] == 'created' 
+            and cr.status == 'approved':
+            
+            committee = UserGroup.get_or_insert('approvalcommittee').members
+            if cr.priority != 'sensitive' 
+                or (current_user in committee and cr.priority == 'sensitive'):
+                
                 cr.status = 'created'
                 change = dict()
                 change['property'] = 'status'
@@ -300,10 +375,15 @@ class CRHandler(BaseHandler):
                 unapproved = True
             else:
                 webapp2.abort(403)
-        if 'status' in form.keys() and form['status'] == 'approved' and cr.status == 'created':
+        if 'status' in form.keys() 
+            and form['status'] == 'approved' 
+            and cr.status == 'created':
+            
             #attempting to approve
-            committee = UserGroup.get_or_insert('approvalcommittee').members        
-            if cr.priority != 'sensitive' or (current_user in committee and cr.priority == 'sensitive'):
+            committee = UserGroup.get_or_insert('approvalcommittee').members
+            if cr.priority != 'sensitive' 
+                or (current_user in committee and cr.priority == 'sensitive'):
+                
                 cr.status = 'approved'
                 cr.approved_on = datetime.datetime.now()
                 change = dict()
@@ -316,7 +396,9 @@ class CRHandler(BaseHandler):
                 approved = True
             else:
                 webapp2.abort(403)
-        if 'status' in form.keys() and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+        if 'status' in form.keys() 
+            and (form['status'] == 'failed' or form['status'] == 'succeeded'):
+            
             if current_user != cr.technician:
                 webapp2.abort(403)
             change = dict()
@@ -331,6 +413,7 @@ class CRHandler(BaseHandler):
         if 'tags' in form.keys():
             updateTags(set(form['tags']) - set(cr.tags),
                        set(cr.tags) - set(form['tags']))
+
         for p in (set(form.keys()) & properties):
             if not equals(getattr(cr, p), form[p]):
                 change = dict()
@@ -346,17 +429,37 @@ class CRHandler(BaseHandler):
             cr.put()
             if approved:
                 subject = "CR #" + cr.id() + " has been approved"
-                body = "Change request id " + cr.id() + " has been approved by " + str(audit_entry["user"]) + "\n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/id=" + cr.id() + "\n\n Thanks, \nChange Management Team"
+                body = "Change request id " + cr.id() 
+                    + " has been approved by " + str(audit_entry["user"]) 
+                    + "\n\nSummary: \n" + str(cr.summary) 
+                    + "\n\n View here: http://www.chromatic-tree-459"
+                    + ".appspot.com/id=" + cr.id() 
+                    + "\n\n Thanks, \nChange Management Team"
+                    
             elif commented and not updated:
                 subject = "CR #" + cr.id() + " has a new comment"
-                body = "Change request id " + cr.id() + " has a new comment by " + str(audit_entry["user"]) + "\n\nSummary: \n" + str(cr.summary) + "\n\nComment: \n" + str(audit_entry['comment']) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/id=" + cr.id() + "\n\n Thanks, \nChange Management Team"
+                body = "Change request id " + cr.id() 
+                        + " has a new comment by " + str(audit_entry["user"]) 
+                        + "\n\nSummary: \n" + str(cr.summary) 
+                        + "\n\nComment: \n" + str(audit_entry['comment']) 
+                        + "\n\n View here: http://www.chromatic-tree-459"
+                        + ".appspot.com/id=" + cr.id() 
+                        + "\n\n Thanks, \nChange Management Team"
             else:
                 subject = "CR #" + cr.id() + " has been edited"
-                body = "Change request id " + cr.id() + " has been edited by " + str(audit_entry["user"]) + "\n\nSummary: \n" + str(cr.summary) + "\n\n View here: http://www.chromatic-tree-459.appspot.com/id=" + cr.id() + "\n\n Thanks, \nChange Management Team"
+                body = "Change request id " + cr.id() + " has been edited by " 
+                        + str(audit_entry["user"]) + "\n\nSummary: \n" 
+                        + str(cr.summary) 
+                        + "\n\n View here: http://www.chromatic-tree-459"
+                        + ".appspot.com/id=" + cr.id() 
+                        + "\n\n Thanks, \nChange Management Team"
+                        
             nonapprovers, approvers, cc = getMailList(cr)
             for recipient in nonapprovers | approvers | cc:
-                mail.send_mail(sender=appEmail, to=recipient, subject=subject, body=body)
+                mail.send_mail(
+                    sender=appEmail, to=recipient, subject=subject, body=body)
             updateIndex(cr, 'fullTextSearch')
+            
     def delete(self, id):
         key = IDsToKey(id)
         cr = key.get()
@@ -367,6 +470,7 @@ class CRHandler(BaseHandler):
         key.delete()
 
 class DraftListHandler(BaseHandler):
+
     def post(self):
         form = json.loads(self.request.body)
         if 'id' in form.keys() and form['id']:
@@ -387,22 +491,29 @@ class DraftListHandler(BaseHandler):
         updateIndex(cr, 'drafts')
 
         self.response.write(json.dumps({'id': cr.id()}))
-    def get(self):
+
+        def get(self):
         crs = self.query(indexName='drafts', statuses=['draft'], private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
+        
     def delete(self):
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status == 'draft', ChangeRequest.author == users.get_current_user())
+        crs_query = ChangeRequest.query().filter(
+                ChangeRequest.status == 'draft', 
+                ChangeRequest.author == users.get_current_user())
+                
         keys = crs_query.fetch(keys_only=True)
         for id in [key.urlsafe() for key in keys]:
             removeFromIndex(id,'drafts')
         ndb.delete_multi(keys)
-        
+
 class DraftHandler(BaseHandler):
+
     def get(self, id):
         cr = self.getCR(id)
         self.response.write(json.dumps(encodeChangeRequest(cr)))
+
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
@@ -417,6 +528,7 @@ class DraftHandler(BaseHandler):
         if changed:
             cr.put()
             updateIndex(cr, 'drafts')
+            
     def delete(self, id):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
@@ -424,7 +536,9 @@ class DraftHandler(BaseHandler):
             removeFromIndex(cr.key.urlsafe(), 'drafts')
         else:
             self.abort(403)
+            
 class TemplateListHandler(BaseHandler):
+    
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
@@ -436,16 +550,19 @@ class TemplateListHandler(BaseHandler):
         cr.put()
         updateIndex(cr, 'templates')
         self.response.write(json.dumps({'id': cr.id()}))
+        
     def get(self):
         crs = self.query(indexName='templates', statuses=['template'])
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
-        
+
 class TemplateHandler(BaseHandler):
+    
     def get(self, id):
         cr = self.getCR(id)
         self.response.write(json.dumps(encodeChangeRequest(cr)))
+    
     def put(self, id):
         form = json.loads(self.request.body)
         changed = False
@@ -460,6 +577,7 @@ class TemplateHandler(BaseHandler):
         if changed:
             cr.put()
             updateIndex(cr, 'templates')
+            
     def delete(self, id):
         cr = IDsToKey(id).get()
         if cr.status == 'template' and cr.author == users.get_current_user():
@@ -467,7 +585,9 @@ class TemplateHandler(BaseHandler):
             removeFromIndex(cr.key.urlsafe(), 'templates')
         else:
             self.abort(403)
+            
 class UserHandler(BaseHandler):
+
     def get(self):
         user = users.get_current_user()
         admins = UserGroup.get_or_insert('admins')
@@ -479,6 +599,7 @@ class UserHandler(BaseHandler):
                                         'inAdmins' : inAdmins,
                                         'inCommittee' : inCommittee,
                                         'preferences' : preferences.toJSON()}))
+                                        
     def put(self):
         user = users.get_current_user()
         preferences = Preferences.get_or_insert(user.email())
@@ -486,12 +607,13 @@ class UserHandler(BaseHandler):
         for k in form.keys():
             setattr(preferences, k, form[k])
         preferences.put()
+        
     def delete(self):
         user = users.get_current_user()
         preferences = Preferences.get_or_insert(user.email())
         preferences.key.delete()
-        
-        
+
+
 class GroupHandler(BaseHandler):
     def post(self):
         form = json.loads(self.request.body)
@@ -503,64 +625,74 @@ class GroupHandler(BaseHandler):
                     newUser = users.User(email=s)
                     UserList.append(newUser)
                 setattr(group, k, UserList)
-            else: 
+            else:
                 setattr(group, k, form[k])
         group.put()
         logging.debug(group.key.id())
         self.response.write(json.dumps({'id': group.key.id()}))
 
-            
+
 
 class IndexHandler(BaseHandler):
     def get(self):
-    
+
         # force update on search index via /admin/rebuildIndex
-        crs_query = ChangeRequest.query().filter(ChangeRequest.status.IN(['created', 'approved', 'failed', 'succeeded']))
-        
-        
+        crs_query = ChangeRequest.query().filter(
+                ChangeRequest.status.IN(['created', 
+                'approved', 'failed', 'succeeded']))
+
+
         #delete everything in the other indices
         doc_index = search.Index(name="drafts")
         while True:
-            # Get a list of documents populating only the doc_id field and extract the ids.
+            # Get a list of documents populating 
+            # only the doc_id field and extract the ids.
             document_ids = [document.doc_id
                             for document in doc_index.get_range(ids_only=True)]
             if not document_ids:
                 break
             # Delete the documents for the given ids from the Index.
             doc_index.delete(document_ids)
-        
+
         doc_index = search.Index(name="templates")
         while True:
-            # Get a list of documents populating only the doc_id field and extract the ids.
+            # Get a list of documents populating 
+            # only the doc_id field and extract the ids.
             document_ids = [document.doc_id
                             for document in doc_index.get_range(ids_only=True)]
             if not document_ids:
                 break
             # Delete the documents for the given ids from the Index.
             doc_index.delete(document_ids)
-        
-        
+
+
         #delete everything in the index
         doc_index = search.Index(name="fullTextSearch")
-        # looping because get_range by default returns up to 100 documents at a time
+        # looping because get_range by default 
+        # returns up to 100 documents at a time
         while True:
-            # Get a list of documents populating only the doc_id field and extract the ids.
+            # Get a list of documents populating only 
+            # the doc_id field and extract the ids.
             document_ids = [document.doc_id
                             for document in doc_index.get_range(ids_only=True)]
             if not document_ids:
                 break
             # Delete the documents for the given ids from the Index.
             doc_index.delete(document_ids)
-        
+
         for cr in crs_query:
             index = search.Index(name="fullTextSearch")
             index.put(cr.toSearchDocument())
+            
 class TempHandler(BaseHandler):
+    
     def get(self):
         admins = UserGroup.get_or_insert('admins')
         committee = UserGroup.get_or_insert('approvalcommittee')
-        coolpeople = {users.User(email) for email in {"vogtnich@gmail.com", "guoalber1@gmail.com", "bbonnen@gmail.com",
-                                                  "antarus@google.com", "krelinga@google.com", "bgilmore@google.com"}}
+        coolpeople = {users.User(email) 
+                for email in {"vogtnich@gmail.com", "guoalber1@gmail.com", 
+                               "bbonnen@gmail.com", "antarus@google.com", 
+                               "krelinga@google.com", "bgilmore@google.com"}}
         for person in coolpeople:
             if person not in admins.members:
                 admins.members.append(person)
@@ -571,9 +703,7 @@ class TempHandler(BaseHandler):
         committee.name = "Approval Committee"
         committee.put()
 
-    
         
-            
 class TagsHandler(BaseHandler):
     def get(self):
         params = self.request.params
@@ -584,18 +714,22 @@ class TagsHandler(BaseHandler):
             ids_only = True
         )
         query = search.Query(options=options,
-                             query_string="text:" + params['query'] if 'query' in params else "")
+                             query_string="text:" 
+                             + params['query'] if 'query' in params else "")
         try:
             results = index.search(query).results
         except search.Error:
             webapp2.abort(400)
         self.response.write(json.dumps([doc.doc_id for doc in results]))
-            
-            
+
+
 application = webapp2.WSGIApplication([
-    webapp2.Route('/api/changerequests', handler=CRListHandler, methods=['GET', 'POST']),
+    webapp2.Route('/api/changerequests', 
+        handler=CRListHandler, methods=['GET', 'POST']),
+    
     webapp2.Route('/api/changerequests/<id:.*>', handler=CRHandler),
-    webapp2.Route('/api/Logout', webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
+    webapp2.Route('/api/Logout', webapp2.RedirectHandler, 
+        defaults={'_uri': users.create_logout_url('/')}),
     webapp2.Route('/api/user', handler=UserHandler),
     webapp2.Route('/api/drafts', handler=DraftListHandler),
     webapp2.Route('/api/drafts/<id:.*>', handler=DraftHandler),
