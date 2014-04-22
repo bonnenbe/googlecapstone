@@ -60,9 +60,6 @@ app.controller('createController', function ($http, $scope, $location, $interval
             if (JSON.stringify(cr[prop]) !== JSON.stringify(self.copy[prop]))
             {
                 changed = true;
-                console.log(prop);
-                console.log(JSON.stringify(cr[prop]));
-                console.log(JSON.stringify(self.copy[prop]));
                 break;
             }
         }

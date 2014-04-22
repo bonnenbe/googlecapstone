@@ -53,7 +53,8 @@ def encodeChangeRequest(cr):
         'endTime': cr.endTime,
         'status': cr.status,
         'tags': cr.tags,
-        'cc_list': [user.email() for user in cr.cc_list]
+        'cc_list': [user.email() for user in cr.cc_list],
+        'author': cr.author
     }
     return obj
 

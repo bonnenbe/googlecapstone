@@ -80,17 +80,19 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
     };
     this.subscribe = function subscribe(){
         $scope.cr.cc_list.push($scope.user);
-        $http.put('/api/api/changerequests/' + $routeParams.id, $scope.cr);
+        angular.copy($scope.cr, self.copy);
+        $http.put('/api/changerequests/' + $routeParams.id, $scope.cr);
     };
     this.unsubscribe = function unsubscribe(){
-        $scope.cr.cc_list.splice($scope.cr.cc_list.indexOf($scope.user),1)
-        $http.put('/api/api/changerequests/' + $routeParams.id, $scope.cr);
+        $scope.cr.cc_list.splice($scope.cr.cc_list.indexOf($scope.user),1);
+        angular.copy($scope.cr, self.copy);
+        $http.put('/api/changerequests/' + $routeParams.id, $scope.cr);
     };
     this.sendDraft = function sendDraft() {
         var changed = false;
         for (var prop in $scope.cr)
         {
-            if (JSON.stringify($scope.cr[prop]) !== JSON.stringify(self.copy[prop]))
+            if (prop != 'audit_trail' && JSON.stringify($scope.cr[prop]) !== JSON.stringify(self.copy[prop]))
             {
                 changed = true;
                 break;
@@ -100,7 +102,7 @@ app.controller('updateController', function ($routeParams, $http, $scope, $locat
             return; //no draft necessary
         if (self.draftID)
             $http.put('/api/drafts/' + self.draftID, JSON.stringify($scope.cr)).success(function (){
-                 angular.copy($scope.cr, self.copy);
+                angular.copy($scope.cr, self.copy);
                 $scope.saved = true;
                 $scope.savedTime = new Date();
             });
