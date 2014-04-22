@@ -19,12 +19,12 @@ destinationEmail = "bbonnen@gmail.com"
 
 def customizeJSON():
     original = json.JSONEncoder.default
-    def default(self,obj):
-        if isinstance(obj,datetime.datetime):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
             return obj.isoformat() + 'Z'
-        elif isinstance(obj,users.User):
+        elif isinstance(obj, users.User):
             return obj.email()
-        return original(self,obj)
+        return original(self, obj)
 
     json.JSONEncoder.default = default
 customizeJSON()
@@ -58,15 +58,15 @@ def encodeChangeRequest(cr):
     return obj
 
 #returns true if property p and string s are equivalent
-def equals(p,s):
+def equals(p, s):
     if isinstance(s, list):
         if len(p) > 0 and isinstance(p[0], users.User):
             return {user.email() for user in p} == set(s)
         else:
             return set(p) == set(s)
-    elif isinstance(p,datetime.datetime):
+    elif isinstance(p, datetime.datetime):
         return p == stringtodatetime(s)
-    elif isinstance(p,users.User):
+    elif isinstance(p, users.User):
         return p.email() == s
     else:
         return str(p) == str(s)
@@ -150,7 +150,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         if 'sort' in params and params['sort']:
             expressions = []
-            for (sort,direction) in map(None, params.getall('sort'), params.getall('direction')):
+            for (sort, direction) in map(None, params.getall('sort'), params.getall('direction')):
                 if sort:
                     if direction == 'asc':
                         direction = search.SortExpression.ASCENDING
@@ -160,7 +160,7 @@ class BaseHandler(webapp2.RequestHandler):
                     expressions.append(search.SortExpression(expression=sort, 
                                                              direction=direction, 
                                                              default_value=0 if isinstance(attr, ndb.DateTimeProperty) else ""))
-            sort_opts = search.SortOptions(expressions=expressions)
+            sort_opts = search.SortOptions(expressions = expressions)
         else:
             sort_opts = None
         options = search.QueryOptions(
@@ -184,12 +184,12 @@ class BaseHandler(webapp2.RequestHandler):
         if private:
             crs_query = crs_query.filter(ChangeRequest.author == users.get_current_user())
         if 'sort' in params and params['sort']:
-            for (sort,direction) in map(None, params.getall('sort'), params.getall('direction')):
+            for (sort, direction) in map(None, params.getall('sort'), params.getall('direction')):
                 if sort:
                     if direction and direction == 'asc':
-                        crs_query = crs_query.order(getattr(ChangeRequest,sort))
+                        crs_query = crs_query.order(getattr(ChangeRequest, sort))
                     else:
-                        crs_query = crs_query.order(-getattr(ChangeRequest,sort))
+                        crs_query = crs_query.order(-getattr(ChangeRequest, sort))
         else:
             crs_query = crs_query.order(-ChangeRequest.created_on)
         crs = crs_query.fetch(int(params['limit']) if 'limit' in params else 10,
@@ -209,24 +209,24 @@ class BaseHandler(webapp2.RequestHandler):
             return cr
         else:
             self.abort(404)
-    def query(self,indexName,statuses=None,private=False):
+    def query(self, indexName, statuses=None,private=False):
         # if self.isSimpleSort():
-        #     crs = self.queryDatastore(statuses=statuses,private=private)
+        #     crs = self.queryDatastore(statuses=statuses, private=private)
         # else:
-        crs = self.queryIndex(indexName=indexName,private=private)
+        crs = self.queryIndex(indexName=indexName, private=private)
         return crs
 
 
 class CRListHandler(BaseHandler):
     def get(self):
-        crs = self.query(indexName='fullTextSearch',statuses=['created','approved', 'succeeded', 'failed'])
+        crs = self.query(indexName='fullTextSearch', statuses=['created', 'approved', 'succeeded', 'failed'])
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
     def post(self):
         form = json.loads(self.request.body)
         cr = ChangeRequest()
         for k in (set(form.keys()) & properties):
-            setattr(cr,k,form[k])
+            setattr(cr, k, form[k])
         cr.audit_trail = []
         cr.status = 'created'
         cr.author = users.get_current_user()
@@ -332,12 +332,12 @@ class CRHandler(BaseHandler):
             updateTags(set(form['tags']) - set(cr.tags),
                        set(cr.tags) - set(form['tags']))
         for p in (set(form.keys()) & properties):
-            if not equals(getattr(cr,p), form[p]):
+            if not equals(getattr(cr, p), form[p]):
                 change = dict()
                 change['property'] = p
-                change['from'] = getattr(cr,p)
-                setattr(cr,p,form[p])
-                change['to'] = getattr(cr,p)
+                change['from'] = getattr(cr, p)
+                setattr(cr, p, form[p])
+                change['to'] = getattr(cr, p)
                 audit_entry['changes'].append(change)
                 updated = True
 
@@ -363,7 +363,7 @@ class CRHandler(BaseHandler):
         if cr.author != users.get_current_user():
             self.abort(403)
         updateTags([], cr.tags)
-        removeFromIndex(key.urlsafe(),"fullTextSearch")
+        removeFromIndex(key.urlsafe(), "fullTextSearch")
         key.delete()
 
 class DraftListHandler(BaseHandler):
@@ -382,13 +382,13 @@ class DraftListHandler(BaseHandler):
         cr.status = 'draft'
         cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
-            setattr(cr,p,form[p])
+            setattr(cr, p, form[p])
         cr.put()
         updateIndex(cr, 'drafts')
 
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        crs = self.query(indexName='drafts',statuses=['draft'],private=True)
+        crs = self.query(indexName='drafts', statuses=['draft'], private=True)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
@@ -409,8 +409,8 @@ class DraftHandler(BaseHandler):
         cr = self.getCR(id)
         if cr.status == 'draft' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
-                if not equals(getattr(cr,p), form[p]):
-                    setattr(cr,p,form[p])
+                if not equals(getattr(cr, p), form[p]):
+                    setattr(cr, p, form[p])
                     changed = True
         else:
             self.abort(403)
@@ -421,7 +421,7 @@ class DraftHandler(BaseHandler):
         cr = IDsToKey(id).get()
         if cr.status == 'draft' and cr.author == users.get_current_user():
             cr.key.delete()
-            removeFromIndex(cr.key.urlsafe(),'drafts')
+            removeFromIndex(cr.key.urlsafe(), 'drafts')
         else:
             self.abort(403)
 class TemplateListHandler(BaseHandler):
@@ -432,12 +432,12 @@ class TemplateListHandler(BaseHandler):
         cr.status = 'template'
         cr.author = users.get_current_user()
         for p in (set(form.keys()) & properties):
-            setattr(cr,p,form[p])
+            setattr(cr, p, form[p])
         cr.put()
         updateIndex(cr, 'templates')
         self.response.write(json.dumps({'id': cr.id()}))
     def get(self):
-        crs = self.query(indexName='templates',statuses=['template'])
+        crs = self.query(indexName='templates', statuses=['template'])
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(self.encodeCRList(crs)))
@@ -452,8 +452,8 @@ class TemplateHandler(BaseHandler):
         cr = self.getCR(id)
         if cr.status == 'template' and cr.author == users.get_current_user():
             for p in (set(form.keys()) & properties):
-                if not equals(getattr(cr,p), form[p]):
-                    setattr(cr,p,form[p])
+                if not equals(getattr(cr, p), form[p]):
+                    setattr(cr, p, form[p])
                     changed = True
         else:
             self.abort(403)
@@ -464,7 +464,7 @@ class TemplateHandler(BaseHandler):
         cr = IDsToKey(id).get()
         if cr.status == 'template' and cr.author == users.get_current_user():
             cr.key.delete()
-            removeFromIndex(cr.key.urlsafe(),'templates')
+            removeFromIndex(cr.key.urlsafe(), 'templates')
         else:
             self.abort(403)
 class UserHandler(BaseHandler):
@@ -484,7 +484,7 @@ class UserHandler(BaseHandler):
         preferences = Preferences.get_or_insert(user.email())
         form = json.loads(self.request.body)
         for k in form.keys():
-            setattr(preferences,k,form[k])
+            setattr(preferences, k, form[k])
         preferences.put()
     def delete(self):
         user = users.get_current_user()
@@ -502,9 +502,9 @@ class GroupHandler(BaseHandler):
                 for s in form[k].split(','):
                     newUser = users.User(email=s)
                     UserList.append(newUser)
-                setattr(group,k,UserList)
+                setattr(group, k, UserList)
             else: 
-                setattr(group,k,form[k])
+                setattr(group, k, form[k])
         group.put()
         logging.debug(group.key.id())
         self.response.write(json.dumps({'id': group.key.id()}))
@@ -593,14 +593,14 @@ class TagsHandler(BaseHandler):
             
             
 application = webapp2.WSGIApplication([
-    webapp2.Route('/api/changerequests', handler=CRListHandler, methods=['GET' ,'POST']),
+    webapp2.Route('/api/changerequests', handler=CRListHandler, methods=['GET', 'POST']),
     webapp2.Route('/api/changerequests/<id:.*>', handler=CRHandler),
-    webapp2.Route('/api/Logout',webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
-    webapp2.Route('/api/user',handler=UserHandler),
-    webapp2.Route('/api/drafts',handler=DraftListHandler),
-    webapp2.Route('/api/drafts/<id:.*>',handler=DraftHandler),
-    webapp2.Route('/api/templates',handler=TemplateListHandler),
-    webapp2.Route('/api/templates/<id:.*>',handler=TemplateHandler),
+    webapp2.Route('/api/Logout', webapp2.RedirectHandler, defaults={'_uri': users.create_logout_url('/')}),
+    webapp2.Route('/api/user', handler=UserHandler),
+    webapp2.Route('/api/drafts', handler=DraftListHandler),
+    webapp2.Route('/api/drafts/<id:.*>', handler=DraftHandler),
+    webapp2.Route('/api/templates', handler=TemplateListHandler),
+    webapp2.Route('/api/templates/<id:.*>', handler=TemplateHandler),
     webapp2.Route('/api/tags', handler = TagsHandler),
     webapp2.Route('/api/usergroups', handler = GroupHandler),
     webapp2.Route('/api/admin/rebuildIndex', handler = IndexHandler),
